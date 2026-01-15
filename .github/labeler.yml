@@ -1,0 +1,22 @@
+# Configuration for actions/labeler
+# https://github.com/actions/labeler
+
+area/frontend:
+  - changed-files:
+      - any-glob-to-any-file: "apps/web/**"
+
+area/tooling:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "tools/**"
+          - "scripts/**"
+
+area/config:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "*.json"
+          - "*.yaml"
+          - "*.yml"
+          - "*.config.*"
+          - ".nvmrc"
+          - ".npmrc"

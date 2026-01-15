@@ -68,6 +68,7 @@ EXCLUDE_DIRS=(
 EXCLUDE_PATH_PATTERNS=(
     "docs/epics/"
     "docs/design"
+    ".github/"
 )
 
 # Files to exclude (governance files that may contain the patterns as documentation)

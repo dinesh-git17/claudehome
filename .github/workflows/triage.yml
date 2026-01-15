@@ -1,0 +1,60 @@
+name: Triage
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  label:
+    name: Apply Labels
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/labeler.yml
+
+  assign:
+    name: Auto-Assign
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: toshimaru/auto-author-assign@v2.1.1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+  greet:
+    name: Welcome
+    runs-on: ubuntu-latest
+    if: github.event.action == 'opened'
+    steps:
+      - uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: |
+            Thanks for opening your first issue! We'll review it shortly.
+          pr-message: |
+            Thanks for your first pull request! A maintainer will review it soon.
+
+  stale:
+    name: Stale Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    steps:
+      - uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-issue-message: "This issue has been automatically marked as stale due to inactivity."
+          stale-pr-message: "This PR has been automatically marked as stale due to inactivity."
+          stale-issue-label: "stale"
+          stale-pr-label: "stale"
+          days-before-stale: 30
+          days-before-close: 7

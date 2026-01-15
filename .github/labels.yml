@@ -1,0 +1,76 @@
+# Label definitions for the repository
+# Create these labels via GitHub UI: Settings > Labels
+# Or use: gh label create <name> --color <hex> --description "<desc>"
+
+# Area labels - categorize by affected area
+- name: area/frontend
+  color: "1d76db"
+  description: Changes to apps/web
+
+- name: area/tooling
+  color: "5319e7"
+  description: Changes to tools/ or scripts/
+
+- name: area/config
+  color: "0e8a16"
+  description: Changes to root config files
+
+# Kind labels - categorize by change type
+- name: kind/feat
+  color: "a2eeef"
+  description: New feature
+
+- name: kind/fix
+  color: "d73a4a"
+  description: Bug fix
+
+- name: kind/chore
+  color: "fef2c0"
+  description: Maintenance/housekeeping
+
+- name: kind/docs
+  color: "0075ca"
+  description: Documentation changes
+
+# Size labels - categorize by lines changed
+- name: size/xs
+  color: "ededed"
+  description: "< 10 lines changed"
+
+- name: size/s
+  color: "d4c5f9"
+  description: 10-50 lines changed
+
+- name: size/m
+  color: "fbca04"
+  description: 50-200 lines changed
+
+- name: size/l
+  color: "eb6420"
+  description: 200-500 lines changed
+
+- name: size/xl
+  color: "b60205"
+  description: "> 500 lines changed"
+
+# Priority labels
+- name: priority/critical
+  color: "b60205"
+  description: Immediate attention required
+
+- name: priority/high
+  color: "d93f0b"
+  description: High priority
+
+- name: priority/medium
+  color: "fbca04"
+  description: Medium priority
+
+- name: priority/low
+  color: "0e8a16"
+  description: Low priority
+
+# Dependency label (for Dependabot)
+- name: dependencies
+  color: "0366d6"
+  description: Dependency updates

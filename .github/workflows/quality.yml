@@ -1,0 +1,128 @@
+name: Quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.11.1"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run ESLint
+        id: lint
+        run: |
+          pnpm lint 2>&1 | tee lint-output.txt
+          exit ${PIPESTATUS[0]}
+
+      - name: Write failure summary
+        if: failure() && steps.lint.outcome == 'failure'
+        run: |
+          echo "## Lint Failed" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat lint-output.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.11.1"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check Prettier
+        id: format
+        run: |
+          pnpm format:check 2>&1 | tee format-output.txt
+          exit ${PIPESTATUS[0]}
+
+      - name: Write failure summary
+        if: failure() && steps.format.outcome == 'failure'
+        run: |
+          echo "## Format Check Failed" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat format-output.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.11.1"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run TypeScript
+        id: typecheck
+        run: |
+          pnpm typecheck 2>&1 | tee typecheck-output.txt
+          exit ${PIPESTATUS[0]}
+
+      - name: Write failure summary
+        if: failure() && steps.typecheck.outcome == 'failure'
+        run: |
+          echo "## Type Check Failed" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat typecheck-output.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+  compliance:
+    name: Protocol Zero
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Protocol Zero scan
+        id: compliance
+        run: |
+          ./tools/protocol-zero.sh 2>&1 | tee compliance-output.txt
+          exit ${PIPESTATUS[0]}
+
+      - name: Write failure summary
+        if: failure() && steps.compliance.outcome == 'failure'
+        run: |
+          echo "## Protocol Zero Violation" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat compliance-output.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY

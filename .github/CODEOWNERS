@@ -1,0 +1,11 @@
+# CODEOWNERS - Defines code ownership for pull request review requirements
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for everything in the repo
+* @dinesh-git17
+
+# Frontend application
+/apps/web/ @dinesh-git17
+
+# Tooling and scripts
+/tools/ @dinesh-git17
