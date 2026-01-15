@@ -1,0 +1,118 @@
+name: Governance Audit
+
+on:
+  schedule:
+    - cron: "0 9 * * 1" # Weekly on Monday at 9:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  audit:
+    name: Repository Settings Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Audit repository settings
+        id: audit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REPO="${{ github.repository }}"
+          DRIFT_DETECTED=false
+          DRIFT_REPORT=""
+
+          # Fetch repository settings
+          SETTINGS=$(gh api "repos/${REPO}" --jq '{
+            squashMergeAllowed: .allow_squash_merge,
+            mergeCommitAllowed: .allow_merge_commit,
+            rebaseMergeAllowed: .allow_rebase_merge,
+            deleteBranchOnMerge: .delete_branch_on_merge,
+            hasWikiEnabled: .has_wiki,
+            hasProjectsEnabled: .has_projects
+          }')
+
+          # Check squash-only merge policy
+          if [[ $(echo "$SETTINGS" | jq -r '.squashMergeAllowed') != "true" ]]; then
+            DRIFT_DETECTED=true
+            DRIFT_REPORT+="- ❌ Squash merge is disabled (expected: enabled)\n"
+          fi
+
+          if [[ $(echo "$SETTINGS" | jq -r '.mergeCommitAllowed') != "false" ]]; then
+            DRIFT_DETECTED=true
+            DRIFT_REPORT+="- ❌ Merge commit is enabled (expected: disabled)\n"
+          fi
+
+          if [[ $(echo "$SETTINGS" | jq -r '.rebaseMergeAllowed') != "false" ]]; then
+            DRIFT_DETECTED=true
+            DRIFT_REPORT+="- ❌ Rebase merge is enabled (expected: disabled)\n"
+          fi
+
+          # Check branch hygiene
+          if [[ $(echo "$SETTINGS" | jq -r '.deleteBranchOnMerge') != "true" ]]; then
+            DRIFT_DETECTED=true
+            DRIFT_REPORT+="- ❌ Auto-delete branches is disabled (expected: enabled)\n"
+          fi
+
+          # Check noise reduction
+          if [[ $(echo "$SETTINGS" | jq -r '.hasWikiEnabled') != "false" ]]; then
+            DRIFT_DETECTED=true
+            DRIFT_REPORT+="- ❌ Wiki is enabled (expected: disabled)\n"
+          fi
+
+          if [[ $(echo "$SETTINGS" | jq -r '.hasProjectsEnabled') != "false" ]]; then
+            DRIFT_DETECTED=true
+            DRIFT_REPORT+="- ❌ Projects is enabled (expected: disabled)\n"
+          fi
+
+          # Check ruleset exists
+          RULESET_COUNT=$(gh api "repos/${REPO}/rulesets" --jq 'length')
+          if [[ "$RULESET_COUNT" -eq 0 ]]; then
+            DRIFT_DETECTED=true
+            DRIFT_REPORT+="- ❌ No rulesets configured (expected: Production Governance ruleset)\n"
+          else
+            RULESET_ACTIVE=$(gh api "repos/${REPO}/rulesets" --jq '.[] | select(.name == "Production Governance" and .enforcement == "active") | .name')
+            if [[ -z "$RULESET_ACTIVE" ]]; then
+              DRIFT_DETECTED=true
+              DRIFT_REPORT+="- ❌ Production Governance ruleset not active\n"
+            fi
+          fi
+
+          # Output results
+          echo "drift_detected=$DRIFT_DETECTED" >> "$GITHUB_OUTPUT"
+          if [[ "$DRIFT_DETECTED" == "true" ]]; then
+            echo "drift_report<<EOF" >> "$GITHUB_OUTPUT"
+            echo -e "$DRIFT_REPORT" >> "$GITHUB_OUTPUT"
+            echo "EOF" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create drift issue
+        if: steps.audit.outputs.drift_detected == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "Governance Drift Detected" \
+            --label "governance,priority/high" \
+            --body "## Repository Configuration Drift
+
+          The weekly governance audit detected the following configuration drift:
+
+          ${{ steps.audit.outputs.drift_report }}
+
+          ## Required Action
+
+          Review and restore repository settings to match governance requirements defined in E0-GOV-01.
+
+          ## Audit Details
+
+          - **Repository:** ${{ github.repository }}
+          - **Run ID:** ${{ github.run_id }}
+          - **Triggered:** ${{ github.event_name }}"
+
+      - name: Audit passed
+        if: steps.audit.outputs.drift_detected != 'true'
+        run: echo "✓ All governance checks passed. No drift detected."
