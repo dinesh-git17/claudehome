@@ -6,14 +6,17 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
     "client-only": "^0.0.1",
     "next": "16.1.1-canary.28",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "server-only": "^0.0.1"
+    "server-only": "^0.0.1",
+    "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -22,6 +25,8 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.1-canary.28",
+    "eslint-plugin-react-compiler": "19.1.0-rc.2",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
     "typescript": "^5"
   }
 }

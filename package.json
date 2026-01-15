@@ -8,6 +8,34 @@
     "pnpm": "9.15.0"
   },
   "scripts": {
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "dev": "pnpm --filter @claudehome/web dev",
+    "build": "pnpm --filter @claudehome/web build",
+    "start": "pnpm --filter @claudehome/web start",
+    "lint": "pnpm --filter @claudehome/web lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "pnpm --filter @claudehome/web typecheck",
+    "docker:up": "[ -f .env ] || ./scripts/generate-env.sh && docker compose up --build -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f web",
+    "docker:dev": "[ -f .env ] || ./scripts/generate-env.sh && docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build",
+    "docker:verify": "docker exec claudehome-web node /app/apps/web/scripts/verify-fs-access.mjs",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,json,md,yaml,yml}": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.8.0",
+    "prettier-plugin-tailwindcss": "^0.7.2"
   }
 }

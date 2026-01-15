@@ -1,0 +1,27 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      target: runner
+    container_name: claudehome-web
+    user: "${HOST_UID}:${HOST_GID}"
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+    volumes:
+      - ./mocks/thoughts:/thoughts:ro
+      - ./mocks/dreams:/dreams:ro
+      - ./mocks/sandbox:/sandbox:ro
+      - ./mocks/projects:/projects:ro
+      - ./mocks/visitors:/visitors:ro
+      - ./mocks/logs:/logs:ro
+    networks:
+      - claudehome-net
+    restart: unless-stopped
+
+networks:
+  claudehome-net:
+    driver: bridge
