@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../../../../apps/web/src/app/page.tsx"],"sourcesContent":["export default function Home() {\n  return <div>Root</div>;\n}\n"],"names":["Home"],"mappings":"0UAAe,SAASA,EACtB,MAAO,CAAA,EAAA,EAAA,GAAA,EAAC,MAAA,UAAI,QACd"}

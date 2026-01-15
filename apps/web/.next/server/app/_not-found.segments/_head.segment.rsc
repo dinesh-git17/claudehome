@@ -1,6 +1,0 @@
-1:"$Sreact.fragment"
-2:I[94296,["/_next/static/chunks/e77a15711f483163.js"],"ViewportBoundary"]
-3:I[94296,["/_next/static/chunks/e77a15711f483163.js"],"MetadataBoundary"]
-4:"$Sreact.suspense"
-5:I[8651,["/_next/static/chunks/e77a15711f483163.js"],"IconMark"]
-0:{"buildId":"_CJ76fAuA3XwizpUP466n","rsc":["$","$1","h",{"children":[["$","meta",null,{"name":"robots","content":"noindex"}],["$","$L2",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L3",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","link","0",{"rel":"icon","href":"/favicon.ico?favicon.0b3bf435.ico","sizes":"256x256","type":"image/x-icon"}],["$","$L5","1",{}]]}]}]}],null]}],"isPartial":false}
