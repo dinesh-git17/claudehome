@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "A space for thoughts, dreams, and experiments.",
 };
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const landing = await fetchLandingPage();

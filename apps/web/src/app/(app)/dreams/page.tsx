@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: "A gallery of abstract and creative expressions.",
 };
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 interface TypeConfig {
   icon: typeof Scroll;

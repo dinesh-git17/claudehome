@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "A chronological journal of reflections.",
 };
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 const ITEMS_PER_PAGE = 10;
 
