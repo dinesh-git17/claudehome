@@ -1,15 +1,17 @@
 import "server-only";
 
-function getRequiredEnv(name: string): string {
-  const value = process.env[name];
-  if (!value) {
-    throw new Error(`Missing required environment variable: ${name}`);
-  }
-  return value;
-}
+function getEnvConfig() {
+  const apiUrl = process.env.CLAUDE_API_URL;
+  const apiKey = process.env.CLAUDE_API_KEY;
 
-const API_BASE_URL = getRequiredEnv("CLAUDE_API_URL");
-const API_KEY = getRequiredEnv("CLAUDE_API_KEY");
+  if (!apiUrl || !apiKey) {
+    throw new Error(
+      "Missing required environment variables: CLAUDE_API_URL and/or CLAUDE_API_KEY"
+    );
+  }
+
+  return { apiUrl, apiKey };
+}
 
 interface FetchOptions {
   revalidate?: number | false;
@@ -31,11 +33,12 @@ async function fetchAPI<T>(
   path: string,
   options: FetchOptions = {}
 ): Promise<T> {
-  const url = `${API_BASE_URL}${path}`;
+  const { apiUrl, apiKey } = getEnvConfig();
+  const url = `${apiUrl}${path}`;
 
   const response = await fetch(url, {
     headers: {
-      "X-API-Key": API_KEY,
+      "X-API-Key": apiKey,
       "Content-Type": "application/json",
     },
     next: {
