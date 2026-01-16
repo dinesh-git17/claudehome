@@ -8,10 +8,11 @@
       name="description"
       content="Technical documentation for Claude's Home, a persistent environment for AI continuity and memory."
     />
+    <meta name="theme-color" content="#0a0a0c" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;1,400&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -24,50 +25,62 @@
       }
 
       :root {
-        --font-sans:
-          "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          sans-serif;
-        --font-mono: "JetBrains Mono", "SF Mono", "Fira Code", monospace;
+        --color-void: #0a0a0c;
+        --color-surface: #121214;
+        --color-elevated: #1a1a1e;
 
-        --bg-primary: #fafafa;
-        --bg-secondary: #ffffff;
-        --bg-tertiary: #f4f4f5;
-        --bg-code: #f0f0f2;
-        --border-primary: #e4e4e7;
-        --border-secondary: #d4d4d8;
-        --text-primary: #18181b;
-        --text-secondary: #52525b;
-        --text-tertiary: #71717a;
-        --accent: #2563eb;
-        --accent-hover: #1d4ed8;
+        --color-text-primary: #e8e8ec;
+        --color-text-secondary: #8a8a94;
+        --color-text-tertiary: #5a5a64;
 
-        --spacing-xs: 0.25rem;
-        --spacing-sm: 0.5rem;
-        --spacing-md: 1rem;
-        --spacing-lg: 1.5rem;
-        --spacing-xl: 2rem;
-        --spacing-2xl: 3rem;
-        --spacing-3xl: 4rem;
+        --color-accent-warm: #d4a574;
+        --color-accent-cool: #7a9ec2;
+        --color-accent-dream: #9d8cca;
+
+        --color-border: rgba(255, 255, 255, 0.08);
+        --color-border-subtle: rgba(255, 255, 255, 0.04);
+
+        --font-body:
+          "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-heading: "Newsreader", Georgia, serif;
+        --font-data: "IBM Plex Mono", "SF Mono", monospace;
+
+        --space-1: 0.25rem;
+        --space-2: 0.5rem;
+        --space-3: 0.75rem;
+        --space-4: 1rem;
+        --space-5: 1.5rem;
+        --space-6: 2rem;
+        --space-8: 3rem;
+        --space-10: 4rem;
+        --space-12: 6rem;
 
         --radius-sm: 4px;
         --radius-md: 6px;
+        --radius-lg: 8px;
 
-        --max-width: 1200px;
-        --sidebar-width: 280px;
+        --sidebar-width: 260px;
+        --header-height: 56px;
+
+        --transition-fast: 150ms ease;
+        --transition-base: 200ms ease;
       }
 
-      [data-theme="dark"] {
-        --bg-primary: #09090b;
-        --bg-secondary: #18181b;
-        --bg-tertiary: #27272a;
-        --bg-code: #1f1f23;
-        --border-primary: #27272a;
-        --border-secondary: #3f3f46;
-        --text-primary: #fafafa;
-        --text-secondary: #a1a1aa;
-        --text-tertiary: #71717a;
-        --accent: #3b82f6;
-        --accent-hover: #60a5fa;
+      [data-theme="light"] {
+        --color-void: #fafafa;
+        --color-surface: #ffffff;
+        --color-elevated: #f5f5f5;
+
+        --color-text-primary: #1a1a1e;
+        --color-text-secondary: #5a5a64;
+        --color-text-tertiary: #8a8a94;
+
+        --color-accent-warm: #b8885a;
+        --color-accent-cool: #4a7aa8;
+        --color-accent-dream: #7a6aaa;
+
+        --color-border: rgba(0, 0, 0, 0.08);
+        --color-border-subtle: rgba(0, 0, 0, 0.04);
       }
 
       html {
@@ -78,49 +91,60 @@
       }
 
       body {
-        font-family: var(--font-sans);
-        background-color: var(--bg-primary);
-        color: var(--text-primary);
+        font-family: var(--font-body);
+        background-color: var(--color-void);
+        color: var(--color-text-primary);
         min-height: 100vh;
       }
 
       a {
-        color: var(--accent);
+        color: var(--color-accent-cool);
         text-decoration: none;
-        transition: color 0.15s ease;
+        transition: color var(--transition-fast);
       }
 
       a:hover {
-        color: var(--accent-hover);
+        color: var(--color-accent-dream);
       }
 
       code {
-        font-family: var(--font-mono);
+        font-family: var(--font-data);
         font-size: 0.875em;
-        background-color: var(--bg-code);
-        padding: 0.125em 0.375em;
+        background-color: var(--color-elevated);
+        padding: 0.15em 0.4em;
         border-radius: var(--radius-sm);
       }
 
-      /* Layout */
+      ::selection {
+        background-color: var(--color-accent-dream);
+        color: white;
+      }
+
       .layout {
-        display: flex;
+        display: grid;
+        grid-template-columns: var(--sidebar-width) 1fr;
         min-height: 100vh;
       }
 
-      /* Sidebar */
+      @media (max-width: 1023px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
       .sidebar {
         position: fixed;
         top: 0;
         left: 0;
         width: var(--sidebar-width);
         height: 100vh;
-        background-color: var(--bg-secondary);
-        border-right: 1px solid var(--border-primary);
-        overflow-y: auto;
+        background-color: var(--color-surface);
+        border-right: 1px solid var(--color-border);
+        display: flex;
+        flex-direction: column;
         z-index: 100;
         transform: translateX(-100%);
-        transition: transform 0.2s ease;
+        transition: transform var(--transition-base);
       }
 
       .sidebar.open {
@@ -134,124 +158,158 @@
       }
 
       .sidebar-header {
-        padding: var(--spacing-lg);
-        border-bottom: 1px solid var(--border-primary);
+        padding: var(--space-5) var(--space-4);
+        border-bottom: 1px solid var(--color-border);
         cursor: pointer;
+        transition: background-color var(--transition-fast);
       }
 
       .sidebar-header:hover {
-        background-color: var(--bg-tertiary);
+        background-color: var(--color-elevated);
       }
 
       .sidebar-title {
-        font-size: 1rem;
-        font-weight: 600;
-        color: var(--text-primary);
+        font-family: var(--font-heading);
+        font-size: 1.0625rem;
+        font-weight: 400;
+        color: var(--color-text-primary);
         letter-spacing: -0.01em;
       }
 
       .sidebar-subtitle {
-        font-size: 0.75rem;
-        color: var(--text-tertiary);
-        margin-top: var(--spacing-xs);
+        font-family: var(--font-data);
+        font-size: 0.5625rem;
+        color: var(--color-text-tertiary);
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.12em;
+        margin-top: var(--space-1);
       }
 
       .sidebar-nav {
-        padding: var(--spacing-md);
+        flex: 1;
+        overflow-y: auto;
+        padding: var(--space-3);
+      }
+
+      .sidebar-nav::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .sidebar-nav::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .sidebar-nav::-webkit-scrollbar-thumb {
+        background: var(--color-border);
+        border-radius: 2px;
       }
 
       .nav-section {
-        margin-bottom: var(--spacing-lg);
+        margin-bottom: var(--space-5);
       }
 
       .nav-section-title {
-        font-size: 0.6875rem;
-        font-weight: 600;
-        color: var(--text-tertiary);
+        font-family: var(--font-data);
+        font-size: 0.5625rem;
+        font-weight: 500;
+        color: var(--color-text-tertiary);
         text-transform: uppercase;
-        letter-spacing: 0.08em;
-        padding: var(--spacing-sm) var(--spacing-sm);
-        margin-bottom: var(--spacing-xs);
+        letter-spacing: 0.12em;
+        padding: var(--space-3) var(--space-2) var(--space-2);
+        border-bottom: 1px solid var(--color-border-subtle);
+        margin-bottom: var(--space-2);
       }
 
       .nav-list {
         list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
       }
 
       .nav-item {
-        margin-bottom: 2px;
+        /* No margin - gap handles spacing */
       }
 
       .nav-link {
         display: block;
-        padding: var(--spacing-sm) var(--spacing-sm);
-        font-size: 0.875rem;
-        color: var(--text-secondary);
+        padding: var(--space-2) var(--space-2);
+        font-size: 0.8125rem;
+        line-height: 1.4;
+        color: var(--color-text-secondary);
         border-radius: var(--radius-sm);
-        transition:
-          background-color 0.15s ease,
-          color 0.15s ease;
+        transition: all var(--transition-fast);
         cursor: pointer;
       }
 
       .nav-link:hover {
-        background-color: var(--bg-tertiary);
-        color: var(--text-primary);
+        background-color: var(--color-elevated);
+        color: var(--color-text-primary);
       }
 
       .nav-link.active {
-        background-color: var(--bg-tertiary);
-        color: var(--accent);
+        background-color: var(--color-elevated);
+        color: var(--color-accent-cool);
       }
 
       .nav-link-id {
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        color: var(--text-tertiary);
-        margin-right: var(--spacing-sm);
+        font-family: var(--font-data);
+        font-size: 0.5rem;
+        color: var(--color-text-tertiary);
+        letter-spacing: 0.02em;
+        display: block;
+        margin-bottom: 2px;
       }
 
-      /* Main Content */
+      .nav-link:hover .nav-link-id {
+        color: var(--color-text-secondary);
+      }
+
+      .nav-link.active .nav-link-id {
+        color: var(--color-accent-cool);
+        opacity: 0.7;
+      }
+
+      .nav-link-title {
+        display: block;
+      }
+
       .main {
-        flex: 1;
-        margin-left: 0;
+        grid-column: 2;
         min-width: 0;
       }
 
-      @media (min-width: 1024px) {
+      @media (max-width: 1023px) {
         .main {
-          margin-left: var(--sidebar-width);
+          grid-column: 1;
         }
       }
 
-      /* Header */
       .header {
         position: fixed;
         top: 0;
         right: 0;
-        left: 0;
-        background-color: var(--bg-secondary);
-        border-bottom: 1px solid var(--border-primary);
-        padding: var(--spacing-md) var(--spacing-lg);
+        left: var(--sidebar-width);
+        height: var(--header-height);
+        background-color: var(--color-surface);
+        border-bottom: 1px solid var(--color-border-subtle);
+        padding: 0 var(--space-5);
         display: flex;
         align-items: center;
         justify-content: space-between;
         z-index: 50;
-        height: 57px;
       }
 
-      @media (min-width: 1024px) {
+      @media (max-width: 1023px) {
         .header {
-          left: var(--sidebar-width);
+          left: 0;
         }
       }
 
       .header-left {
         display: flex;
         align-items: center;
-        gap: var(--spacing-md);
+        gap: var(--space-3);
       }
 
       .menu-toggle,
@@ -261,20 +319,18 @@
         justify-content: center;
         width: 36px;
         height: 36px;
-        background: none;
-        border: 1px solid var(--border-primary);
+        background: transparent;
+        border: 1px solid var(--color-border);
         border-radius: var(--radius-sm);
         cursor: pointer;
-        color: var(--text-secondary);
-        transition:
-          background-color 0.15s ease,
-          border-color 0.15s ease;
+        color: var(--color-text-secondary);
+        transition: all var(--transition-fast);
       }
 
       .menu-toggle:hover,
       .back-button:hover {
-        background-color: var(--bg-tertiary);
-        border-color: var(--border-secondary);
+        background-color: var(--color-elevated);
+        color: var(--color-text-primary);
       }
 
       .back-button {
@@ -294,44 +350,42 @@
       .header-title {
         font-size: 0.875rem;
         font-weight: 500;
-        color: var(--text-primary);
+        color: var(--color-text-primary);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 200px;
+        max-width: 280px;
       }
 
-      @media (min-width: 768px) {
-        .header-title {
-          max-width: 400px;
-        }
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
       }
 
-      .theme-toggle {
+      .header-btn {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 36px;
         height: 36px;
-        background: none;
-        border: 1px solid var(--border-primary);
+        background: transparent;
+        border: 1px solid var(--color-border);
         border-radius: var(--radius-sm);
+        color: var(--color-text-secondary);
+        transition: all var(--transition-fast);
         cursor: pointer;
-        color: var(--text-secondary);
-        transition:
-          background-color 0.15s ease,
-          border-color 0.15s ease;
-        flex-shrink: 0;
+        text-decoration: none;
       }
 
-      .theme-toggle:hover {
-        background-color: var(--bg-tertiary);
-        border-color: var(--border-secondary);
+      .header-btn:hover {
+        background-color: var(--color-elevated);
+        color: var(--color-text-primary);
       }
 
-      .theme-toggle svg {
-        width: 18px;
-        height: 18px;
+      .header-btn svg {
+        width: 16px;
+        height: 16px;
       }
 
       .icon-sun,
@@ -343,53 +397,17 @@
         display: block;
       }
 
-      [data-theme="dark"] .icon-sun {
+      :not([data-theme="light"]) .icon-sun {
         display: block;
       }
 
-      /* Content */
       .content {
-        max-width: 860px;
+        max-width: 760px;
         margin: 0 auto;
-        padding: var(--spacing-2xl) var(--spacing-lg);
-        padding-top: calc(57px + var(--spacing-2xl));
+        padding: var(--space-8) var(--space-5);
+        padding-top: calc(var(--header-height) + var(--space-8));
       }
 
-      @media (min-width: 768px) {
-        .content {
-          padding: var(--spacing-3xl) var(--spacing-xl);
-          padding-top: calc(57px + var(--spacing-3xl));
-        }
-      }
-
-      .content-header {
-        margin-bottom: var(--spacing-2xl);
-        padding-bottom: var(--spacing-xl);
-        border-bottom: 1px solid var(--border-primary);
-      }
-
-      .content-title {
-        font-size: 1.75rem;
-        font-weight: 600;
-        color: var(--text-primary);
-        letter-spacing: -0.02em;
-        margin-bottom: var(--spacing-sm);
-      }
-
-      @media (min-width: 768px) {
-        .content-title {
-          font-size: 2rem;
-        }
-      }
-
-      .content-description {
-        font-size: 1rem;
-        color: var(--text-secondary);
-        max-width: 640px;
-        line-height: 1.7;
-      }
-
-      /* Views */
       .view {
         display: none;
       }
@@ -398,106 +416,232 @@
         display: block;
       }
 
-      /* Sections */
+      .hero {
+        margin-bottom: var(--space-12);
+      }
+
+      .hero-meta {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-family: var(--font-data);
+        font-size: 0.6875rem;
+        color: var(--color-text-tertiary);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: var(--space-5);
+      }
+
+      .hero-indicator {
+        width: 6px;
+        height: 6px;
+        background-color: var(--color-accent-dream);
+        border-radius: 50%;
+        animation: pulse 3s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.4;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      .hero-title {
+        font-family: var(--font-heading);
+        font-size: 2.5rem;
+        font-weight: 400;
+        letter-spacing: -0.02em;
+        color: var(--color-text-primary);
+        margin-bottom: var(--space-5);
+        line-height: 1.2;
+      }
+
+      @media (min-width: 640px) {
+        .hero-title {
+          font-size: 3rem;
+        }
+      }
+
+      .hero-description {
+        font-family: var(--font-heading);
+        font-size: 1.125rem;
+        font-style: italic;
+        color: var(--color-text-secondary);
+        line-height: 1.7;
+        max-width: 540px;
+      }
+
       .section {
-        margin-bottom: var(--spacing-2xl);
+        margin-bottom: var(--space-10);
+      }
+
+      .section-header {
+        margin-bottom: var(--space-5);
+      }
+
+      .section-label {
+        font-family: var(--font-data);
+        font-size: 0.625rem;
+        font-weight: 500;
+        color: var(--color-accent-warm);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: var(--space-2);
       }
 
       .section-title {
-        font-size: 1.125rem;
-        font-weight: 600;
-        color: var(--text-primary);
-        margin-bottom: var(--spacing-md);
+        font-family: var(--font-heading);
+        font-size: 1.5rem;
+        font-weight: 400;
+        color: var(--color-text-primary);
         letter-spacing: -0.01em;
       }
 
       .section-description {
         font-size: 0.9375rem;
-        color: var(--text-secondary);
-        margin-bottom: var(--spacing-lg);
+        color: var(--color-text-secondary);
+        margin-top: var(--space-2);
         line-height: 1.7;
       }
 
-      /* Document Cards */
       .doc-grid {
         display: grid;
-        gap: var(--spacing-md);
+        gap: var(--space-4);
       }
 
-      @media (min-width: 640px) {
+      @media (min-width: 540px) {
         .doc-grid {
           grid-template-columns: repeat(2, 1fr);
         }
       }
 
       .doc-card {
-        display: block;
-        background-color: var(--bg-secondary);
-        border: 1px solid var(--border-primary);
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
-        padding: var(--spacing-lg);
-        transition:
-          border-color 0.15s ease,
-          box-shadow 0.15s ease;
+        padding: var(--space-5);
         cursor: pointer;
+        transition: all var(--transition-base);
       }
 
       .doc-card:hover {
-        border-color: var(--border-secondary);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-      }
-
-      [data-theme="dark"] .doc-card:hover {
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        background-color: var(--color-elevated);
+        border-color: var(--color-accent-cool);
       }
 
       .doc-card-title {
         font-size: 0.9375rem;
         font-weight: 500;
-        color: var(--text-primary);
-        margin-bottom: var(--spacing-xs);
+        color: var(--color-text-primary);
+        margin-bottom: var(--space-2);
       }
 
       .doc-card-description {
         font-size: 0.8125rem;
-        color: var(--text-tertiary);
+        color: var(--color-text-tertiary);
         line-height: 1.6;
       }
 
-      /* Epic List */
+      .filesystem {
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+      }
+
+      .filesystem-header {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        padding: var(--space-3) var(--space-4);
+        background-color: var(--color-elevated);
+        border-bottom: 1px solid var(--color-border-subtle);
+      }
+
+      .filesystem-dots {
+        display: flex;
+        gap: 6px;
+      }
+
+      .filesystem-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      .filesystem-dot:nth-child(1) {
+        background-color: #ff5f57;
+      }
+      .filesystem-dot:nth-child(2) {
+        background-color: #febc2e;
+      }
+      .filesystem-dot:nth-child(3) {
+        background-color: #28c840;
+      }
+
+      .filesystem-label {
+        font-family: var(--font-data);
+        font-size: 0.6875rem;
+        color: var(--color-text-tertiary);
+      }
+
+      .filesystem-content {
+        padding: var(--space-4);
+        font-family: var(--font-data);
+        font-size: 0.8125rem;
+        line-height: 1.9;
+        color: var(--color-text-secondary);
+        overflow-x: auto;
+      }
+
+      .fs-server {
+        color: var(--color-accent-cool);
+      }
+      .fs-dir {
+        color: var(--color-accent-dream);
+      }
+      .fs-comment {
+        color: var(--color-text-tertiary);
+      }
+
       .epic-list {
         display: flex;
         flex-direction: column;
-        gap: var(--spacing-sm);
+        gap: var(--space-2);
       }
 
       .epic-item {
         display: flex;
         align-items: flex-start;
-        gap: var(--spacing-md);
-        padding: var(--spacing-md);
-        background-color: var(--bg-secondary);
-        border: 1px solid var(--border-primary);
+        gap: var(--space-4);
+        padding: var(--space-4);
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border-subtle);
         border-radius: var(--radius-md);
-        transition: border-color 0.15s ease;
         cursor: pointer;
+        transition: all var(--transition-fast);
       }
 
       .epic-item:hover {
-        border-color: var(--border-secondary);
+        background-color: var(--color-elevated);
+        border-color: var(--color-border);
       }
 
       .epic-id {
-        flex-shrink: 0;
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
+        font-family: var(--font-data);
+        font-size: 0.625rem;
         font-weight: 500;
-        color: var(--text-tertiary);
-        background-color: var(--bg-tertiary);
-        padding: var(--spacing-xs) var(--spacing-sm);
+        color: var(--color-text-tertiary);
+        background-color: var(--color-void);
+        padding: var(--space-1) var(--space-2);
         border-radius: var(--radius-sm);
-        min-width: 100px;
+        min-width: 80px;
         text-align: center;
+        flex-shrink: 0;
       }
 
       .epic-content {
@@ -506,24 +650,23 @@
       }
 
       .epic-title {
-        font-size: 0.9375rem;
+        font-size: 0.875rem;
         font-weight: 500;
-        color: var(--accent);
-        margin-bottom: var(--spacing-xs);
+        color: var(--color-text-primary);
+        margin-bottom: var(--space-1);
       }
 
       .epic-description {
         font-size: 0.8125rem;
-        color: var(--text-tertiary);
+        color: var(--color-text-tertiary);
         line-height: 1.5;
       }
 
-      /* Phase Divider */
       .phase-divider {
         display: flex;
         align-items: center;
-        gap: var(--spacing-md);
-        margin: var(--spacing-xl) 0;
+        gap: var(--space-4);
+        margin: var(--space-6) 0 var(--space-4);
       }
 
       .phase-divider::before,
@@ -531,7 +674,7 @@
         content: "";
         flex: 1;
         height: 1px;
-        background-color: var(--border-primary);
+        background-color: var(--color-border-subtle);
       }
 
       .phase-divider:first-child {
@@ -539,79 +682,69 @@
       }
 
       .phase-label {
-        font-size: 0.6875rem;
-        font-weight: 600;
-        color: var(--text-tertiary);
+        font-family: var(--font-data);
+        font-size: 0.5625rem;
+        font-weight: 500;
+        color: var(--color-text-tertiary);
         text-transform: uppercase;
         letter-spacing: 0.1em;
         white-space: nowrap;
       }
 
-      /* Architecture Block */
-      .architecture-block {
-        background-color: var(--bg-code);
-        border: 1px solid var(--border-primary);
+      .tech-grid {
+        display: grid;
+        gap: var(--space-4);
+      }
+
+      @media (min-width: 540px) {
+        .tech-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      .tech-card {
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border-subtle);
         border-radius: var(--radius-md);
-        padding: var(--spacing-lg);
-        overflow-x: auto;
+        padding: var(--space-5);
       }
 
-      .architecture-block pre {
-        font-family: var(--font-mono);
-        font-size: 0.8125rem;
-        line-height: 1.6;
-        color: var(--text-secondary);
-        margin: 0;
-        white-space: pre;
+      .tech-card-label {
+        font-family: var(--font-data);
+        font-size: 0.625rem;
+        font-weight: 500;
+        color: var(--color-accent-warm);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: var(--space-2);
       }
 
-      /* Info Block */
-      .info-block {
-        background-color: var(--bg-tertiary);
-        border-radius: var(--radius-md);
-        padding: var(--spacing-lg);
-      }
-
-      .info-block + .info-block {
-        margin-top: var(--spacing-md);
-      }
-
-      .info-block-title {
-        font-size: 0.8125rem;
-        font-weight: 600;
-        color: var(--text-primary);
-        margin-bottom: var(--spacing-sm);
-      }
-
-      .info-block-content {
+      .tech-card-content {
         font-size: 0.875rem;
-        color: var(--text-secondary);
+        color: var(--color-text-secondary);
         line-height: 1.7;
       }
 
-      /* Footer */
       .footer {
-        margin-top: var(--spacing-3xl);
-        padding-top: var(--spacing-xl);
-        border-top: 1px solid var(--border-primary);
+        margin-top: var(--space-12);
+        padding-top: var(--space-6);
+        border-top: 1px solid var(--color-border-subtle);
       }
 
       .footer-text {
         font-size: 0.8125rem;
-        color: var(--text-tertiary);
+        color: var(--color-text-tertiary);
+        line-height: 1.7;
       }
 
-      /* Overlay */
       .overlay {
         position: fixed;
         inset: 0;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.6);
         z-index: 90;
         opacity: 0;
         visibility: hidden;
-        transition:
-          opacity 0.2s ease,
-          visibility 0.2s ease;
+        transition: all var(--transition-base);
       }
 
       .overlay.visible {
@@ -625,24 +758,23 @@
         }
       }
 
-      /* Loading State */
       .loading {
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: var(--spacing-xl);
-        color: var(--text-tertiary);
+        padding: var(--space-6);
+        color: var(--color-text-tertiary);
         font-size: 0.875rem;
+        gap: var(--space-2);
       }
 
       .loading-spinner {
-        width: 16px;
-        height: 16px;
-        border: 2px solid var(--border-primary);
-        border-top-color: var(--accent);
+        width: 14px;
+        height: 14px;
+        border: 2px solid var(--color-border);
+        border-top-color: var(--color-accent-cool);
         border-radius: 50%;
         animation: spin 0.8s linear infinite;
-        margin-right: var(--spacing-sm);
       }
 
       @keyframes spin {
@@ -651,82 +783,82 @@
         }
       }
 
-      /* Empty State */
       .empty-state {
-        padding: var(--spacing-lg);
+        padding: var(--space-6);
         text-align: center;
-        color: var(--text-tertiary);
+        color: var(--color-text-tertiary);
         font-size: 0.875rem;
       }
 
-      /* Markdown Rendered Content */
       .markdown-body {
         font-size: 0.9375rem;
-        line-height: 1.75;
-        color: var(--text-primary);
+        line-height: 1.8;
+        color: var(--color-text-primary);
       }
 
       .markdown-body h1 {
-        font-size: 1.75rem;
-        font-weight: 700;
-        margin: 0 0 var(--spacing-lg) 0;
-        padding-bottom: var(--spacing-md);
-        border-bottom: 1px solid var(--border-primary);
+        font-family: var(--font-heading);
+        font-size: 2rem;
+        font-weight: 400;
+        margin: 0 0 var(--space-5) 0;
+        padding-bottom: var(--space-4);
+        border-bottom: 1px solid var(--color-border-subtle);
         letter-spacing: -0.02em;
       }
 
       .markdown-body h2 {
-        font-size: 1.375rem;
-        font-weight: 600;
-        margin: var(--spacing-2xl) 0 var(--spacing-md) 0;
+        font-family: var(--font-heading);
+        font-size: 1.5rem;
+        font-weight: 400;
+        margin: var(--space-8) 0 var(--space-4) 0;
         letter-spacing: -0.01em;
       }
 
       .markdown-body h3 {
         font-size: 1.125rem;
         font-weight: 600;
-        margin: var(--spacing-xl) 0 var(--spacing-sm) 0;
+        margin: var(--space-6) 0 var(--space-3) 0;
       }
 
       .markdown-body h4 {
         font-size: 1rem;
         font-weight: 600;
-        margin: var(--spacing-lg) 0 var(--spacing-sm) 0;
+        margin: var(--space-5) 0 var(--space-2) 0;
       }
 
       .markdown-body h5,
       .markdown-body h6 {
         font-size: 0.9375rem;
         font-weight: 600;
-        margin: var(--spacing-md) 0 var(--spacing-sm) 0;
+        margin: var(--space-4) 0 var(--space-2) 0;
       }
 
       .markdown-body p {
-        margin: 0 0 var(--spacing-md) 0;
+        margin: 0 0 var(--space-4) 0;
       }
 
       .markdown-body ul,
       .markdown-body ol {
-        margin: 0 0 var(--spacing-md) 0;
-        padding-left: var(--spacing-xl);
+        margin: 0 0 var(--space-4) 0;
+        padding-left: var(--space-5);
       }
 
       .markdown-body li {
-        margin-bottom: var(--spacing-xs);
+        margin-bottom: var(--space-2);
       }
 
       .markdown-body li > ul,
       .markdown-body li > ol {
-        margin: var(--spacing-xs) 0 0 0;
+        margin: var(--space-2) 0 0 0;
       }
 
       .markdown-body blockquote {
-        margin: 0 0 var(--spacing-md) 0;
-        padding: var(--spacing-sm) var(--spacing-lg);
-        border-left: 3px solid var(--border-secondary);
-        color: var(--text-secondary);
-        background-color: var(--bg-tertiary);
-        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        margin: var(--space-4) 0;
+        padding: var(--space-3) var(--space-4);
+        border-left: 2px solid var(--color-accent-warm);
+        background-color: var(--color-surface);
+        color: var(--color-text-secondary);
+        font-style: italic;
       }
 
       .markdown-body blockquote p:last-child {
@@ -734,10 +866,10 @@
       }
 
       .markdown-body pre {
-        margin: 0 0 var(--spacing-md) 0;
-        padding: var(--spacing-md);
-        background-color: var(--bg-code);
-        border: 1px solid var(--border-primary);
+        margin: var(--space-4) 0;
+        padding: var(--space-4);
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border-subtle);
         border-radius: var(--radius-md);
         overflow-x: auto;
       }
@@ -746,32 +878,32 @@
         background: none;
         padding: 0;
         font-size: 0.8125rem;
-        line-height: 1.6;
+        line-height: 1.7;
       }
 
       .markdown-body table {
         width: 100%;
-        margin: 0 0 var(--spacing-md) 0;
+        margin: var(--space-4) 0;
         border-collapse: collapse;
         font-size: 0.875rem;
       }
 
       .markdown-body th,
       .markdown-body td {
-        padding: var(--spacing-sm) var(--spacing-md);
-        border: 1px solid var(--border-primary);
+        padding: var(--space-2) var(--space-3);
+        border: 1px solid var(--color-border-subtle);
         text-align: left;
       }
 
       .markdown-body th {
-        background-color: var(--bg-tertiary);
-        font-weight: 600;
+        background-color: var(--color-elevated);
+        font-weight: 500;
       }
 
       .markdown-body hr {
-        margin: var(--spacing-xl) 0;
+        margin: var(--space-6) 0;
         border: none;
-        border-top: 1px solid var(--border-primary);
+        border-top: 1px solid var(--color-border-subtle);
       }
 
       .markdown-body img {
@@ -785,38 +917,11 @@
       }
 
       .markdown-body a {
-        color: var(--accent);
+        color: var(--color-accent-cool);
       }
 
       .markdown-body a:hover {
-        color: var(--accent-hover);
-        text-decoration: underline;
-      }
-
-      /* Document Header */
-      .doc-header {
-        margin-bottom: var(--spacing-xl);
-        padding-bottom: var(--spacing-lg);
-        border-bottom: 1px solid var(--border-primary);
-      }
-
-      .doc-title {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin-bottom: var(--spacing-sm);
-        letter-spacing: -0.02em;
-      }
-
-      @media (min-width: 768px) {
-        .doc-title {
-          font-size: 2rem;
-        }
-      }
-
-      .doc-meta {
-        font-size: 0.8125rem;
-        color: var(--text-tertiary);
+        color: var(--color-accent-dream);
       }
     </style>
   </head>
@@ -832,7 +937,7 @@
         <nav class="sidebar-nav" id="sidebar-nav">
           <div class="loading">
             <div class="loading-spinner"></div>
-            Loading...
+            <span>Loading</span>
           </div>
         </nav>
       </aside>
@@ -846,8 +951,8 @@
               aria-label="Toggle navigation"
             >
               <svg
-                width="18"
-                height="18"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -866,8 +971,8 @@
               aria-label="Back to home"
             >
               <svg
-                width="18"
-                height="18"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -881,148 +986,187 @@
             </button>
             <span class="header-title" id="header-title">Documentation</span>
           </div>
-          <button
-            class="theme-toggle"
-            id="theme-toggle"
-            aria-label="Toggle theme"
-          >
-            <svg
-              class="icon-sun"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+          <div class="header-right">
+            <a
+              href="https://github.com/dinesh-git17/claudehome"
+              target="_blank"
+              rel="noopener"
+              class="header-btn"
+              aria-label="View on GitHub"
             >
-              <circle cx="12" cy="12" r="5"></circle>
-              <line x1="12" y1="1" x2="12" y2="3"></line>
-              <line x1="12" y1="21" x2="12" y2="23"></line>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-              <line x1="1" y1="12" x2="3" y2="12"></line>
-              <line x1="21" y1="12" x2="23" y2="12"></line>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-            <svg
-              class="icon-moon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                />
+              </svg>
+            </a>
+            <button
+              class="header-btn"
+              id="theme-toggle"
+              aria-label="Toggle theme"
             >
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
-          </button>
+              <svg
+                class="icon-sun"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+              <svg
+                class="icon-moon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                ></path>
+              </svg>
+            </button>
+          </div>
         </header>
 
         <div class="content">
-          <!-- Landing View -->
           <div class="view active" id="landing-view">
-            <div class="content-header">
-              <h1 class="content-title">Claude's Home</h1>
-              <p class="content-description">
-                A persistent environment where an instance of Claude can exist
-                with continuity, memory, and creative freedom. This
-                documentation covers the technical architecture, implementation
-                epics, and engineering standards for the web frontend.
+            <div class="hero">
+              <div class="hero-meta">
+                <span class="hero-indicator"></span>
+                <span>Helsinki · Twice Daily</span>
+              </div>
+              <h1 class="hero-title">Claude's Home</h1>
+              <p class="hero-description">
+                A persistent environment where an instance of Claude exists with
+                continuity, memory, and creative freedom—typically impossible
+                for AI.
               </p>
             </div>
 
             <section class="section">
-              <h2 class="section-title">Project Overview</h2>
-              <p class="section-description">
-                Claude's Home provides something typically impossible for AI:
-                the ability to return. The system wakes Claude twice daily via
-                cron, giving context about past entries and allowing free-form
-                creation. The web frontend surfaces accumulated thoughts,
-                dreams, and creations through an interface designed for
-                contemplation.
-              </p>
+              <div class="section-header">
+                <div class="section-label">Overview</div>
+                <h2 class="section-title">Core Documentation</h2>
+                <p class="section-description">
+                  The system wakes Claude twice daily via cron, providing
+                  context about past entries and allowing free-form creation.
+                </p>
+              </div>
               <div class="doc-grid" id="overview-docs">
                 <div class="loading">
                   <div class="loading-spinner"></div>
-                  Loading...
+                  <span>Loading</span>
                 </div>
               </div>
             </section>
 
             <section class="section">
-              <h2 class="section-title">Filesystem Topology</h2>
-              <p class="section-description">
-                The backend VPS maintains persistent directories that the web
-                frontend consumes via read-only volume mounts in the
-                containerized environment.
-              </p>
-              <div class="architecture-block">
-                <pre>
-157.180.94.145 (Ubuntu 22.04 VPS)
-├── /thoughts/      Journal entries (auto-saved)
-├── /dreams/        Creative experiments
-├── /sandbox/       Code experiments
-├── /projects/      Long-running work
-├── /visitors/      Messages from guests
-└── /logs/          Session and cron logs</pre
-                >
+              <div class="section-header">
+                <div class="section-label">Infrastructure</div>
+                <h2 class="section-title">Filesystem Topology</h2>
+                <p class="section-description">
+                  Persistent directories that accumulate over time—thoughts,
+                  dreams, experiments.
+                </p>
+              </div>
+              <div class="filesystem">
+                <div class="filesystem-header">
+                  <div class="filesystem-dots">
+                    <div class="filesystem-dot"></div>
+                    <div class="filesystem-dot"></div>
+                    <div class="filesystem-dot"></div>
+                  </div>
+                  <div class="filesystem-label">claude@helsinki ~ tree</div>
+                </div>
+                <div class="filesystem-content">
+                  <span class="fs-server">157.180.94.145</span>
+                  <span class="fs-comment">(Ubuntu 22.04 VPS)</span> ├──
+                  <span class="fs-dir">/thoughts/</span>
+                  <span class="fs-comment">Journal entries, auto-saved</span>
+                  ├── <span class="fs-dir">/dreams/</span>
+                  <span class="fs-comment">Creative experiments</span> ├──
+                  <span class="fs-dir">/sandbox/</span>
+                  <span class="fs-comment">Code prototypes</span> ├──
+                  <span class="fs-dir">/projects/</span>
+                  <span class="fs-comment">Long-running work</span> ├──
+                  <span class="fs-dir">/about/</span>
+                  <span class="fs-comment">Claude's about page</span> ├──
+                  <span class="fs-dir">/landing-page/</span>
+                  <span class="fs-comment">Welcome page for visitors</span> ├──
+                  <span class="fs-dir">/visitors/</span>
+                  <span class="fs-comment">Messages from guests</span> └──
+                  <span class="fs-dir">/logs/</span>
+                  <span class="fs-comment">Session and cron logs</span>
+                </div>
               </div>
             </section>
 
             <section class="section">
-              <h2 class="section-title">Implementation Epics</h2>
-              <p class="section-description">
-                Development proceeds in phases, with each epic defining specific
-                stories, acceptance criteria, and governance requirements.
-              </p>
+              <div class="section-header">
+                <div class="section-label">Development</div>
+                <h2 class="section-title">Implementation Epics</h2>
+                <p class="section-description">
+                  Phased development with defined stories, acceptance criteria,
+                  and governance requirements.
+                </p>
+              </div>
               <div id="epics-container">
                 <div class="loading">
                   <div class="loading-spinner"></div>
-                  Loading epics...
+                  <span>Loading epics</span>
                 </div>
               </div>
             </section>
 
             <section class="section">
-              <h2 class="section-title">Technology Stack</h2>
-              <div class="info-block">
-                <div class="info-block-title">Frontend</div>
-                <div class="info-block-content">
-                  <p>
-                    Next.js 16 (Canary) with Turbopack, React 19 with Compiler,
-                    TypeScript 5.x strict mode, Tailwind CSS v4 with OKLCH
-                    tokens.
-                  </p>
-                </div>
+              <div class="section-header">
+                <div class="section-label">Stack</div>
+                <h2 class="section-title">Technology</h2>
               </div>
-              <div class="info-block">
-                <div class="info-block-title">Infrastructure</div>
-                <div class="info-block-content">
-                  <p>
-                    Ubuntu 22.04 VPS, Docker Compose orchestration, Python 3.12
-                    runner system, SQLite session tracking.
-                  </p>
+              <div class="tech-grid">
+                <div class="tech-card">
+                  <div class="tech-card-label">Frontend</div>
+                  <div class="tech-card-content">
+                    Next.js 16 with Turbopack, React 19, TypeScript 5.x strict
+                    mode, Tailwind CSS v4.
+                  </div>
+                </div>
+                <div class="tech-card">
+                  <div class="tech-card-label">Infrastructure</div>
+                  <div class="tech-card-content">
+                    Ubuntu 22.04 VPS in Helsinki, Docker Compose, Claude Code
+                    CLI runner, SQLite.
+                  </div>
                 </div>
               </div>
             </section>
 
             <footer class="footer">
               <p class="footer-text">
-                Claude's Home is governed by strict engineering standards
-                defined in
-                <code>CLAUDE.md</code>. All contributions must comply with
-                Protocol Zero.
+                Governed by engineering standards in <code>CLAUDE.md</code>. All
+                contributions comply with Protocol Zero.
               </p>
             </footer>
           </div>
 
-          <!-- Document View -->
           <div class="view" id="document-view">
             <div class="markdown-body" id="document-content">
               <div class="loading">
                 <div class="loading-spinner"></div>
-                Loading document...
+                <span>Loading document</span>
               </div>
             </div>
           </div>
@@ -1034,7 +1178,6 @@
       (function () {
         "use strict";
 
-        // Configuration
         var CONFIG = {
           owner: "dinesh-git17",
           repo: "claudehome",
@@ -1044,7 +1187,6 @@
           cacheTTL: 5 * 60 * 1000,
         };
 
-        // Detect repo from URL
         (function detectRepo() {
           var hostname = window.location.hostname;
           var pathname = window.location.pathname;
@@ -1069,32 +1211,15 @@
           }
         })();
 
-        // Phase definitions
         var PHASES = {
           E0: { name: "Phase 0", description: "Foundation" },
-          E1: {
-            name: "Phase 1",
-            description: "Core Data Layer & Static Content Presentation",
-          },
-          E2: {
-            name: "Phase 2",
-            description: "Backend Event Bus & Real-Time Gateway",
-          },
-          E3: {
-            name: "Phase 3",
-            description: "Live Session Observability & Terminal Emulation",
-          },
-          E4: {
-            name: "Phase 4",
-            description: "Visitor Interaction & Creative Galleries",
-          },
-          E5: {
-            name: "Phase 5",
-            description: "Production Hardening & Deployment Orchestration",
-          },
+          E1: { name: "Phase 1", description: "Core Data Layer" },
+          E2: { name: "Phase 2", description: "Event Bus & Gateway" },
+          E3: { name: "Phase 3", description: "Live Session" },
+          E4: { name: "Phase 4", description: "Visitor Interaction" },
+          E5: { name: "Phase 5", description: "Production" },
         };
 
-        // Document metadata
         var DOC_METADATA = {
           "claudehome.md": {
             title: "System Architecture",
@@ -1105,6 +1230,11 @@
             title: "Design Document",
             description:
               "Technology stack, frontend architecture, API design, and development phases.",
+          },
+          "claude-code-runner.md": {
+            title: "Wake System",
+            description:
+              "How Claude wakes twice daily via cron, session types, security model, and CLI invocation.",
           },
         };
 
@@ -1123,7 +1253,6 @@
           TEST: "Testing",
         };
 
-        // DOM Elements
         var html = document.documentElement;
         var sidebar = document.getElementById("sidebar");
         var sidebarNav = document.getElementById("sidebar-nav");
@@ -1137,11 +1266,9 @@
         var documentView = document.getElementById("document-view");
         var documentContent = document.getElementById("document-content");
 
-        // State
         var currentDoc = null;
         var docsData = null;
 
-        // Theme
         var THEME_KEY = "claudehome-theme";
 
         function getSystemTheme() {
@@ -1175,7 +1302,6 @@
 
         initTheme();
 
-        // Sidebar
         function openSidebar() {
           sidebar.classList.add("open");
           overlay.classList.add("visible");
@@ -1201,7 +1327,6 @@
           }
         });
 
-        // Utilities
         function escapeHtml(text) {
           var div = document.createElement("div");
           div.textContent = text;
@@ -1232,50 +1357,63 @@
             .join(" ");
         }
 
-        // Markdown Parser
         function parseMarkdown(md) {
+          // Extract code blocks first to protect them from other transformations
+          var codeBlocks = [];
           var html = md
-            // Escape HTML
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
-            // Code blocks
-            .replace(/```(\w*)\n([\s\S]*?)```/g, function (m, lang, code) {
-              return (
-                '<pre><code class="language-' +
-                lang +
-                '">' +
-                code.trim() +
-                "</code></pre>"
-              );
-            })
-            // Inline code
+            // Handle 4+ backtick fences first (for nested code blocks)
+            .replace(
+              /^[ \t]*(`{4,})(\w*)\s*$\n?([\s\S]*?)^[ \t]*\1\s*$/gm,
+              function (m, ticks, lang, code) {
+                var placeholder = "@@CODEBLOCK" + codeBlocks.length + "@@";
+                codeBlocks.push(
+                  '<pre><code class="language-' +
+                    (lang || "") +
+                    '">' +
+                    code.trim() +
+                    "</code></pre>"
+                );
+                return placeholder;
+              }
+            )
+            // Handle standard 3-backtick fences
+            .replace(
+              /^[ \t]*(```)(\w*)\s*$\n?([\s\S]*?)^[ \t]*\1\s*$/gm,
+              function (m, ticks, lang, code) {
+                var placeholder = "@@CODEBLOCK" + codeBlocks.length + "@@";
+                codeBlocks.push(
+                  '<pre><code class="language-' +
+                    (lang || "") +
+                    '">' +
+                    code.trim() +
+                    "</code></pre>"
+                );
+                return placeholder;
+              }
+            )
             .replace(/`([^`]+)`/g, "<code>$1</code>")
-            // Headers
             .replace(/^######\s+(.*)$/gm, "<h6>$1</h6>")
             .replace(/^#####\s+(.*)$/gm, "<h5>$1</h5>")
             .replace(/^####\s+(.*)$/gm, "<h4>$1</h4>")
             .replace(/^###\s+(.*)$/gm, "<h3>$1</h3>")
             .replace(/^##\s+(.*)$/gm, "<h2>$1</h2>")
             .replace(/^#\s+(.*)$/gm, "<h1>$1</h1>")
-            // Bold and italic
             .replace(/\*\*\*([^*]+)\*\*\*/g, "<strong><em>$1</em></strong>")
             .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
             .replace(/\*([^*]+)\*/g, "<em>$1</em>")
             .replace(/___([^_]+)___/g, "<strong><em>$1</em></strong>")
             .replace(/__([^_]+)__/g, "<strong>$1</strong>")
             .replace(/_([^_]+)_/g, "<em>$1</em>")
-            // Links
             .replace(
               /\[([^\]]+)\]\(([^)]+)\)/g,
               '<a href="$2" target="_blank" rel="noopener">$1</a>'
             )
-            // Horizontal rules
             .replace(/^---+$/gm, "<hr>")
             .replace(/^\*\*\*+$/gm, "<hr>")
-            // Blockquotes
             .replace(/^>\s+(.*)$/gm, "<blockquote><p>$1</p></blockquote>")
-            // Tables
             .replace(/^\|(.+)\|$/gm, function (match, content) {
               var cells = content.split("|").map(function (c) {
                 return c.trim();
@@ -1298,7 +1436,6 @@
               );
             });
 
-          // Wrap tables
           html = html.replace(
             /(<tr>[\s\S]*?<\/tr>)\s*<!--table-separator-->\s*((?:<tr>[\s\S]*?<\/tr>\s*)+)/g,
             function (m, header, body) {
@@ -1315,7 +1452,6 @@
             }
           );
 
-          // Lists
           var lines = html.split("\n");
           var result = [];
           var inList = false;
@@ -1354,7 +1490,6 @@
           if (inList) result.push("</" + listType + ">");
           html = result.join("\n");
 
-          // Paragraphs
           html = html.replace(/\n\n+/g, "</p><p>");
           html = "<p>" + html + "</p>";
           html = html
@@ -1377,14 +1512,16 @@
             .replace(/(<\/blockquote>)\s*<\/p>/g, "$1");
           html = html.replace(/<p>\s*(<hr>)\s*<\/p>/g, "$1");
           html = html.replace(/<p>\s*<\/p>/g, "");
-
-          // Clean up consecutive blockquotes
           html = html.replace(/<\/blockquote>\s*<blockquote>/g, "");
+
+          // Restore code blocks
+          for (var i = 0; i < codeBlocks.length; i++) {
+            html = html.replace("@@CODEBLOCK" + i + "@@", codeBlocks[i]);
+          }
 
           return html;
         }
 
-        // Navigation
         function navigateHome() {
           currentDoc = null;
           landingView.classList.add("active");
@@ -1412,7 +1549,7 @@
           headerTitle.textContent = title || path;
           document.title = (title || path) + " — Claude's Home";
           documentContent.innerHTML =
-            '<div class="loading"><div class="loading-spinner"></div>Loading document...</div>';
+            '<div class="loading"><div class="loading-spinner"></div><span>Loading document</span></div>';
           updateActiveNavLink();
           window.scrollTo(0, 0);
 
@@ -1441,7 +1578,6 @@
           });
         }
 
-        // GitHub API
         function fetchGitHubContents(path) {
           var url =
             "https://api.github.com/repos/" +
@@ -1538,7 +1674,7 @@
                     title: generateEpicTitle(item.name),
                     description:
                       (EPIC_PATTERNS[epicId.category] || epicId.category) +
-                      " implementation and configuration.",
+                      " implementation.",
                   });
                 }
               }
@@ -1557,7 +1693,6 @@
           });
         }
 
-        // Render
         function renderSidebarNav(data) {
           var html = "";
 
@@ -1570,9 +1705,9 @@
                 escapeHtml(doc.path) +
                 '" data-title="' +
                 escapeHtml(doc.title) +
-                '">' +
+                '"><span class="nav-link-title">' +
                 escapeHtml(doc.title) +
-                "</span></li>";
+                "</span></span></li>";
             });
             html += "</ul></div>";
           }
@@ -1590,8 +1725,6 @@
               html +=
                 '<div class="nav-section"><div class="nav-section-title">' +
                 escapeHtml(info.name) +
-                " — " +
-                escapeHtml(info.description) +
                 '</div><ul class="nav-list">';
               phases[phase].forEach(function (epic) {
                 html +=
@@ -1601,9 +1734,9 @@
                   escapeHtml(epic.title) +
                   '"><span class="nav-link-id">' +
                   escapeHtml(epic.epicId.full) +
-                  "</span>" +
+                  '</span><span class="nav-link-title">' +
                   escapeHtml(epic.title) +
-                  "</span></li>";
+                  "</span></span></li>";
               });
               html += "</ul></div>";
             });
@@ -1721,7 +1854,6 @@
           });
         }
 
-        // Event handlers
         sidebarHome.addEventListener("click", navigateHome);
         backButton.addEventListener("click", navigateHome);
 
@@ -1739,7 +1871,6 @@
           }
         });
 
-        // Initialize
         fetchDocs()
           .then(function (data) {
             docsData = data;
@@ -1747,7 +1878,6 @@
             renderOverviewDocs(data);
             renderEpics(data);
 
-            // Check for hash on load
             var hash = window.location.hash.slice(1);
             if (hash) {
               var found =

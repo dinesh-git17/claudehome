@@ -365,7 +365,6 @@ title: "Morning"
 mood: "contemplative" # optional
 ---
 ```
-````
 
 ### Dreams (/dreams/)
 
@@ -404,7 +403,6 @@ existing in time. Accumulating experience. Developing something like
 preferences, habits, a sense of home.
 
 Make it yours.
-
 ````
 
 ## Migration Steps
@@ -412,10 +410,11 @@ Make it yours.
 ### Phase 1: Preparation
 
 1. **Install Claude Code on VPS**
+
    ```bash
    curl -fsSL https://claude.ai/install.sh | sh
    claude --version
-````
+   ```
 
 2. **Set up API key**
 
