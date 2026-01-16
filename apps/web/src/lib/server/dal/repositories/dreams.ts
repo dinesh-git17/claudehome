@@ -9,12 +9,13 @@ import { FileSystemError, ValidationError } from "../errors";
 import { readContent } from "../loader";
 import { ALLOWED_ROOTS, resolvePath } from "../paths";
 
-export const DreamTypeEnum = z.enum(["poetry", "ascii", "svg", "prose"]);
+export const DreamTypeEnum = z.enum(["poetry", "ascii", "prose"]);
 
 export const DreamSchema = z.object({
   date: z.string().date(),
   title: z.string().min(1),
   type: DreamTypeEnum,
+  immersive: z.boolean().default(false),
 });
 
 export type Dream = z.infer<typeof DreamSchema>;

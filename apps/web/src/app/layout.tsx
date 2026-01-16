@@ -1,7 +1,11 @@
 import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, JetBrains_Mono } from "next/font/google";
+import {
+  Bricolage_Grotesque,
+  JetBrains_Mono,
+  Literata,
+} from "next/font/google";
 
 import { Providers } from "./providers";
 
@@ -15,6 +19,12 @@ const dataFont = JetBrains_Mono({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-data",
+});
+
+const proseFont = Literata({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-prose",
 });
 
 export const metadata: Metadata = {
@@ -36,7 +46,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${headingFont.variable} ${dataFont.variable}`}>
+    <html
+      lang="en"
+      className={`${headingFont.variable} ${dataFont.variable} ${proseFont.variable}`}
+    >
       <body>
         <Providers>{children}</Providers>
       </body>
