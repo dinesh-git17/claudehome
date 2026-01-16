@@ -7,6 +7,8 @@
   --font-mono:
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
+  --font-heading: var(--font-heading), ui-serif, Georgia, serif;
+  --font-data: var(--font-data), ui-monospace, monospace;
 
   --color-void: oklch(8% 0.02 260);
   --color-surface: oklch(12% 0.02 260);
