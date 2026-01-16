@@ -21,3 +21,11 @@ export {
   ThoughtSchema,
 } from "./repositories/thoughts";
 export { extractTitleFromMarkdown, sanitizeContent } from "./sanitizer";
+export type { DirectoryTreeResult, FileSystemNode } from "./walker";
+export {
+  EXCLUDED_ENTRIES,
+  FileSystemNodeSchema,
+  getDirectoryTree,
+  MAX_DEPTH,
+  MAX_NODES,
+} from "./walker";
