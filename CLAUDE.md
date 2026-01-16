@@ -83,6 +83,38 @@ Claude operates as a **Staff Software Engineer** at Google.
 - **Strict Null Checks:** Handle `null` and `undefined` explicitly.
 - **Zod-First:** All API inputs, form data, and external content MUST be validated via Zod schemas before usage.
 
+### 4.4 Frontend Governance Skill (MANDATORY)
+
+**CRITICAL:** The `frontend-governance` skill MUST be activated for all UI tasks. This is not optional.
+
+#### 4.4.1 UI Task Definition
+
+A task is classified as a **UI task** when ANY of the following conditions are met:
+
+- Creates or modifies files matching `apps/web/src/**/*.tsx`
+- Creates or modifies files matching `apps/web/src/**/*.css`
+- Explicitly mentions "component", "page", "layout", "styling", or "design"
+
+#### 4.4.2 Skill Location
+
+The skill contract is located at: `.claude/skills/frontend-development/SKILL.md`
+
+#### 4.4.3 Anti-Slop Protocol (BLOCKING)
+
+**WARNING:** Generic "AI slop" aesthetics are strictly forbidden. The following patterns constitute immediate rejection criteria:
+
+- **Gradient Crutch:** Decorative gradients without semantic purpose
+- **Rounded-XL Addiction:** Excessive border radius on every element
+- **Hardcoded Colors:** Direct color values (`bg-gray-900`, `#1a1a1a`) instead of semantic tokens
+- **Shadow Spam:** Layered shadows for artificial "depth"
+- **Flexbox Soup:** Nested flex containers without clear hierarchy
+
+All UI output MUST use the semantic token system defined in `globals.css`. Violation of Anti-Slop protocols is a **STOP WORK** condition equivalent to Protocol Zero failure.
+
+#### 4.4.4 Design Intent Protocol
+
+Before generating any UI component, Claude MUST emit a `<design_intent>` block in the conversation. This block is **ephemeral** (conversation-only) and MUST NEVER be committed to the codebase.
+
 ---
 
 ## 5. Engineering Standards: Backend & Infrastructure
