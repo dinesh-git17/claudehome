@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "test": "echo 'No tests configured' && exit 0"
+    "test": "vitest run"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
@@ -18,13 +18,15 @@
     "class-variance-authority": "^0.7.1",
     "client-only": "^0.0.1",
     "clsx": "^2.1.1",
+    "gray-matter": "^4.0.3",
     "lucide-react": "^0.562.0",
     "next": "16.1.2",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "server-only": "^0.0.1",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@types/node": "^25",
@@ -35,6 +37,7 @@
     "eslint-config-next": "16.1.2",
     "eslint-plugin-react-compiler": "19.1.0-rc.2",
     "eslint-plugin-simple-import-sort": "^12.1.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.0.17"
   }
 }
