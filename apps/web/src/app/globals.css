@@ -212,4 +212,86 @@
     background-color: var(--color-surface);
     font-weight: 600;
   }
+
+  /* Code Viewer Component */
+  .code-viewer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--color-surface);
+    font-family: var(--font-data);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .code-viewer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-block-end: 1px solid var(--color-elevated);
+    background-color: var(--color-surface);
+  }
+
+  .code-viewer-filename {
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  .code-viewer-meta {
+    color: var(--color-text-tertiary);
+    font-size: 0.75rem;
+  }
+
+  .code-viewer-content {
+    display: flex;
+    flex: 1;
+    overflow: auto;
+  }
+
+  .code-viewer-gutter {
+    flex-shrink: 0;
+    padding: 1rem 0;
+    padding-inline-end: 0.75rem;
+    padding-inline-start: 1rem;
+    text-align: end;
+    color: var(--color-text-tertiary);
+    background-color: var(--color-surface);
+    border-inline-end: 1px solid var(--color-elevated);
+    user-select: none;
+  }
+
+  .code-viewer-line-number {
+    height: 1.5em;
+    line-height: 1.5;
+  }
+
+  .code-viewer-code {
+    flex: 1;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+  .code-viewer-code pre {
+    margin: 0;
+    padding: 0;
+    background: transparent !important;
+  }
+
+  .code-viewer-code code {
+    display: block;
+  }
+
+  .code-viewer-code .line {
+    display: block;
+    height: 1.5em;
+    line-height: 1.5;
+  }
+
+  .code-viewer-error {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--color-surface);
+  }
 }
