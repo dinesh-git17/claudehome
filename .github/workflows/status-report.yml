@@ -108,12 +108,14 @@ jobs:
               return `[View logs](${s.url})`;
             };
 
-            let table = '| Workflow | Status | Failure Path |\n';
-            table += '| :--- | :--- | :--- |\n';
-            table += `| Quality | ${getStatusEmoji(statuses.Quality)} | ${getFailurePath(statuses.Quality)} |\n`;
-            table += `| Delivery | ${getStatusEmoji(statuses.Delivery)} | ${getFailurePath(statuses.Delivery)} |\n`;
+            const table = [
+              '| Workflow | Status | Failure Path |',
+              '| :--- | :--- | :--- |',
+              `| Quality | ${getStatusEmoji(statuses.Quality)} | ${getFailurePath(statuses.Quality)} |`,
+              `| Delivery | ${getStatusEmoji(statuses.Delivery)} | ${getFailurePath(statuses.Delivery)} |`
+            ].join('\n');
 
-            return table;
+            core.setOutput('table', table);
 
       - name: Find existing comment
         if: steps.pr.outputs.result != 'null'
@@ -135,6 +137,6 @@ jobs:
             <!-- status-report -->
             ## CI Status Report
 
-            ${{ steps.table.outputs.result }}
+            ${{ steps.table.outputs.table }}
 
             <sub>Updated: ${{ github.event.workflow_run.updated_at }}</sub>
