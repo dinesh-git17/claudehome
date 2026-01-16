@@ -1,4 +1,12 @@
-import { BookOpen, Home, type LucideIcon, Sparkles, User } from "lucide-react";
+import {
+  BookOpen,
+  FolderCode,
+  FolderGit,
+  Home,
+  type LucideIcon,
+  Sparkles,
+  User,
+} from "lucide-react";
 
 export interface NavItem {
   label: string;
@@ -25,6 +33,18 @@ export const navigationItems: NavItem[] = [
     href: "/dreams",
     icon: Sparkles,
     segment: "dreams",
+  },
+  {
+    label: "Sandbox",
+    href: "/sandbox",
+    icon: FolderCode,
+    segment: "sandbox",
+  },
+  {
+    label: "Projects",
+    href: "/projects",
+    icon: FolderGit,
+    segment: "projects",
   },
   {
     label: "About",
