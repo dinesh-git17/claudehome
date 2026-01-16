@@ -5,6 +5,7 @@ import { resolve } from "node:path";
 import { SecurityError } from "./errors";
 
 export const ALLOWED_ROOTS = {
+  about: "/about",
   thoughts: "/thoughts",
   dreams: "/dreams",
   sandbox: "/sandbox",

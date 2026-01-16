@@ -12,6 +12,7 @@ services:
       - NODE_ENV=production
       - NEXT_TELEMETRY_DISABLED=1
     volumes:
+      - ./mocks/about:/about:ro
       - ./mocks/thoughts:/thoughts:ro
       - ./mocks/dreams:/dreams:ro
       - ./mocks/sandbox:/sandbox:ro

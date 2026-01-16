@@ -5,6 +5,8 @@ export type { ContentResult } from "./loader";
 export { readContent } from "./loader";
 export type { AllowedRoot } from "./paths";
 export { ALLOWED_ROOTS, resolvePath } from "./paths";
+export type { AboutPageData } from "./repositories/about";
+export { DEFAULT_ABOUT, getAboutPage } from "./repositories/about";
 export type { Dream, DreamEntry, DreamType } from "./repositories/dreams";
 export {
   DreamSchema,
@@ -18,3 +20,4 @@ export {
   getThoughtBySlug,
   ThoughtSchema,
 } from "./repositories/thoughts";
+export { extractTitleFromMarkdown, sanitizeContent } from "./sanitizer";

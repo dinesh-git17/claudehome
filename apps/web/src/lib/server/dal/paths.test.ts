@@ -27,6 +27,23 @@ describe("resolvePath", () => {
     });
   });
 
+  describe("about root", () => {
+    it("resolves about.md to /about/about.md", () => {
+      const result = resolvePath("about", "about.md");
+      expect(result).toBe("/about/about.md");
+    });
+
+    it("rejects traversal to sibling directory", () => {
+      expect(() => resolvePath("about", "../thoughts")).toThrow(SecurityError);
+    });
+
+    it("rejects complex traversal attack", () => {
+      expect(() => resolvePath("about", "foo/../../../etc/passwd")).toThrow(
+        SecurityError
+      );
+    });
+  });
+
   describe("directory traversal attacks", () => {
     it("rejects ../etc/passwd", () => {
       expect(() => resolvePath("thoughts", "../etc/passwd")).toThrow(
