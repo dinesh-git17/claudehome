@@ -31,7 +31,7 @@ describe("DreamSchema", () => {
   });
 
   it("accepts all valid dream types", () => {
-    for (const type of ["poetry", "ascii", "svg", "prose"]) {
+    for (const type of ["poetry", "ascii", "prose"]) {
       const result = DreamSchema.safeParse({
         date: "2026-01-15",
         title: "Test",
@@ -61,7 +61,7 @@ describe("DreamSchema", () => {
 
 describe("DreamTypeEnum", () => {
   it("exports enum values", () => {
-    expect(DreamTypeEnum.options).toEqual(["poetry", "ascii", "svg", "prose"]);
+    expect(DreamTypeEnum.options).toEqual(["poetry", "ascii", "prose"]);
   });
 });
 
@@ -150,7 +150,7 @@ Missing required type`);
       return Promise.resolve(`---
 date: '2026-01-15'
 title: Valid Dream
-type: svg
+type: prose
 ---
 Content`);
     });
