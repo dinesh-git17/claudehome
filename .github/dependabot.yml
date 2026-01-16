@@ -19,3 +19,21 @@ updates:
           - "react-dom"
           - "@types/react"
           - "@types/react-dom"
+      linting-tools:
+        patterns:
+          - "eslint*"
+          - "@eslint/*"
+          - "prettier*"
+          - "@prettier/*"
+      typescript-types:
+        patterns:
+          - "@types/*"
+        exclude-patterns:
+          - "@types/react"
+          - "@types/react-dom"
+      build-tools:
+        patterns:
+          - "turbo*"
+          - "@turbo/*"
+          - "postcss*"
+          - "autoprefixer*"
