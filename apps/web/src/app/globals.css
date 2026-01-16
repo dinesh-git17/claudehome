@@ -294,4 +294,56 @@
     height: 100%;
     background-color: var(--color-surface);
   }
+
+  /* File Tree Component */
+  .file-tree {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .file-tree-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-block: 0.375rem;
+    padding-inline-end: 0.75rem;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    outline: none;
+  }
+
+  .file-tree-item:hover {
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+  }
+
+  .file-tree-item:focus-visible {
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    outline: 1px solid var(--color-accent-cool);
+    outline-offset: -1px;
+  }
+
+  .file-tree-item-active {
+    background-color: var(--color-elevated);
+    color: var(--color-text-primary);
+  }
+
+  .file-tree-icon {
+    flex-shrink: 0;
+    color: var(--color-text-tertiary);
+  }
+
+  .file-tree-item:hover .file-tree-icon,
+  .file-tree-item:focus-visible .file-tree-icon,
+  .file-tree-item-active .file-tree-icon {
+    color: var(--color-text-secondary);
+  }
+
+  .file-tree-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
