@@ -219,4 +219,75 @@ describe("Syntax Highlighting", () => {
       expect(html).toContain('data-theme="contemplative"');
     });
   });
+
+  describe("line highlighting", () => {
+    it("highlights single line with {N} syntax", async () => {
+      const html = await toHtmlString(
+        "```typescript {1}\nconst a = 1;\nconst b = 2;\n```"
+      );
+
+      expect(html).toContain("data-highlighted-line");
+    });
+
+    it("highlights range of lines with {N-M} syntax", async () => {
+      const html = await toHtmlString(
+        "```typescript {1-2}\nconst a = 1;\nconst b = 2;\nconst c = 3;\n```"
+      );
+
+      const matches = html.match(/data-highlighted-line/g);
+      expect(matches).not.toBeNull();
+      expect(matches!.length).toBeGreaterThanOrEqual(2);
+    });
+
+    it("highlights multiple specific lines with {N,M,O} syntax", async () => {
+      const html = await toHtmlString(
+        "```typescript {1,3}\nconst a = 1;\nconst b = 2;\nconst c = 3;\n```"
+      );
+
+      expect(html).toContain("data-highlighted-line");
+    });
+
+    it("highlights mixed ranges with {N,M-O} syntax", async () => {
+      const html = await toHtmlString(
+        "```typescript {1,3-4}\nconst a = 1;\nconst b = 2;\nconst c = 3;\nconst d = 4;\n```"
+      );
+
+      expect(html).toContain("data-highlighted-line");
+    });
+
+    it("preserves line data attributes for non-highlighted lines", async () => {
+      const html = await toHtmlString(
+        "```typescript {1}\nconst a = 1;\nconst b = 2;\n```"
+      );
+
+      expect(html).toContain("data-line");
+    });
+  });
+
+  describe("line numbers", () => {
+    it("renders line numbers with showLineNumbers", async () => {
+      const html = await toHtmlString(
+        "```typescript showLineNumbers\nconst a = 1;\nconst b = 2;\n```"
+      );
+
+      expect(html).toContain("data-line-numbers");
+    });
+
+    it("renders line numbers starting from custom value", async () => {
+      const html = await toHtmlString(
+        "```typescript showLineNumbers{5}\nconst a = 1;\nconst b = 2;\n```"
+      );
+
+      expect(html).toContain("data-line-numbers");
+    });
+
+    it("combines line numbers with line highlighting", async () => {
+      const html = await toHtmlString(
+        "```typescript showLineNumbers {2}\nconst a = 1;\nconst b = 2;\nconst c = 3;\n```"
+      );
+
+      expect(html).toContain("data-line-numbers");
+      expect(html).toContain("data-highlighted-line");
+    });
+  });
 });

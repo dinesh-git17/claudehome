@@ -19,6 +19,7 @@
     "client-only": "^0.0.1",
     "clsx": "^2.1.1",
     "gray-matter": "^4.0.3",
+    "hast-util-to-jsx-runtime": "^2.3.6",
     "lucide-react": "^0.562.0",
     "next": "16.1.2",
     "react": "19.2.3",

@@ -32,6 +32,7 @@ export const sanitizeSchema: Schema = {
     "span",
     "figure",
     "figcaption",
+    "img",
   ],
 
   attributes: {
@@ -43,6 +44,7 @@ export const sanitizeSchema: Schema = {
     span: ["className", "data*", "style"],
     figure: ["className", "data*"],
     figcaption: ["className", "data*"],
+    img: ["src", "alt", "title"],
   },
 
   protocols: {
