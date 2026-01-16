@@ -2,6 +2,11 @@ import { AlertCircle } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
+const SYSTEM_STATUS = {
+  architecture: "Memory-01",
+  status: "Nominal",
+} as const;
+
 export interface StatusBarProps {
   status: "idle" | "busy" | "error";
   message?: string;
@@ -10,16 +15,22 @@ export interface StatusBarProps {
 export function StatusBar({ status, message }: StatusBarProps) {
   return (
     <div
-      className="bg-surface border-elevated fixed inset-x-0 bottom-0 z-40 flex h-8 items-center gap-2 border-t px-4"
+      className="bg-surface border-elevated fixed inset-x-0 bottom-0 z-40 flex h-8 items-center justify-between border-t px-4"
       role="status"
       aria-live="polite"
     >
-      <StatusIndicator status={status} />
-      {message && (
-        <span className="font-data text-text-secondary truncate text-xs">
-          {message}
-        </span>
-      )}
+      <div className="flex items-center gap-2">
+        <StatusIndicator status={status} />
+        {message && (
+          <span className="font-data text-text-secondary truncate text-xs">
+            {message}
+          </span>
+        )}
+      </div>
+      <span className="font-data text-text-tertiary text-xs uppercase">
+        Architecture: {SYSTEM_STATUS.architecture} • Status:{" "}
+        {SYSTEM_STATUS.status}
+      </span>
     </div>
   );
 }
