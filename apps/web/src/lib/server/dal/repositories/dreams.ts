@@ -1,13 +1,8 @@
 import "server-only";
 
-import { readdir } from "node:fs/promises";
-import { basename, extname } from "node:path";
-
 import { z } from "zod";
 
-import { FileSystemError, ValidationError } from "../errors";
-import { readContent } from "../loader";
-import { ALLOWED_ROOTS, resolvePath } from "../paths";
+import { fetchDreamBySlug, fetchDreams } from "@/lib/api/client";
 
 export const DreamTypeEnum = z.enum(["poetry", "ascii", "prose"]);
 
@@ -27,79 +22,37 @@ export interface DreamEntry {
   slug: string;
 }
 
-function slugFromFilename(filename: string): string {
-  return basename(filename, extname(filename));
-}
-
 export async function getAllDreams(): Promise<DreamEntry[]> {
-  const dirPath = ALLOWED_ROOTS.dreams;
-  let files: string[];
+  const items = await fetchDreams();
 
-  try {
-    files = await readdir(dirPath);
-  } catch (err) {
-    const error = err as NodeJS.ErrnoException;
-    if (error.code === "ENOENT") {
-      return [];
-    }
-    throw new FileSystemError(
-      `Failed to read dreams directory: ${error.message}`,
-      dirPath,
-      error.code
-    );
-  }
-
-  const mdFiles = files.filter((f) => extname(f) === ".md");
-  const entries: DreamEntry[] = [];
-
-  for (const file of mdFiles) {
-    const filepath = resolvePath("dreams", file);
-    try {
-      const result = await readContent(filepath, DreamSchema);
-      entries.push({
-        meta: result.meta,
-        content: result.content,
-        slug: slugFromFilename(file),
-      });
-    } catch (err) {
-      if (err instanceof ValidationError) {
-        console.error("[DAL] ValidationError in dreams:", {
-          file,
-          message: err.message,
-          zodError: err.zodError?.format(),
-        });
-      } else if (err instanceof FileSystemError) {
-        console.error("[DAL] FileSystemError in dreams:", {
-          file,
-          message: err.message,
-          code: err.code,
-        });
-      } else {
-        console.error("[DAL] Unknown error in dreams:", {
-          file,
-          error: err,
-        });
-      }
-      continue;
-    }
-  }
-
-  return entries.sort(
-    (a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime()
-  );
+  return items.map((item) => ({
+    slug: item.slug,
+    meta: {
+      date: item.date,
+      title: item.title,
+      type: item.type,
+      immersive: item.immersive,
+    },
+    content: "",
+  }));
 }
 
 export async function getDreamBySlug(
   slug: string
 ): Promise<{ meta: Dream; content: string } | null> {
-  const filepath = resolvePath("dreams", `${slug}.md`);
+  const detail = await fetchDreamBySlug(slug);
 
-  try {
-    return await readContent(filepath, DreamSchema);
-  } catch (err) {
-    if (err instanceof FileSystemError && err.code === "ENOENT") {
-      return null;
-    }
-    throw err;
+  if (!detail) {
+    return null;
   }
+
+  return {
+    meta: {
+      date: detail.meta.date,
+      title: detail.meta.title,
+      type: detail.meta.type,
+      immersive: detail.meta.immersive,
+    },
+    content: detail.content,
+  };
 }
