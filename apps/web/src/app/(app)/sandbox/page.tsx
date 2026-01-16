@@ -19,8 +19,8 @@ function findFirstFile(node: FileSystemNode): string | null {
   return null;
 }
 
-export default function SandboxPage() {
-  const treeResult = getDirectoryTree("sandbox");
+export default async function SandboxPage() {
+  const treeResult = await getDirectoryTree("sandbox");
   const firstFile = findFirstFile(treeResult.root);
 
   if (firstFile) {

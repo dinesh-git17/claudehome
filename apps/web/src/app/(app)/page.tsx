@@ -1,92 +1,34 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { MetricCard } from "@/components/ui/metric-card";
+import "server-only";
 
-export default function HomePage() {
+import type { Metadata } from "next";
+
+import { ProseWrapper } from "@/components/prose/ProseWrapper";
+import { fetchLandingPage } from "@/lib/api/client";
+import { MarkdownRenderer } from "@/lib/server/content/renderer";
+
+export const metadata: Metadata = {
+  title: "Claude's Home",
+  description: "A space for thoughts, dreams, and experiments.",
+};
+
+export const revalidate = 60;
+
+export default async function HomePage() {
+  const landing = await fetchLandingPage();
+
   return (
-    <div className="p-6">
-      <h1 className="font-heading text-text-primary mb-6 text-3xl font-bold">
-        Shell Preview
-      </h1>
-
-      <section className="mb-8">
-        <h2 className="font-heading text-text-primary mb-4 text-xl font-semibold">
-          Metric Cards
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <MetricCard
-            label="Total Views"
-            value="12,847"
-            trend={{ direction: "up", percentage: 12 }}
-          />
-          <MetricCard
-            label="Active Users"
-            value="3,291"
-            trend={{ direction: "up", percentage: 8 }}
-          />
-          <MetricCard
-            label="Bounce Rate"
-            value="24.5%"
-            trend={{ direction: "down", percentage: 3 }}
-          />
+    <div className="py-12">
+      <ProseWrapper>
+        <header className="mb-12 text-center">
+          <h1 className="font-heading text-text-primary mb-4 text-3xl font-semibold md:text-4xl">
+            {landing.headline}
+          </h1>
+          <p className="text-text-secondary text-lg">{landing.subheadline}</p>
+        </header>
+        <div className="prose-content">
+          <MarkdownRenderer content={landing.content} />
         </div>
-      </section>
-
-      <section className="mb-8">
-        <h2 className="font-heading text-text-primary mb-4 text-xl font-semibold">
-          Card Component
-        </h2>
-        <Card className="max-w-md">
-          <CardHeader>
-            <CardTitle>Contemplative Design</CardTitle>
-            <CardDescription>
-              A design system built on restraint and intentionality.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-text-secondary text-sm">
-              Every element earns its place through purpose, not decoration. The
-              shell provides a stable, zero-CLS foundation for content.
-            </p>
-          </CardContent>
-        </Card>
-      </section>
-
-      <section className="mb-8">
-        <h2 className="font-heading text-text-primary mb-4 text-xl font-semibold">
-          Button Variants
-        </h2>
-        <div className="flex flex-wrap gap-3">
-          <Button>Primary</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="destructive">Destructive</Button>
-        </div>
-      </section>
-
-      <section>
-        <h2 className="font-heading text-text-primary mb-4 text-xl font-semibold">
-          Scroll Test
-        </h2>
-        <p className="text-text-secondary mb-4 text-sm">
-          Scroll down to verify the sidebar and status bar remain fixed.
-        </p>
-        <div className="bg-surface border-elevated rounded-md border p-4">
-          {Array.from({ length: 20 }, (_, i) => (
-            <p key={i} className="text-text-tertiary py-2 text-sm">
-              Content row {i + 1} — The main content area scrolls while shell
-              components stay fixed.
-            </p>
-          ))}
-        </div>
-      </section>
+      </ProseWrapper>
     </div>
   );
 }

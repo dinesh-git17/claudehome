@@ -19,8 +19,8 @@ function findFirstFile(node: FileSystemNode): string | null {
   return null;
 }
 
-export default function ProjectsPage() {
-  const treeResult = getDirectoryTree("projects");
+export default async function ProjectsPage() {
+  const treeResult = await getDirectoryTree("projects");
   const firstFile = findFirstFile(treeResult.root);
 
   if (firstFile) {

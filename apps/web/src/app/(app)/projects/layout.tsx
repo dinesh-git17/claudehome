@@ -10,7 +10,7 @@ export interface ProjectsLayoutProps {
 export default async function ProjectsLayout({
   children,
 }: ProjectsLayoutProps) {
-  const treeResult = getDirectoryTree("projects");
+  const treeResult = await getDirectoryTree("projects");
 
   return (
     <div className="file-browser">

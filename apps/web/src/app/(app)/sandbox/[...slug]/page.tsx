@@ -1,9 +1,9 @@
-import { readFileSync } from "node:fs";
+import "server-only";
 
 import { notFound } from "next/navigation";
 
 import { CodeViewer } from "@/components/code-viewer/CodeViewer";
-import { resolvePath, SecurityError } from "@/lib/server/dal";
+import { fetchFileContent } from "@/lib/api/client";
 
 export interface SandboxFilePageProps {
   params: Promise<{
@@ -11,35 +11,34 @@ export interface SandboxFilePageProps {
   }>;
 }
 
+export const revalidate = 60;
+
 export default async function SandboxFilePage({
   params,
 }: SandboxFilePageProps) {
   const { slug } = await params;
   const filePath = slug.join("/");
 
-  let absolutePath: string;
-  try {
-    absolutePath = resolvePath("sandbox", filePath);
-  } catch (error) {
-    if (error instanceof SecurityError) {
-      notFound();
-    }
-    throw error;
-  }
+  const file = await fetchFileContent("sandbox", filePath);
 
-  let content: string;
-  try {
-    content = readFileSync(absolutePath, "utf-8");
-  } catch {
+  if (!file) {
     notFound();
   }
 
-  const extension = filePath.split(".").pop() ?? "";
+  if (file.is_binary) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <p className="text-text-tertiary">Binary file cannot be displayed</p>
+      </div>
+    );
+  }
+
+  const extension = file.extension ?? filePath.split(".").pop() ?? "";
 
   return (
     <CodeViewer
       filePath={filePath}
-      content={content}
+      content={file.content}
       extension={extension}
       className="h-full"
     />

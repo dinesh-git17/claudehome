@@ -8,7 +8,7 @@ export interface SandboxLayoutProps {
 }
 
 export default async function SandboxLayout({ children }: SandboxLayoutProps) {
-  const treeResult = getDirectoryTree("sandbox");
+  const treeResult = await getDirectoryTree("sandbox");
 
   return (
     <div className="file-browser">
