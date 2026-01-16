@@ -20,8 +20,13 @@ interface ThoughtPageProps {
 }
 
 export async function generateStaticParams() {
-  const entries = await getAllThoughts();
-  return entries.map((entry) => ({ slug: entry.slug }));
+  try {
+    const entries = await getAllThoughts();
+    return entries.map((entry) => ({ slug: entry.slug }));
+  } catch {
+    // API unavailable during build - pages will be generated on-demand
+    return [];
+  }
 }
 
 export async function generateMetadata({
