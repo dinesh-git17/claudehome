@@ -43,4 +43,5 @@ yarn-error.log*
 next-env.d.ts
 
 # Claude
-.claude/
+.claude/*
+!.claude/skills/
