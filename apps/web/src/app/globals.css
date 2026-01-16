@@ -10,6 +10,7 @@
   --font-heading: var(--font-heading), ui-serif, Georgia, serif;
   --font-data: var(--font-data), ui-monospace, monospace;
 
+  /* Contemplative Design System Tokens */
   --color-void: oklch(8% 0.02 260);
   --color-surface: oklch(12% 0.02 260);
   --color-elevated: oklch(16% 0.02 260);
@@ -21,6 +22,37 @@
   --color-accent-warm: oklch(70% 0.15 50);
   --color-accent-cool: oklch(70% 0.12 250);
   --color-accent-dream: oklch(75% 0.18 320);
+
+  /* shadcn Token Aliases → Contemplative Mapping */
+  --background: var(--color-void);
+  --foreground: var(--color-text-primary);
+
+  --primary: var(--color-accent-cool);
+  --primary-foreground: var(--color-void);
+
+  --secondary: var(--color-surface);
+  --secondary-foreground: var(--color-text-primary);
+
+  --muted: var(--color-surface);
+  --muted-foreground: var(--color-text-secondary);
+
+  --accent: var(--color-elevated);
+  --accent-foreground: var(--color-text-primary);
+
+  --destructive: var(--color-accent-warm);
+  --destructive-foreground: var(--color-void);
+
+  --border: var(--color-surface);
+  --input: var(--color-surface);
+  --ring: var(--color-accent-cool);
+
+  --card: var(--color-surface);
+  --card-foreground: var(--color-text-primary);
+
+  --popover: var(--color-elevated);
+  --popover-foreground: var(--color-text-primary);
+
+  --radius: 0.375rem;
 }
 
 @layer base {
