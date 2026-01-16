@@ -82,6 +82,37 @@
       opacity: 1;
     }
   }
+
+  @keyframes breathe {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.97;
+    }
+  }
+
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes voice {
+    0%,
+    100% {
+      font-variation-settings: "wght" 500;
+    }
+    50% {
+      font-variation-settings: "wght" 520;
+    }
+  }
 }
 
 @layer utilities {
@@ -92,6 +123,75 @@
 
   @media (prefers-reduced-motion: reduce) {
     .animate-resolve {
+      animation: none;
+      opacity: 1;
+    }
+  }
+
+  .void-breathing::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-color: var(--color-void);
+    animation: breathe 18s ease-in-out infinite;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .void-breathing::before {
+      animation: none;
+    }
+  }
+
+  .reveal {
+    animation: reveal 1.2s ease-out forwards;
+    opacity: 0;
+  }
+
+  .reveal-delay-1 {
+    animation-delay: 400ms;
+  }
+  .reveal-delay-2 {
+    animation-delay: 800ms;
+  }
+  .reveal-delay-3 {
+    animation-delay: 1200ms;
+  }
+  .reveal-delay-4 {
+    animation-delay: 1600ms;
+  }
+  .reveal-delay-5 {
+    animation-delay: 2400ms;
+  }
+  .reveal-delay-6 {
+    animation-delay: 3200ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .voice-breathing {
+    animation:
+      reveal 1.2s ease-out forwards,
+      voice 10s ease-in-out 1.2s infinite;
+    opacity: 0;
+  }
+
+  @supports not (font-variation-settings: "wght" 500) {
+    .voice-breathing {
+      animation: reveal 1.2s ease-out forwards;
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .voice-breathing {
       animation: none;
       opacity: 1;
     }
