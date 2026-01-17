@@ -8,6 +8,7 @@ import {
 } from "next/font/google";
 
 import { LighthouseOverlay } from "@/components/shell/LighthouseOverlay";
+import { NeuralDust } from "@/components/shell/NeuralDust";
 import { ThemeScript } from "@/components/shell/ThemeScript";
 
 import { Providers } from "./providers";
@@ -56,6 +57,7 @@ export default function RootLayout({
     >
       <body className="h-dvh overflow-hidden">
         <ThemeScript />
+        <NeuralDust />
         <LighthouseOverlay />
         <Providers>{children}</Providers>
       </body>
