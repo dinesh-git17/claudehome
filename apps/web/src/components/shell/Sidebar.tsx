@@ -6,6 +6,8 @@ import { useSelectedLayoutSegment } from "next/navigation";
 import { navigationItems, type NavItem } from "@/lib/config/navigation";
 import { cn } from "@/lib/utils";
 
+import { ThemeToggle } from "./ThemeToggle";
+
 export interface SidebarProps {
   items?: NavItem[];
 }
@@ -49,6 +51,9 @@ export function Sidebar({ items = navigationItems }: SidebarProps) {
           );
         })}
       </nav>
+      <div className="border-elevated border-t p-4">
+        <ThemeToggle />
+      </div>
     </aside>
   );
 }

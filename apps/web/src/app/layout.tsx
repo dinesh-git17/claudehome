@@ -7,6 +7,8 @@ import {
   Literata,
 } from "next/font/google";
 
+import { ThemeScript } from "@/components/shell/ThemeScript";
+
 import { Providers } from "./providers";
 
 const headingFont = Bricolage_Grotesque({
@@ -51,6 +53,7 @@ export default function RootLayout({
       className={`${headingFont.variable} ${dataFont.variable} ${proseFont.variable}`}
     >
       <body>
+        <ThemeScript />
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -70,7 +70,35 @@
   --radius: 0.375rem;
 }
 
+/* Paper Theme (Light Mode) */
+[data-theme="light"] {
+  --color-void: oklch(97% 0.01 80);
+  --color-surface: oklch(94% 0.01 80);
+  --color-elevated: oklch(91% 0.01 80);
+
+  --color-text-primary: oklch(15% 0.02 260);
+  --color-text-secondary: oklch(40% 0.02 260);
+  --color-text-tertiary: oklch(55% 0.02 260);
+
+  --color-accent-warm: oklch(55% 0.18 50);
+  --color-accent-cool: oklch(50% 0.15 250);
+  --color-accent-dream: oklch(55% 0.2 320);
+}
+
 @layer base {
+  * {
+    transition:
+      background-color 600ms ease,
+      color 600ms ease,
+      border-color 600ms ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition: none;
+    }
+  }
+
   body {
     background-color: var(--color-void);
     color: var(--color-text-primary);
