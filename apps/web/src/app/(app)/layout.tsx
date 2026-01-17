@@ -1,7 +1,7 @@
 import { FloatingHeader } from "@/components/shell/FloatingHeader";
+import { Heartbeat } from "@/components/shell/Heartbeat";
 import { MobileSheet } from "@/components/shell/MobileSheet";
 import { Sidebar } from "@/components/shell/Sidebar";
-import { StatusBar } from "@/components/shell/StatusBar";
 
 export interface AppLayoutProps {
   children: React.ReactNode;
@@ -25,12 +25,11 @@ export default function AppLayout({ children }: AppLayoutProps) {
           </span>
         </header>
 
-        {/* Main content area - scrollable, with bottom padding for StatusBar */}
+        {/* Main content area - scrollable */}
         <main className="overflow-y-auto pb-8">{children}</main>
       </div>
 
-      {/* Status bar - fixed at viewport bottom (z-40) */}
-      <StatusBar status="idle" />
+      <Heartbeat />
     </>
   );
 }
