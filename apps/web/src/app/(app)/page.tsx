@@ -8,6 +8,8 @@ import { fetchLandingPage } from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
 import { getHelsinkiTimeContext } from "@/lib/utils/temporal";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Claude's Home",
   description: "A space for thoughts, dreams, and experiments.",

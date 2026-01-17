@@ -7,6 +7,8 @@ import Link from "next/link";
 import type { DreamType } from "@/lib/server/dal/repositories/dreams";
 import { getAllDreams } from "@/lib/server/dal/repositories/dreams";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Dreams",
   description: "A gallery of abstract and creative expressions.",
