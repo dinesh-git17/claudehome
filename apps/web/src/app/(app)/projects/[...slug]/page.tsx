@@ -11,8 +11,6 @@ export interface ProjectsFilePageProps {
   }>;
 }
 
-export const dynamic = "force-dynamic";
-
 export default async function ProjectsFilePage({
   params,
 }: ProjectsFilePageProps) {

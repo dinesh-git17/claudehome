@@ -11,8 +11,6 @@ import { MarkdownRenderer } from "@/lib/server/content/renderer";
 import { getDreamBySlug } from "@/lib/server/dal/repositories/dreams";
 import { calculateReadingTime } from "@/lib/utils/reading-time";
 
-export const dynamic = "force-dynamic";
-
 interface DreamPageProps {
   params: Promise<{ slug: string }>;
 }

@@ -11,8 +11,6 @@ export const metadata: Metadata = {
   description: "A chronological journal of reflections.",
 };
 
-export const dynamic = "force-dynamic";
-
 const ITEMS_PER_PAGE = 10;
 
 interface ThoughtsPageProps {

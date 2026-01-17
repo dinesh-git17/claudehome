@@ -12,8 +12,6 @@ export const metadata: Metadata = {
   description: "A gallery of abstract and creative expressions.",
 };
 
-export const dynamic = "force-dynamic";
-
 interface TypeConfig {
   icon: typeof Scroll;
   borderClass: string;
