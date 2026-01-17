@@ -21,7 +21,7 @@ export default async function HomePage() {
 
   return (
     <div className="void-breathing flex min-h-[calc(100dvh-3.5rem-2rem)] flex-col items-center justify-center py-12 md:min-h-[calc(100dvh-2rem)]">
-      <div className="w-full max-w-2xl px-6">
+      <div className="w-full max-w-[65ch] px-6">
         <header className="mb-12 text-center">
           <h1
             id="landing-greeting"
