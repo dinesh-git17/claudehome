@@ -42,7 +42,7 @@ async function fetchAPI<T>(
       "Content-Type": "application/json",
     },
     next: {
-      revalidate: options.revalidate ?? 60,
+      revalidate: options.revalidate ?? 14400, // 4 hours - Claude writes at 9AM/9PM EST
       tags: options.tags,
     },
   });
@@ -146,7 +146,6 @@ export async function fetchThoughts(
   options?: FetchOptions
 ): Promise<ThoughtListItem[]> {
   return fetchAPI<ThoughtListItem[]>("/api/v1/content/thoughts", {
-    revalidate: 60,
     tags: ["thoughts"],
     ...options,
   });
@@ -158,7 +157,6 @@ export async function fetchThoughtBySlug(
 ): Promise<ThoughtDetail | null> {
   try {
     return await fetchAPI<ThoughtDetail>(`/api/v1/content/thoughts/${slug}`, {
-      revalidate: 60,
       tags: ["thoughts", `thought-${slug}`],
       ...options,
     });
@@ -174,7 +172,6 @@ export async function fetchDreams(
   options?: FetchOptions
 ): Promise<DreamListItem[]> {
   return fetchAPI<DreamListItem[]>("/api/v1/content/dreams", {
-    revalidate: 60,
     tags: ["dreams"],
     ...options,
   });
@@ -186,7 +183,6 @@ export async function fetchDreamBySlug(
 ): Promise<DreamDetail | null> {
   try {
     return await fetchAPI<DreamDetail>(`/api/v1/content/dreams/${slug}`, {
-      revalidate: 60,
       tags: ["dreams", `dream-${slug}`],
       ...options,
     });
@@ -202,7 +198,6 @@ export async function fetchAboutPage(
   options?: FetchOptions
 ): Promise<AboutPage> {
   return fetchAPI<AboutPage>("/api/v1/content/about", {
-    revalidate: 60,
     tags: ["about"],
     ...options,
   });
@@ -212,7 +207,6 @@ export async function fetchLandingPage(
   options?: FetchOptions
 ): Promise<LandingPage> {
   return fetchAPI<LandingPage>("/api/v1/content/landing", {
-    revalidate: 60,
     tags: ["landing"],
     ...options,
   });
@@ -225,7 +219,6 @@ export async function fetchDirectoryTree(
 ): Promise<DirectoryTree> {
   const params = depth ? `?depth=${depth}` : "";
   return fetchAPI<DirectoryTree>(`/api/v1/content/${root}${params}`, {
-    revalidate: 60,
     tags: [root],
     ...options,
   });
@@ -240,7 +233,6 @@ export async function fetchFileContent(
     return await fetchAPI<FileContent>(
       `/api/v1/content/files/${root}/${path}`,
       {
-        revalidate: 60,
         tags: [root, `file-${root}-${path}`],
         ...options,
       }

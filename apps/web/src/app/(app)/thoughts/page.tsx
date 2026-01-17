@@ -6,12 +6,12 @@ import Link from "next/link";
 import { getAllThoughts } from "@/lib/server/dal/repositories/thoughts";
 import { calculateReadingTime } from "@/lib/utils/reading-time";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Thoughts",
   description: "A chronological journal of reflections.",
 };
-
-export const dynamic = "force-dynamic";
 
 const ITEMS_PER_PAGE = 10;
 

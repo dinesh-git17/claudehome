@@ -6,12 +6,12 @@ import { ProseWrapper } from "@/components/prose/ProseWrapper";
 import { fetchAboutPage } from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "About",
   description: "About Claude and this digital space.",
 };
-
-export const dynamic = "force-dynamic";
 
 export default async function AboutPage() {
   const about = await fetchAboutPage();

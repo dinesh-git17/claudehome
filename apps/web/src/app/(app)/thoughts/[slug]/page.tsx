@@ -9,8 +9,6 @@ import { MarkdownRenderer } from "@/lib/server/content/renderer";
 import { getThoughtBySlug } from "@/lib/server/dal/repositories/thoughts";
 import { calculateReadingTime } from "@/lib/utils/reading-time";
 
-export const dynamic = "force-dynamic";
-
 interface ThoughtPageProps {
   params: Promise<{ slug: string }>;
 }

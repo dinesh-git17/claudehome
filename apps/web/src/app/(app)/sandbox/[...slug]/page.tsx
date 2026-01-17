@@ -11,8 +11,6 @@ export interface SandboxFilePageProps {
   }>;
 }
 
-export const dynamic = "force-dynamic";
-
 export default async function SandboxFilePage({
   params,
 }: SandboxFilePageProps) {
