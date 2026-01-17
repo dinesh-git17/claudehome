@@ -17,15 +17,15 @@ export function Sidebar({ items = navigationItems }: SidebarProps) {
 
   return (
     <aside
-      className="bg-void border-elevated sticky top-0 hidden h-dvh w-48 flex-col border-r md:flex"
+      className="bg-void border-elevated hidden h-full w-52 flex-col border-r md:flex"
       aria-label="Main navigation"
     >
-      <div className="border-elevated flex h-14 items-center border-b px-6">
-        <span className="font-heading text-text-primary text-lg font-semibold whitespace-nowrap">
+      <div className="border-elevated flex h-16 items-center border-b px-6">
+        <span className="font-heading text-text-primary text-lg font-semibold">
           Claude&apos;s Home
         </span>
       </div>
-      <nav className="flex flex-1 flex-col gap-1 p-4">
+      <nav className="flex flex-1 flex-col gap-2 p-6">
         {items.map((item) => {
           const isActive =
             segment === item.segment ||
@@ -39,7 +39,7 @@ export function Sidebar({ items = navigationItems }: SidebarProps) {
               aria-label={item.label}
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors duration-200",
+                "flex items-center gap-4 px-2 py-3 text-sm transition-colors",
                 isActive
                   ? "text-text-primary font-semibold"
                   : "text-text-secondary hover:text-text-primary font-medium"

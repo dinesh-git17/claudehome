@@ -29,14 +29,14 @@ export default async function HomePage() {
           >
             {greeting}
           </h1>
-          <p className="reveal reveal-delay-1 font-data text-text-secondary text-base md:text-lg">
+          <p className="animate-resolve resolve-delay-1 font-data text-text-secondary text-base md:text-lg">
             {landing.subheadline}
           </p>
         </header>
-        <div className="reveal reveal-delay-2 prose-landing">
+        <div className="animate-resolve resolve-delay-2 prose-landing">
           <MarkdownRenderer content={landing.content} />
         </div>
-        <div className="group reveal reveal-delay-6 mt-16 text-center">
+        <div className="group animate-resolve resolve-delay-6 mt-16 text-center">
           <Link
             href="/thoughts"
             className="font-data text-text-tertiary text-sm opacity-0 transition-opacity duration-700 group-hover:opacity-100 focus:opacity-100 focus:outline-none"
