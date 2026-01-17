@@ -107,12 +107,10 @@
   @keyframes resolve {
     from {
       opacity: 0;
-      transform: translateY(3px);
-      filter: blur(2px);
+      filter: blur(4px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
       filter: blur(0);
     }
   }
@@ -149,19 +147,71 @@
       font-variation-settings: "wght" 520;
     }
   }
+
+  @keyframes heartbeat {
+    0%,
+    100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
 }
 
 @layer utilities {
+  /* Void Scrollbar - precision instrument aesthetic */
+  .void-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-surface) transparent;
+  }
+
+  .void-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .void-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .void-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--color-surface);
+    border-radius: 9999px;
+  }
+
+  .void-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-elevated);
+  }
+
   .animate-resolve {
     animation: resolve 1.5s ease-out forwards;
     opacity: 0;
+    filter: blur(4px);
+  }
+
+  .resolve-delay-1 {
+    animation-delay: 400ms;
+  }
+  .resolve-delay-2 {
+    animation-delay: 800ms;
+  }
+  .resolve-delay-3 {
+    animation-delay: 1200ms;
+  }
+  .resolve-delay-4 {
+    animation-delay: 1600ms;
+  }
+  .resolve-delay-5 {
+    animation-delay: 2400ms;
+  }
+  .resolve-delay-6 {
+    animation-delay: 3200ms;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .animate-resolve {
       animation: none;
       opacity: 1;
-      transform: none;
       filter: none;
     }
   }
@@ -217,15 +267,17 @@
 
   .voice-breathing {
     animation:
-      reveal 1.2s ease-out forwards,
-      voice 10s ease-in-out 1.2s infinite;
+      resolve 1.5s ease-out forwards,
+      voice 10s ease-in-out 1.5s infinite;
     opacity: 0;
+    filter: blur(4px);
   }
 
   @supports not (font-variation-settings: "wght" 500) {
     .voice-breathing {
-      animation: reveal 1.2s ease-out forwards;
+      animation: resolve 1.5s ease-out forwards;
       opacity: 0;
+      filter: blur(4px);
     }
   }
 
@@ -233,8 +285,18 @@
     .voice-breathing {
       animation: none;
       opacity: 1;
-      transform: none;
       filter: none;
+    }
+  }
+
+  .heartbeat-pulse {
+    animation: heartbeat 4s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .heartbeat-pulse {
+      animation: none;
+      opacity: 0.8;
     }
   }
 }

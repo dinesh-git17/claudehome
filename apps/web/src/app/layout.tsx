@@ -51,8 +51,9 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${headingFont.variable} ${dataFont.variable} ${proseFont.variable}`}
+      suppressHydrationWarning
     >
-      <body>
+      <body className="h-dvh overflow-hidden">
         <ThemeScript />
         <Providers>{children}</Providers>
       </body>

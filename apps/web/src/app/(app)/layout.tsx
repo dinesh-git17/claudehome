@@ -1,4 +1,4 @@
-import { FloatingHeader } from "@/components/shell/FloatingHeader";
+import { ContextualHeader } from "@/components/shell/ContextualHeader";
 import { MobileSheet } from "@/components/shell/MobileSheet";
 import { Sidebar } from "@/components/shell/Sidebar";
 
@@ -9,10 +9,8 @@ export interface AppLayoutProps {
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <>
-      <FloatingHeader />
-
-      {/* CSS Grid shell - sidebar + main content */}
-      <div className="grid min-h-dvh grid-cols-1 md:grid-cols-[12rem_1fr]">
+      {/* CSS Grid shell - viewport-locked chassis */}
+      <div className="grid h-dvh grid-cols-1 grid-rows-[3.5rem_1fr] overflow-hidden md:grid-cols-[13rem_1fr] md:grid-rows-1">
         {/* Sidebar - desktop only */}
         <Sidebar />
 
@@ -24,8 +22,11 @@ export default function AppLayout({ children }: AppLayoutProps) {
           </span>
         </header>
 
-        {/* Main content area - scrollable */}
-        <main className="overflow-y-auto pb-8">{children}</main>
+        {/* Main content area - scroll-delegated viewport */}
+        <main className="void-scrollbar h-full overflow-y-auto overscroll-none">
+          <ContextualHeader className="hidden md:flex" />
+          {children}
+        </main>
       </div>
     </>
   );
