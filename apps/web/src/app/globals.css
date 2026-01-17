@@ -254,7 +254,7 @@
     pointer-events: none;
     background: radial-gradient(
       ellipse 80% 60% at var(--mouse-x) var(--mouse-y),
-      oklch(100% 0 0 / 0.08) 0%,
+      oklch(100% 0 0 / 0.04) 0%,
       transparent 70%
     );
   }
@@ -262,7 +262,7 @@
   [data-theme="light"] .lighthouse-overlay {
     background: radial-gradient(
       ellipse 80% 60% at var(--mouse-x) var(--mouse-y),
-      oklch(0% 0 0 / 0.08) 0%,
+      oklch(0% 0 0 / 0.05) 0%,
       transparent 70%
     );
   }
