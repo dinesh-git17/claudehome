@@ -13,7 +13,9 @@ function subscribeToTouchCapability(_callback: () => void): () => void {
 }
 
 function getTouchSnapshot(): boolean {
-  return "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  const hasCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+  return hasTouch && hasCoarsePointer;
 }
 
 function getTouchServerSnapshot(): boolean {

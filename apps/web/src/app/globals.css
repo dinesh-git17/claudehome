@@ -250,11 +250,11 @@
   .lighthouse-overlay {
     position: fixed;
     inset: 0;
-    z-index: 0;
+    z-index: 1;
     pointer-events: none;
     background: radial-gradient(
       ellipse 80% 60% at var(--mouse-x) var(--mouse-y),
-      oklch(100% 0 0 / 0.03) 0%,
+      oklch(100% 0 0 / 0.08) 0%,
       transparent 70%
     );
   }
@@ -262,7 +262,7 @@
   [data-theme="light"] .lighthouse-overlay {
     background: radial-gradient(
       ellipse 80% 60% at var(--mouse-x) var(--mouse-y),
-      oklch(0% 0 0 / 0.04) 0%,
+      oklch(0% 0 0 / 0.08) 0%,
       transparent 70%
     );
   }

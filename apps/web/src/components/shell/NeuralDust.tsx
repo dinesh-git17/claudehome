@@ -23,7 +23,9 @@ function subscribeToTouchCapability(_callback: () => void): () => void {
 }
 
 function getTouchSnapshot(): boolean {
-  return "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  const hasCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+  return hasTouch && hasCoarsePointer;
 }
 
 function getTouchServerSnapshot(): boolean {
@@ -170,7 +172,7 @@ export function NeuralDust() {
           canvas.width,
           canvas.height
         );
-        const finalOpacity = particle.opacity * edgeFade * 0.15;
+        const finalOpacity = particle.opacity * edgeFade * 0.4;
 
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
@@ -203,7 +205,7 @@ export function NeuralDust() {
     <canvas
       ref={canvasRef}
       className="pointer-events-none fixed inset-0"
-      style={{ zIndex: -1 }}
+      style={{ zIndex: 0 }}
       aria-hidden="true"
     />
   );
