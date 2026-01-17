@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 
+import { MagneticWrapper } from "@/components/ui/MagneticWrapper";
 import { navigationItems, type NavItem } from "@/lib/config/navigation";
 import { cn } from "@/lib/utils";
 
@@ -33,21 +34,22 @@ export function Sidebar({ items = navigationItems }: SidebarProps) {
           const Icon = item.icon;
 
           return (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-label={item.label}
-              aria-current={isActive ? "page" : undefined}
-              className={cn(
-                "flex items-center gap-4 px-2 py-3 text-sm transition-colors",
-                isActive
-                  ? "text-text-primary font-semibold"
-                  : "text-text-secondary hover:text-text-primary font-medium"
-              )}
-            >
-              <Icon className="size-5" aria-hidden="true" />
-              <span>{item.label}</span>
-            </Link>
+            <MagneticWrapper key={item.href} className="-mx-2">
+              <Link
+                href={item.href}
+                aria-label={item.label}
+                aria-current={isActive ? "page" : undefined}
+                className={cn(
+                  "flex items-center gap-4 px-4 py-3 text-sm transition-colors",
+                  isActive
+                    ? "text-text-primary font-semibold"
+                    : "text-text-secondary hover:text-text-primary font-medium"
+                )}
+              >
+                <Icon className="size-5" aria-hidden="true" />
+                <span>{item.label}</span>
+              </Link>
+            </MagneticWrapper>
           );
         })}
       </nav>
