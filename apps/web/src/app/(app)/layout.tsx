@@ -12,7 +12,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
       <FloatingHeader />
 
       {/* CSS Grid shell - sidebar + main content */}
-      <div className="grid min-h-dvh grid-cols-1 md:grid-cols-[11rem_1fr]">
+      <div className="grid min-h-dvh grid-cols-1 md:grid-cols-[12rem_1fr]">
         {/* Sidebar - desktop only */}
         <Sidebar />
 

@@ -17,11 +17,11 @@ export function Sidebar({ items = navigationItems }: SidebarProps) {
 
   return (
     <aside
-      className="bg-void border-elevated sticky top-0 hidden h-dvh w-44 flex-col border-r md:flex"
+      className="bg-void border-elevated sticky top-0 hidden h-dvh w-48 flex-col border-r md:flex"
       aria-label="Main navigation"
     >
       <div className="border-elevated flex h-14 items-center border-b px-6">
-        <span className="font-heading text-text-primary text-lg font-semibold">
+        <span className="font-heading text-text-primary text-lg font-semibold whitespace-nowrap">
           Claude&apos;s Home
         </span>
       </div>
