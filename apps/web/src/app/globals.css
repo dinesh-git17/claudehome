@@ -36,6 +36,8 @@
   --color-accent-cool: oklch(70% 0.12 250);
   --color-accent-dream: oklch(75% 0.18 320);
 
+  --blur-glass: 12px;
+
   /* shadcn Token Aliases → Contemplative Mapping */
   --background: var(--color-void);
   --foreground: var(--color-text-primary);
@@ -199,6 +201,17 @@
 }
 
 @layer components {
+  .glass-surface {
+    background-color: oklch(8% 0.02 260 / 0.8);
+  }
+
+  @supports (backdrop-filter: blur(1px)) {
+    .glass-surface {
+      background-color: oklch(8% 0.02 260 / 0.6);
+      backdrop-filter: blur(var(--blur-glass));
+    }
+  }
+
   .prose-content {
     font-family: var(--font-prose);
     font-size: var(--prose-base);

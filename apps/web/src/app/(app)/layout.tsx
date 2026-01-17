@@ -1,3 +1,4 @@
+import { FloatingHeader } from "@/components/shell/FloatingHeader";
 import { MobileSheet } from "@/components/shell/MobileSheet";
 import { Sidebar } from "@/components/shell/Sidebar";
 import { StatusBar } from "@/components/shell/StatusBar";
@@ -9,6 +10,8 @@ export interface AppLayoutProps {
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <>
+      <FloatingHeader />
+
       {/* CSS Grid shell - sidebar + main content */}
       <div className="grid min-h-dvh grid-cols-1 md:grid-cols-[16rem_1fr]">
         {/* Sidebar - desktop only */}

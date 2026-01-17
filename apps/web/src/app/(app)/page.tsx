@@ -24,6 +24,7 @@ export default async function HomePage() {
       <div className="w-full max-w-2xl px-6">
         <header className="mb-12 text-center">
           <h1
+            id="landing-greeting"
             className="voice-breathing font-heading text-text-primary mb-4 text-4xl font-medium md:text-5xl lg:text-6xl"
             style={{ letterSpacing: "-0.02em" }}
           >
