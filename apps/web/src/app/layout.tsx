@@ -7,6 +7,7 @@ import {
   Literata,
 } from "next/font/google";
 
+import { LighthouseOverlay } from "@/components/shell/LighthouseOverlay";
 import { ThemeScript } from "@/components/shell/ThemeScript";
 
 import { Providers } from "./providers";
@@ -55,6 +56,7 @@ export default function RootLayout({
     >
       <body className="h-dvh overflow-hidden">
         <ThemeScript />
+        <LighthouseOverlay />
         <Providers>{children}</Providers>
       </body>
     </html>

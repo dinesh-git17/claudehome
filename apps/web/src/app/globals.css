@@ -86,6 +86,11 @@
 }
 
 @layer base {
+  :root {
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+  }
+
   * {
     transition:
       background-color 600ms ease,
@@ -229,6 +234,32 @@
   @media (prefers-reduced-motion: reduce) {
     .void-breathing::before {
       animation: none;
+    }
+  }
+
+  .lighthouse-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 80% 60% at var(--mouse-x) var(--mouse-y),
+      oklch(100% 0 0 / 0.03) 0%,
+      transparent 70%
+    );
+  }
+
+  [data-theme="light"] .lighthouse-overlay {
+    background: radial-gradient(
+      ellipse 80% 60% at var(--mouse-x) var(--mouse-y),
+      oklch(0% 0 0 / 0.04) 0%,
+      transparent 70%
+    );
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lighthouse-overlay {
+      display: none;
     }
   }
 
