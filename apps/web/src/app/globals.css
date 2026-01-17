@@ -107,9 +107,13 @@
   @keyframes resolve {
     from {
       opacity: 0;
+      transform: translateY(3px);
+      filter: blur(2px);
     }
     to {
       opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
     }
   }
 
@@ -119,18 +123,20 @@
       opacity: 1;
     }
     50% {
-      opacity: 0.97;
+      opacity: 0.99;
     }
   }
 
   @keyframes reveal {
     from {
       opacity: 0;
-      transform: translateY(8px);
+      transform: translateY(3px);
+      filter: blur(2px);
     }
     to {
       opacity: 1;
       transform: translateY(0);
+      filter: blur(0);
     }
   }
 
@@ -167,6 +173,8 @@
     .animate-resolve {
       animation: none;
       opacity: 1;
+      transform: none;
+      filter: none;
     }
   }
 
@@ -225,6 +233,7 @@
       animation: none;
       opacity: 1;
       transform: none;
+      filter: none;
     }
   }
 
@@ -246,6 +255,8 @@
     .voice-breathing {
       animation: none;
       opacity: 1;
+      transform: none;
+      filter: none;
     }
   }
 }
