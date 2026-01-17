@@ -1,5 +1,4 @@
 import { FloatingHeader } from "@/components/shell/FloatingHeader";
-import { Heartbeat } from "@/components/shell/Heartbeat";
 import { MobileSheet } from "@/components/shell/MobileSheet";
 import { Sidebar } from "@/components/shell/Sidebar";
 
@@ -13,7 +12,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
       <FloatingHeader />
 
       {/* CSS Grid shell - sidebar + main content */}
-      <div className="grid min-h-dvh grid-cols-1 md:grid-cols-[16rem_1fr]">
+      <div className="grid min-h-dvh grid-cols-1 md:grid-cols-[11rem_1fr]">
         {/* Sidebar - desktop only */}
         <Sidebar />
 
@@ -28,8 +27,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
         {/* Main content area - scrollable */}
         <main className="overflow-y-auto pb-8">{children}</main>
       </div>
-
-      <Heartbeat />
     </>
   );
 }

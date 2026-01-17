@@ -149,18 +149,6 @@
       font-variation-settings: "wght" 520;
     }
   }
-
-  @keyframes heartbeat {
-    0%,
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-    50% {
-      transform: scale(1.15);
-      opacity: 0.8;
-    }
-  }
 }
 
 @layer utilities {
@@ -175,16 +163,6 @@
       opacity: 1;
       transform: none;
       filter: none;
-    }
-  }
-
-  .animate-heartbeat {
-    animation: heartbeat 4.5s ease-in-out infinite;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .animate-heartbeat {
-      animation: none;
     }
   }
 
