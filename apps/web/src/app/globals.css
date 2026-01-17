@@ -162,6 +162,16 @@
       opacity: 1;
     }
   }
+
+  @keyframes idle-hum {
+    0%,
+    100% {
+      opacity: 0.05;
+    }
+    50% {
+      opacity: 0.08;
+    }
+  }
 }
 
 @layer utilities {
@@ -328,6 +338,26 @@
     .heartbeat-pulse {
       animation: none;
       opacity: 0.8;
+    }
+  }
+
+  .idle-hum {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .idle-hum-inner {
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--color-accent-cool);
+    animation: idle-hum 4.5s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .idle-hum {
+      display: none;
     }
   }
 }

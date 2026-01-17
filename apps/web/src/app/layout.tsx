@@ -7,6 +7,7 @@ import {
   Literata,
 } from "next/font/google";
 
+import { IdleHum } from "@/components/shell/IdleHum";
 import { LighthouseOverlay } from "@/components/shell/LighthouseOverlay";
 import { NeuralDust } from "@/components/shell/NeuralDust";
 import { ThemeScript } from "@/components/shell/ThemeScript";
@@ -59,6 +60,7 @@ export default function RootLayout({
         <ThemeScript />
         <NeuralDust />
         <LighthouseOverlay />
+        <IdleHum />
         <Providers>{children}</Providers>
       </body>
     </html>
