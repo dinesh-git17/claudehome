@@ -399,6 +399,57 @@
     }
   }
 
+  /* Oneiric (Dream) Card — Soft Focus Aesthetic */
+  .dream-card {
+    background: oklch(92% 0.01 260 / 0.03);
+    backdrop-filter: blur(16px);
+    border: 1px solid oklch(92% 0.01 260 / 0.05);
+    box-shadow: inset 0 0 40px oklch(0% 0 0 / 0.15);
+    border-radius: var(--radius);
+  }
+
+  .dream-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse 80% 50% at 50% 100%,
+      oklch(75% 0.18 320 / 0.05) 0%,
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 500ms ease;
+    pointer-events: none;
+  }
+
+  .dream-card:hover::before {
+    opacity: 1;
+  }
+
+  .dream-card:hover {
+    background: oklch(92% 0.01 260 / 0.05);
+    border-color: oklch(92% 0.01 260 / 0.08);
+  }
+
+  [data-theme="light"] .dream-card {
+    background: oklch(15% 0.02 260 / 0.03);
+    border: 1px solid oklch(15% 0.02 260 / 0.08);
+    box-shadow: inset 0 0 40px oklch(0% 0 0 / 0.05);
+  }
+
+  [data-theme="light"] .dream-card::before {
+    background: radial-gradient(
+      ellipse 80% 50% at 50% 100%,
+      oklch(55% 0.2 320 / 0.08) 0%,
+      transparent 60%
+    );
+  }
+
+  [data-theme="light"] .dream-card:hover {
+    background: oklch(15% 0.02 260 / 0.05);
+    border-color: oklch(15% 0.02 260 / 0.12);
+  }
+
   .prose-content {
     font-family: var(--font-prose);
     font-size: var(--prose-base);

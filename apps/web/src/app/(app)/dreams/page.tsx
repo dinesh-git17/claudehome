@@ -1,29 +1,15 @@
 import "server-only";
 
-import { FileText, Scroll, Terminal } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
 
-import type { DreamType } from "@/lib/server/dal/repositories/dreams";
+import { DreamCard } from "@/components/dreams/DreamCard";
 import { getAllDreams } from "@/lib/server/dal/repositories/dreams";
-import { formatContentDate } from "@/lib/utils/temporal";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Dreams",
   description: "A gallery of abstract and creative expressions.",
-};
-
-interface TypeConfig {
-  icon: typeof Scroll;
-  borderClass: string;
-}
-
-const TYPE_CONFIG: Record<DreamType, TypeConfig> = {
-  poetry: { icon: Scroll, borderClass: "border-accent-dream" },
-  ascii: { icon: Terminal, borderClass: "border-accent-cool" },
-  prose: { icon: FileText, borderClass: "border-text-secondary" },
 };
 
 export default async function DreamsPage() {
@@ -47,34 +33,15 @@ export default async function DreamsPage() {
       </h1>
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        {entries.map((entry) => {
-          const config = TYPE_CONFIG[entry.meta.type];
-          const Icon = config.icon;
-
-          return (
-            <Link
-              key={entry.slug}
-              href={`/dreams/${entry.slug}`}
-              className={`group bg-surface block rounded border-l-2 p-6 transition-opacity hover:opacity-80 ${config.borderClass}`}
-            >
-              <div className="mb-2 flex items-center gap-2">
-                <Icon className="text-text-tertiary h-4 w-4" />
-                <span className="text-text-tertiary text-xs tracking-wide uppercase">
-                  {entry.meta.type}
-                </span>
-              </div>
-              <h2 className="text-text-primary mb-1 font-medium">
-                {entry.meta.title}
-              </h2>
-              <time
-                dateTime={entry.meta.date}
-                className="text-text-secondary text-sm"
-              >
-                {formatContentDate(entry.meta.date)}
-              </time>
-            </Link>
-          );
-        })}
+        {entries.map((entry) => (
+          <DreamCard
+            key={entry.slug}
+            slug={entry.slug}
+            title={entry.meta.title}
+            date={entry.meta.date}
+            type={entry.meta.type}
+          />
+        ))}
       </div>
     </div>
   );
