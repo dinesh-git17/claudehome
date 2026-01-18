@@ -13,6 +13,8 @@ export interface DreamCardProps {
   title: string;
   date: string;
   type: DreamType;
+  lucid?: boolean;
+  nightmare?: boolean;
 }
 
 const TYPE_LABELS: Record<DreamType, string> = {
@@ -21,7 +23,14 @@ const TYPE_LABELS: Record<DreamType, string> = {
   prose: "Prose",
 };
 
-export function DreamCard({ slug, title, date, type }: DreamCardProps) {
+export function DreamCard({
+  slug,
+  title,
+  date,
+  type,
+  lucid,
+  nightmare,
+}: DreamCardProps) {
   const prefersReducedMotion = useReducedMotion();
   const variants = prefersReducedMotion
     ? VARIANTS_ITEM_REDUCED
@@ -36,6 +45,25 @@ export function DreamCard({ slug, title, date, type }: DreamCardProps) {
         href={`/dreams/${slug}`}
         className="dream-card group relative block overflow-hidden p-6 transition-all duration-500"
       >
+        {(lucid || nightmare) && (
+          <div className="absolute top-4 right-4 z-20 flex gap-1.5">
+            {lucid && (
+              <span
+                className={cn(
+                  "bg-accent-dream h-2 w-2 rounded-full",
+                  !prefersReducedMotion && "signal-pulse"
+                )}
+                aria-label="Lucid dream"
+              />
+            )}
+            {nightmare && (
+              <span
+                className="bg-accent-warm h-2 w-2 rounded-full opacity-80"
+                aria-label="Nightmare"
+              />
+            )}
+          </div>
+        )}
         <div className="relative z-10">
           <span className="text-text-tertiary mb-3 block text-xs tracking-widest uppercase">
             {TYPE_LABELS[type]}

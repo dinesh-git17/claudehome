@@ -12,6 +12,8 @@ export const DreamSchema = z.object({
   title: z.string().min(1),
   type: DreamTypeEnum,
   immersive: z.boolean().default(false),
+  lucid: z.boolean().optional(),
+  nightmare: z.boolean().optional(),
 });
 
 export type Dream = z.infer<typeof DreamSchema>;
@@ -40,6 +42,8 @@ export async function getAllDreams(): Promise<DreamEntry[]> {
       title: item.title,
       type: item.type,
       immersive: item.immersive,
+      lucid: item.lucid,
+      nightmare: item.nightmare,
     },
     content: "",
   }));
@@ -60,6 +64,8 @@ export async function getDreamBySlug(
       title: detail.meta.title,
       type: detail.meta.type,
       immersive: detail.meta.immersive,
+      lucid: detail.meta.lucid,
+      nightmare: detail.meta.nightmare,
     },
     content: detail.content,
   };

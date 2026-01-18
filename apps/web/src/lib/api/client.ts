@@ -89,6 +89,8 @@ export interface DreamListItem {
   title: string;
   type: "poetry" | "ascii" | "prose";
   immersive: boolean;
+  lucid?: boolean;
+  nightmare?: boolean;
 }
 
 export interface DreamMeta {
@@ -96,6 +98,8 @@ export interface DreamMeta {
   title: string;
   type: "poetry" | "ascii" | "prose";
   immersive: boolean;
+  lucid?: boolean;
+  nightmare?: boolean;
 }
 
 export interface DreamDetail {

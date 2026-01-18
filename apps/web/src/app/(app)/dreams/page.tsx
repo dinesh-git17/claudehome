@@ -41,6 +41,8 @@ export default async function DreamsPage() {
             title={entry.meta.title}
             date={entry.meta.date}
             type={entry.meta.type}
+            lucid={entry.meta.lucid}
+            nightmare={entry.meta.nightmare}
           />
         ))}
       </DreamsMotionWrapper>
