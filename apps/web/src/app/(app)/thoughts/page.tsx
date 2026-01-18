@@ -17,27 +17,71 @@ export const metadata: Metadata = {
   description: "A chronological journal of reflections.",
 };
 
-interface YearGroup {
-  year: number;
+interface WeekGroup {
+  weekStart: Date;
+  label: string;
   entries: ThoughtEntry[];
 }
 
-function groupByYear(entries: ThoughtEntry[]): YearGroup[] {
-  const groups = new Map<number, ThoughtEntry[]>();
+function getWeekStart(date: Date): Date {
+  const d = new Date(date);
+  const day = d.getUTCDay();
+  const diff = d.getUTCDate() - day + (day === 0 ? -6 : 1);
+  d.setUTCDate(diff);
+  d.setUTCHours(12, 0, 0, 0);
+  return d;
+}
+
+function formatWeekLabel(weekStart: Date): string {
+  const weekEnd = new Date(weekStart);
+  weekEnd.setUTCDate(weekEnd.getUTCDate() + 6);
+
+  const startMonth = weekStart.toLocaleDateString("en-US", {
+    month: "short",
+    timeZone: "UTC",
+  });
+  const startDay = weekStart.getUTCDate();
+  const endDay = weekEnd.getUTCDate();
+  const year = weekStart.getUTCFullYear();
+
+  const sameMonth = weekStart.getUTCMonth() === weekEnd.getUTCMonth();
+
+  if (sameMonth) {
+    return `${startMonth} ${startDay} – ${endDay}, ${year}`;
+  }
+
+  const endMonth = weekEnd.toLocaleDateString("en-US", {
+    month: "short",
+    timeZone: "UTC",
+  });
+  return `${startMonth} ${startDay} – ${endMonth} ${endDay}, ${year}`;
+}
+
+function groupByWeek(entries: ThoughtEntry[]): WeekGroup[] {
+  const groups = new Map<
+    string,
+    { weekStart: Date; entries: ThoughtEntry[] }
+  >();
 
   for (const entry of entries) {
-    const year = parseContentDate(entry.meta.date).getUTCFullYear();
-    const existing = groups.get(year);
+    const date = parseContentDate(entry.meta.date);
+    const weekStart = getWeekStart(date);
+    const key = weekStart.toISOString();
+    const existing = groups.get(key);
     if (existing) {
-      existing.push(entry);
+      existing.entries.push(entry);
     } else {
-      groups.set(year, [entry]);
+      groups.set(key, { weekStart, entries: [entry] });
     }
   }
 
-  return Array.from(groups.entries())
-    .sort(([a], [b]) => b - a)
-    .map(([year, yearEntries]) => ({ year, entries: yearEntries }));
+  return Array.from(groups.values())
+    .sort((a, b) => b.weekStart.getTime() - a.weekStart.getTime())
+    .map(({ weekStart, entries: weekEntries }) => ({
+      weekStart,
+      label: formatWeekLabel(weekStart),
+      entries: weekEntries,
+    }));
 }
 
 export default async function ThoughtsPage() {
@@ -54,7 +98,7 @@ export default async function ThoughtsPage() {
     );
   }
 
-  const yearGroups = groupByYear(entries);
+  const weekGroups = groupByWeek(entries);
 
   return (
     <div className="px-4 py-12 md:px-8">
@@ -62,18 +106,21 @@ export default async function ThoughtsPage() {
         Thoughts
       </h1>
 
-      <div className="space-y-16">
-        {yearGroups.map(({ year, entries: yearEntries }) => (
-          <section key={year} aria-labelledby={`year-${year}`}>
+      <div className="space-y-12">
+        {weekGroups.map(({ weekStart, label, entries: weekEntries }) => (
+          <section
+            key={weekStart.toISOString()}
+            aria-labelledby={`week-${weekStart.toISOString()}`}
+          >
             <h2
-              id={`year-${year}`}
-              className="font-data text-text-tertiary/50 bg-void sticky top-0 z-10 mb-6 py-2 text-sm tracking-widest"
+              id={`week-${weekStart.toISOString()}`}
+              className="font-data text-text-tertiary/50 bg-void sticky top-0 z-10 mb-6 py-2 text-sm tracking-wide"
             >
-              {year}
+              {label}
             </h2>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {yearEntries.map((entry) => (
+              {weekEntries.map((entry) => (
                 <ThoughtCard
                   key={entry.slug}
                   slug={entry.slug}
