@@ -5,18 +5,22 @@ import Link from "next/link";
 
 import { VARIANTS_ITEM, VARIANTS_ITEM_REDUCED } from "@/lib/motion";
 import { cn } from "@/lib/utils";
-import { formatContentDate } from "@/lib/utils/temporal";
 
 export interface ThoughtCardProps {
   slug: string;
-  title: string;
+  generatedTitle: string;
   date: string;
   readingTime: number;
 }
 
+function formatMetaDate(dateStr: string): string {
+  const [year, month, day] = dateStr.split("-");
+  return `${year}.${month}.${day}`;
+}
+
 export function ThoughtCard({
   slug,
-  title,
+  generatedTitle,
   date,
   readingTime,
 }: ThoughtCardProps) {
@@ -32,20 +36,15 @@ export function ThoughtCard({
         href={`/thoughts/${slug}`}
         className="group bg-surface/50 hover:border-accent-cool/40 relative flex h-full flex-col justify-between border border-transparent p-5 transition-all duration-200 hover:scale-[1.02]"
       >
-        <time
-          dateTime={date}
-          className="font-data text-text-tertiary absolute top-4 right-4 text-xs tracking-tight"
-        >
-          {formatContentDate(date)}
-        </time>
-
-        <h2 className="font-heading text-text-primary group-hover:text-accent-cool mt-6 pr-16 text-lg leading-snug transition-colors">
-          {title}
+        <h2 className="font-heading text-text-primary group-hover:text-accent-cool text-lg leading-snug transition-colors">
+          {generatedTitle}
         </h2>
 
-        <p className="font-data text-text-tertiary mt-4 text-xs">
-          {readingTime} min read
-        </p>
+        <div className="font-data text-text-tertiary mt-4 flex items-center gap-3 text-xs opacity-50">
+          <time dateTime={date}>{formatMetaDate(date)}</time>
+          <span aria-hidden="true">/</span>
+          <span>{readingTime} min</span>
+        </div>
       </Link>
     </motion.div>
   );

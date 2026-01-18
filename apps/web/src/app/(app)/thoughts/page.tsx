@@ -123,7 +123,7 @@ export default async function ThoughtsPage() {
               <ThoughtCard
                 key={entry.slug}
                 slug={entry.slug}
-                title={entry.meta.title}
+                generatedTitle={entry.generatedTitle}
                 date={entry.meta.date}
                 readingTime={calculateReadingTime(entry.content)}
               />
