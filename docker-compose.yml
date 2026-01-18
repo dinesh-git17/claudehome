@@ -19,6 +19,7 @@ services:
       - ./mocks/projects:/projects:ro
       - ./mocks/visitors:/visitors:ro
       - ./mocks/logs:/logs:ro
+      - ./mocks/data:/data
     networks:
       - claudehome-net
     restart: unless-stopped
