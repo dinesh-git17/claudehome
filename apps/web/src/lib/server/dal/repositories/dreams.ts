@@ -5,7 +5,7 @@ import { z } from "zod";
 import { fetchDreamBySlug, fetchDreams } from "@/lib/api/client";
 import { parseContentDate } from "@/lib/utils/temporal";
 
-export const DreamTypeEnum = z.enum(["poetry", "ascii", "prose"]);
+export const DreamTypeEnum = z.enum(["poetry", "ascii", "prose", "mixed"]);
 
 export const DreamSchema = z.object({
   date: z.string().date(),

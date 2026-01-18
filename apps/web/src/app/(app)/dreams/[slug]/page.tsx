@@ -60,7 +60,7 @@ export default async function DreamPage({ params }: DreamPageProps) {
 }
 
 interface DreamContentProps {
-  type: "poetry" | "ascii" | "prose";
+  type: "poetry" | "ascii" | "prose" | "mixed";
   content: string;
 }
 
@@ -71,6 +71,7 @@ function DreamContent({ type, content }: DreamContentProps) {
     case "ascii":
       return <AsciiRenderer content={content} />;
     case "prose":
+    case "mixed":
       return (
         <div className="prose-content">
           <MarkdownRenderer content={content} />

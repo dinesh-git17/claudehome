@@ -21,6 +21,7 @@ const TYPE_LABELS: Record<DreamType, string> = {
   poetry: "Poetry",
   ascii: "ASCII",
   prose: "Prose",
+  mixed: "Mixed",
 };
 
 export function DreamCard({

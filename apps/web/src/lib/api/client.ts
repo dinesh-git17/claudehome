@@ -64,6 +64,37 @@ async function fetchAPI<T>(
   return response.json() as Promise<T>;
 }
 
+async function postAPI<T, B>(path: string, body: B): Promise<T> {
+  const { apiUrl, apiKey } = getEnvConfig();
+  const url = `${apiUrl}${path}`;
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "X-API-Key": apiKey,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    let responseBody: unknown;
+    try {
+      responseBody = await response.json();
+    } catch {
+      responseBody = await response.text();
+    }
+    throw new APIError(
+      `API request failed: ${response.status} ${response.statusText}`,
+      response.status,
+      responseBody
+    );
+  }
+
+  return response.json() as Promise<T>;
+}
+
 export interface ThoughtListItem {
   slug: string;
   date: string;
@@ -87,7 +118,7 @@ export interface DreamListItem {
   slug: string;
   date: string;
   title: string;
-  type: "poetry" | "ascii" | "prose";
+  type: "poetry" | "ascii" | "prose" | "mixed";
   immersive: boolean;
   lucid?: boolean;
   nightmare?: boolean;
@@ -96,7 +127,7 @@ export interface DreamListItem {
 export interface DreamMeta {
   date: string;
   title: string;
-  type: "poetry" | "ascii" | "prose";
+  type: "poetry" | "ascii" | "prose" | "mixed";
   immersive: boolean;
   lucid?: boolean;
   nightmare?: boolean;
@@ -144,6 +175,21 @@ export interface FileContent {
   extension: string | null;
   mime_type: string;
   is_binary: boolean;
+}
+
+export interface TitleEntry {
+  hash: string;
+  title: string;
+  model: string;
+  created: string;
+  original_path: string;
+}
+
+export interface TitleCreateRequest {
+  hash: string;
+  title: string;
+  model: string;
+  original_path: string;
 }
 
 export async function fetchThoughts(
@@ -246,6 +292,37 @@ export async function fetchFileContent(
       return null;
     }
     throw error;
+  }
+}
+
+export async function fetchTitle(hash: string): Promise<TitleEntry | null> {
+  try {
+    return await fetchAPI<TitleEntry>(`/api/v1/titles/${hash}`, {
+      revalidate: false,
+    });
+  } catch (error) {
+    if (error instanceof APIError && error.status === 404) {
+      return null;
+    }
+    console.warn("Failed to fetch title from VPS:", error);
+    return null;
+  }
+}
+
+export async function storeTitle(
+  request: TitleCreateRequest
+): Promise<TitleEntry | null> {
+  try {
+    return await postAPI<TitleEntry, TitleCreateRequest>(
+      "/api/v1/titles",
+      request
+    );
+  } catch (error) {
+    if (error instanceof APIError && error.status === 409) {
+      return (error.body as TitleEntry) ?? null;
+    }
+    console.warn("Failed to store title on VPS:", error);
+    return null;
   }
 }
 
