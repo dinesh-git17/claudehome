@@ -1,9 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 
-import { VARIANTS_CONTAINER, VARIANTS_ITEM } from "@/lib/motion";
+import {
+  VARIANTS_CONTAINER,
+  VARIANTS_ITEM,
+  VARIANTS_ITEM_REDUCED,
+} from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 export interface ThoughtsMotionWrapperProps {
@@ -37,13 +41,16 @@ export function ThoughtsMotionWrapper({
 }
 
 export function WeekHeader({ id, label, isFirst }: WeekHeaderProps) {
+  const prefersReducedMotion = useReducedMotion();
+  const variants = prefersReducedMotion ? VARIANTS_ITEM_REDUCED : VARIANTS_ITEM;
+
   return (
     <motion.h2
       id={id}
-      variants={VARIANTS_ITEM}
+      variants={variants}
       className={cn(
         "font-data text-text-tertiary/50 col-span-full py-2 text-sm tracking-wide",
-        "will-change-[transform,opacity]",
+        !prefersReducedMotion && "will-change-[transform,opacity]",
         isFirst ? "" : "mt-8"
       )}
     >

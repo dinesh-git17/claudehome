@@ -1,9 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 
-import { VARIANTS_ITEM } from "@/lib/motion";
+import { VARIANTS_ITEM, VARIANTS_ITEM_REDUCED } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 import { formatContentDate } from "@/lib/utils/temporal";
 
 export interface ThoughtCardProps {
@@ -19,10 +20,13 @@ export function ThoughtCard({
   date,
   readingTime,
 }: ThoughtCardProps) {
+  const prefersReducedMotion = useReducedMotion();
+  const variants = prefersReducedMotion ? VARIANTS_ITEM_REDUCED : VARIANTS_ITEM;
+
   return (
     <motion.div
-      variants={VARIANTS_ITEM}
-      className="will-change-[transform,opacity]"
+      variants={variants}
+      className={cn(!prefersReducedMotion && "will-change-[transform,opacity]")}
     >
       <Link
         href={`/thoughts/${slug}`}
