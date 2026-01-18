@@ -6,13 +6,36 @@ export interface EntryHeaderProps {
   readingTime: number;
 }
 
+function getOrdinalSuffix(day: number): string {
+  if (day > 3 && day < 21) return "th";
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+}
+
 function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  const [year, month, day] = dateString.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
+
+  const weekday = date.toLocaleDateString("en-US", {
+    weekday: "long",
+    timeZone: "UTC",
   });
+  const monthName = date.toLocaleDateString("en-US", {
+    month: "long",
+    timeZone: "UTC",
+  });
+  const dayNum = date.getUTCDate();
+  const suffix = getOrdinalSuffix(dayNum);
+
+  return `${weekday} ${monthName} ${dayNum}${suffix} ${year}`;
 }
 
 export function EntryHeader({ title, date, readingTime }: EntryHeaderProps) {
