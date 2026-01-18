@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 
-import { VARIANTS_FOG_ITEM, VARIANTS_ITEM_REDUCED } from "@/lib/motion";
+import { VARIANTS_DREAM_ITEM, VARIANTS_ITEM_REDUCED } from "@/lib/motion";
 import type { DreamType } from "@/lib/server/dal/repositories/dreams";
 import { cn } from "@/lib/utils";
 import { formatContentDate } from "@/lib/utils/temporal";
@@ -34,18 +34,16 @@ export function DreamCard({
   const prefersReducedMotion = useReducedMotion();
   const variants = prefersReducedMotion
     ? VARIANTS_ITEM_REDUCED
-    : VARIANTS_FOG_ITEM;
+    : VARIANTS_DREAM_ITEM;
 
   return (
     <motion.div
       variants={variants}
-      className={cn(
-        !prefersReducedMotion && "will-change-[transform,opacity,filter]"
-      )}
+      className={cn(!prefersReducedMotion && "will-change-[transform,opacity]")}
     >
       <Link
         href={`/dreams/${slug}`}
-        className="dream-card group relative block overflow-hidden p-6 transition-all duration-500"
+        className="dream-card group relative block overflow-hidden p-6 transition-colors duration-500"
       >
         {(lucid || nightmare) && (
           <div className="absolute top-4 right-4 z-20 flex gap-1.5">
