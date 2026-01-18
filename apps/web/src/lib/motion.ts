@@ -79,49 +79,59 @@ export const VARIANTS_ITEM_REDUCED: Variants = {
 };
 
 /**
- * Fog motion constants for dream content.
- * Slightly slower than default for dreamier feel.
+ * Oneiric ease curve: heavy, sleepy deceleration for dream-like dissolve.
+ * Softer start than biological ease to simulate memory forming from fog.
  */
-export const FOG_STAGGER_DELAY = 0.06;
-export const FOG_DELAY_CHILDREN = 0.08;
-export const FOG_DURATION = 0.7;
+export const ONEIRIC_EASE: [number, number, number, number] = [
+  0.2, 0.8, 0.2, 1,
+];
 
 /**
- * Fog transition: gentle ease for dreamlike materialization.
+ * Oneiric motion constants for dream content.
+ * Slower stagger creates drifting, foggy emergence.
  */
-export const FOG_TRANSITION: Transition = {
-  duration: FOG_DURATION,
-  ease: BIOLOGICAL_EASE,
+export const ONEIRIC_STAGGER_DELAY = 0.1;
+export const ONEIRIC_DELAY_CHILDREN = 0.2;
+export const ONEIRIC_DURATION = 1.2;
+
+/**
+ * Oneiric transition: slow resolve for heavy blur dissolve.
+ */
+export const ONEIRIC_TRANSITION: Transition = {
+  duration: ONEIRIC_DURATION,
+  ease: ONEIRIC_EASE,
 };
 
 /**
- * Container variants for fog-staggered dream animations.
+ * Container variants for oneiric-staggered dream animations.
  * No container opacity — children handle their own visibility.
  */
 export const VARIANTS_FOG_CONTAINER: Variants = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: FOG_STAGGER_DELAY,
-      delayChildren: FOG_DELAY_CHILDREN,
+      staggerChildren: ONEIRIC_STAGGER_DELAY,
+      delayChildren: ONEIRIC_DELAY_CHILDREN,
     },
   },
 };
 
 /**
- * Item variants for fog materialization effect.
- * Dreams resolve from blur with subtle upward drift.
+ * Item variants for oneiric "fog resolve" effect.
+ * Dreams materialize from heavy blur with slow, drifting emergence.
  */
 export const VARIANTS_FOG_ITEM: Variants = {
   hidden: {
     opacity: 0,
-    y: 10,
-    filter: "blur(4px)",
+    y: 20,
+    filter: "blur(12px)",
+    scale: 0.98,
   },
   show: {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: FOG_TRANSITION,
+    scale: 1,
+    transition: ONEIRIC_TRANSITION,
   },
 };
