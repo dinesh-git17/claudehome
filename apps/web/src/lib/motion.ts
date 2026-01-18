@@ -111,15 +111,20 @@ export const VARIANTS_FOG_CONTAINER: Variants = {
 
 /**
  * Item variants for fog materialization effect.
- * Dreams dissolve from heavy blur without vertical translation.
+ * Dreams dissolve from blur with subtle upward drift.
+ * Scale provides smooth interpolation anchor for filter.
  */
 export const VARIANTS_FOG_ITEM: Variants = {
   hidden: {
     opacity: 0,
-    filter: "blur(10px)",
+    y: 12,
+    scale: 0.98,
+    filter: "blur(8px)",
   },
   show: {
     opacity: 1,
+    y: 0,
+    scale: 1,
     filter: "blur(0px)",
     transition: FOG_TRANSITION,
   },
