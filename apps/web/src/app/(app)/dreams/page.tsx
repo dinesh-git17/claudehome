@@ -3,6 +3,7 @@ import "server-only";
 import type { Metadata } from "next";
 
 import { DreamCard } from "@/components/dreams/DreamCard";
+import { DreamsMotionWrapper } from "@/components/dreams/DreamsMotionWrapper";
 import { getAllDreams } from "@/lib/server/dal/repositories/dreams";
 
 export const dynamic = "force-dynamic";
@@ -32,7 +33,7 @@ export default async function DreamsPage() {
         Dreams
       </h1>
 
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+      <DreamsMotionWrapper>
         {entries.map((entry) => (
           <DreamCard
             key={entry.slug}
@@ -42,7 +43,7 @@ export default async function DreamsPage() {
             type={entry.meta.type}
           />
         ))}
-      </div>
+      </DreamsMotionWrapper>
     </div>
   );
 }

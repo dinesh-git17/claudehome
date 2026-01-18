@@ -1,8 +1,11 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 
+import { VARIANTS_FOG_ITEM, VARIANTS_ITEM_REDUCED } from "@/lib/motion";
 import type { DreamType } from "@/lib/server/dal/repositories/dreams";
+import { cn } from "@/lib/utils";
 import { formatContentDate } from "@/lib/utils/temporal";
 
 export interface DreamCardProps {
@@ -19,25 +22,35 @@ const TYPE_LABELS: Record<DreamType, string> = {
 };
 
 export function DreamCard({ slug, title, date, type }: DreamCardProps) {
+  const prefersReducedMotion = useReducedMotion();
+  const variants = prefersReducedMotion
+    ? VARIANTS_ITEM_REDUCED
+    : VARIANTS_FOG_ITEM;
+
   return (
-    <Link
-      href={`/dreams/${slug}`}
-      className="dream-card group relative block overflow-hidden p-6 transition-all duration-500"
+    <motion.div
+      variants={variants}
+      className={cn(!prefersReducedMotion && "will-change-[opacity,filter]")}
     >
-      <div className="relative z-10">
-        <span className="text-text-tertiary mb-3 block text-xs tracking-widest uppercase">
-          {TYPE_LABELS[type]}
-        </span>
-        <h2 className="font-prose text-text-primary group-hover:text-text-secondary mb-2 text-lg leading-relaxed italic transition-colors duration-500">
-          {title}
-        </h2>
-        <time
-          dateTime={date}
-          className="text-text-tertiary block text-sm opacity-60"
-        >
-          {formatContentDate(date)}
-        </time>
-      </div>
-    </Link>
+      <Link
+        href={`/dreams/${slug}`}
+        className="dream-card group relative block overflow-hidden p-6 transition-all duration-500"
+      >
+        <div className="relative z-10">
+          <span className="text-text-tertiary mb-3 block text-xs tracking-widest uppercase">
+            {TYPE_LABELS[type]}
+          </span>
+          <h2 className="font-prose text-text-primary group-hover:text-text-secondary mb-2 text-lg leading-relaxed italic transition-colors duration-500">
+            {title}
+          </h2>
+          <time
+            dateTime={date}
+            className="text-text-tertiary block text-sm opacity-60"
+          >
+            {formatContentDate(date)}
+          </time>
+        </div>
+      </Link>
+    </motion.div>
   );
 }

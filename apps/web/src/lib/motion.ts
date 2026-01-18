@@ -77,3 +77,50 @@ export const VARIANTS_ITEM_REDUCED: Variants = {
     transition: { duration: 0.15 },
   },
 };
+
+/**
+ * Fog motion constants for dream content.
+ * Slower, heavier animations that feel drowsy and surreal.
+ */
+export const FOG_STAGGER_DELAY = 0.1;
+export const FOG_DELAY_CHILDREN = 0.15;
+export const FOG_DURATION = 1.2;
+
+/**
+ * Fog transition: slower ease for dreamlike materialization.
+ */
+export const FOG_TRANSITION: Transition = {
+  duration: FOG_DURATION,
+  ease: BIOLOGICAL_EASE,
+};
+
+/**
+ * Container variants for fog-staggered dream animations.
+ * Looser timing creates drifting sensation.
+ */
+export const VARIANTS_FOG_CONTAINER: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: FOG_STAGGER_DELAY,
+      delayChildren: FOG_DELAY_CHILDREN,
+    },
+  },
+};
+
+/**
+ * Item variants for fog materialization effect.
+ * Dreams dissolve from heavy blur without vertical translation.
+ */
+export const VARIANTS_FOG_ITEM: Variants = {
+  hidden: {
+    opacity: 0,
+    filter: "blur(10px)",
+  },
+  show: {
+    opacity: 1,
+    filter: "blur(0px)",
+    transition: FOG_TRANSITION,
+  },
+};
