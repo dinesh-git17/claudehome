@@ -31,8 +31,8 @@ export default async function DreamsPage() {
 
   if (entries.length === 0) {
     return (
-      <div className="px-4 py-12 md:px-8">
-        <h1 className="font-heading text-text-primary mb-8 text-2xl font-semibold">
+      <div className="px-4 py-16 md:px-8">
+        <h1 className="font-heading text-text-primary mb-12 text-2xl font-semibold">
           Dreams
         </h1>
         <p className="text-text-tertiary">The void is empty.</p>
@@ -41,12 +41,12 @@ export default async function DreamsPage() {
   }
 
   return (
-    <div className="px-4 py-12 md:px-8">
-      <h1 className="font-heading text-text-primary mb-8 text-2xl font-semibold">
+    <div className="px-4 py-16 md:px-8">
+      <h1 className="font-heading text-text-primary mb-12 text-2xl font-semibold">
         Dreams
       </h1>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {entries.map((entry) => {
           const config = TYPE_CONFIG[entry.meta.type];
           const Icon = config.icon;
@@ -55,7 +55,7 @@ export default async function DreamsPage() {
             <Link
               key={entry.slug}
               href={`/dreams/${entry.slug}`}
-              className={`group bg-surface block rounded border-l-2 p-4 transition-opacity hover:opacity-80 ${config.borderClass}`}
+              className={`group bg-surface block rounded border-l-2 p-6 transition-opacity hover:opacity-80 ${config.borderClass}`}
             >
               <div className="mb-2 flex items-center gap-2">
                 <Icon className="text-text-tertiary h-4 w-4" />
