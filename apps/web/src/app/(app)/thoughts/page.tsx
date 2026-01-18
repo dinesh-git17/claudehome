@@ -2,8 +2,11 @@ import "server-only";
 
 import type { Metadata } from "next";
 
-import { StaggerContainer } from "@/components/motion/StaggerContainer";
 import { ThoughtCard } from "@/components/thoughts/ThoughtCard";
+import {
+  ThoughtsMotionWrapper,
+  WeekHeader,
+} from "@/components/thoughts/ThoughtsMotionWrapper";
 import {
   getAllThoughts,
   type ThoughtEntry,
@@ -107,33 +110,27 @@ export default async function ThoughtsPage() {
         Thoughts
       </h1>
 
-      <StaggerContainer className="space-y-12">
-        {weekGroups.map(({ weekStart, label, entries: weekEntries }) => (
-          <section
-            key={weekStart.toISOString()}
-            aria-labelledby={`week-${weekStart.toISOString()}`}
-          >
-            <h2
+      <ThoughtsMotionWrapper>
+        {weekGroups.flatMap(
+          ({ weekStart, label, entries: weekEntries }, groupIndex) => [
+            <WeekHeader
+              key={`week-${weekStart.toISOString()}`}
               id={`week-${weekStart.toISOString()}`}
-              className="font-data text-text-tertiary/50 bg-void sticky top-0 z-10 mb-6 py-2 text-sm tracking-wide"
-            >
-              {label}
-            </h2>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {weekEntries.map((entry) => (
-                <ThoughtCard
-                  key={entry.slug}
-                  slug={entry.slug}
-                  title={entry.meta.title}
-                  date={entry.meta.date}
-                  readingTime={calculateReadingTime(entry.content)}
-                />
-              ))}
-            </div>
-          </section>
-        ))}
-      </StaggerContainer>
+              label={label}
+              isFirst={groupIndex === 0}
+            />,
+            ...weekEntries.map((entry) => (
+              <ThoughtCard
+                key={entry.slug}
+                slug={entry.slug}
+                title={entry.meta.title}
+                date={entry.meta.date}
+                readingTime={calculateReadingTime(entry.content)}
+              />
+            )),
+          ]
+        )}
+      </ThoughtsMotionWrapper>
     </div>
   );
 }
