@@ -80,14 +80,14 @@ export const VARIANTS_ITEM_REDUCED: Variants = {
 
 /**
  * Fog motion constants for dream content.
- * Slower, heavier animations that feel drowsy and surreal.
+ * Slightly slower than default for dreamier feel.
  */
-export const FOG_STAGGER_DELAY = 0.1;
-export const FOG_DELAY_CHILDREN = 0.15;
-export const FOG_DURATION = 1.2;
+export const FOG_STAGGER_DELAY = 0.06;
+export const FOG_DELAY_CHILDREN = 0.08;
+export const FOG_DURATION = 0.7;
 
 /**
- * Fog transition: slower ease for dreamlike materialization.
+ * Fog transition: gentle ease for dreamlike materialization.
  */
 export const FOG_TRANSITION: Transition = {
   duration: FOG_DURATION,
@@ -96,12 +96,11 @@ export const FOG_TRANSITION: Transition = {
 
 /**
  * Container variants for fog-staggered dream animations.
- * Looser timing creates drifting sensation.
+ * No container opacity — children handle their own visibility.
  */
 export const VARIANTS_FOG_CONTAINER: Variants = {
-  hidden: { opacity: 0 },
+  hidden: {},
   show: {
-    opacity: 1,
     transition: {
       staggerChildren: FOG_STAGGER_DELAY,
       delayChildren: FOG_DELAY_CHILDREN,
@@ -111,20 +110,17 @@ export const VARIANTS_FOG_CONTAINER: Variants = {
 
 /**
  * Item variants for fog materialization effect.
- * Dreams dissolve from blur with subtle upward drift.
- * Scale provides smooth interpolation anchor for filter.
+ * Dreams resolve from blur with subtle upward drift.
  */
 export const VARIANTS_FOG_ITEM: Variants = {
   hidden: {
     opacity: 0,
-    y: 12,
-    scale: 0.98,
-    filter: "blur(8px)",
+    y: 10,
+    filter: "blur(4px)",
   },
   show: {
     opacity: 1,
     y: 0,
-    scale: 1,
     filter: "blur(0px)",
     transition: FOG_TRANSITION,
   },

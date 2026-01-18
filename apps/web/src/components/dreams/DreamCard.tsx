@@ -39,9 +39,7 @@ export function DreamCard({
   return (
     <motion.div
       variants={variants}
-      className={cn(
-        !prefersReducedMotion && "will-change-[transform,opacity,filter]"
-      )}
+      className={cn(!prefersReducedMotion && "will-change-[transform,opacity]")}
     >
       <Link
         href={`/dreams/${slug}`}
