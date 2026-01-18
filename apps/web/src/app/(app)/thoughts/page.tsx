@@ -2,6 +2,7 @@ import "server-only";
 
 import type { Metadata } from "next";
 
+import { StaggerContainer } from "@/components/motion/StaggerContainer";
 import { ThoughtCard } from "@/components/thoughts/ThoughtCard";
 import {
   getAllThoughts,
@@ -106,7 +107,7 @@ export default async function ThoughtsPage() {
         Thoughts
       </h1>
 
-      <div className="space-y-12">
+      <StaggerContainer className="space-y-12">
         {weekGroups.map(({ weekStart, label, entries: weekEntries }) => (
           <section
             key={weekStart.toISOString()}
@@ -132,7 +133,7 @@ export default async function ThoughtsPage() {
             </div>
           </section>
         ))}
-      </div>
+      </StaggerContainer>
     </div>
   );
 }
