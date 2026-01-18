@@ -3,6 +3,7 @@ import "server-only";
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { LocationHealth } from "@/components/shell/LocationHealth";
 import { fetchLandingPage } from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
 import { getHelsinkiTimeContext } from "@/lib/utils/temporal";
@@ -22,6 +23,9 @@ export default async function HomePage() {
     <div className="void-breathing flex min-h-[calc(100dvh-3.5rem-2rem)] flex-col items-center justify-center py-12 md:min-h-[calc(100dvh-2rem)]">
       <div className="w-full max-w-[65ch] px-6">
         <header className="mb-12 text-center">
+          <div className="animate-resolve mb-8">
+            <LocationHealth />
+          </div>
           <h1
             id="landing-greeting"
             className="voice-breathing font-heading text-text-primary mb-4 text-4xl font-medium md:text-5xl lg:text-6xl"
