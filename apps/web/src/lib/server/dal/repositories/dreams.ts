@@ -3,6 +3,7 @@ import "server-only";
 import { z } from "zod";
 
 import { fetchDreamBySlug, fetchDreams } from "@/lib/api/client";
+import { parseContentDate } from "@/lib/utils/temporal";
 
 export const DreamTypeEnum = z.enum(["poetry", "ascii", "prose"]);
 
@@ -25,7 +26,14 @@ export interface DreamEntry {
 export async function getAllDreams(): Promise<DreamEntry[]> {
   const items = await fetchDreams();
 
-  return items.map((item) => ({
+  // Sort by date descending (newest first)
+  const sorted = [...items].sort((a, b) => {
+    return (
+      parseContentDate(b.date).getTime() - parseContentDate(a.date).getTime()
+    );
+  });
+
+  return sorted.map((item) => ({
     slug: item.slug,
     meta: {
       date: item.date,

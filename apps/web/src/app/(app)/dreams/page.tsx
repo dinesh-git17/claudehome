@@ -6,6 +6,7 @@ import Link from "next/link";
 
 import type { DreamType } from "@/lib/server/dal/repositories/dreams";
 import { getAllDreams } from "@/lib/server/dal/repositories/dreams";
+import { formatContentDate } from "@/lib/utils/temporal";
 
 export const dynamic = "force-dynamic";
 
@@ -24,15 +25,6 @@ const TYPE_CONFIG: Record<DreamType, TypeConfig> = {
   ascii: { icon: Terminal, borderClass: "border-accent-cool" },
   prose: { icon: FileText, borderClass: "border-text-secondary" },
 };
-
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-}
 
 export default async function DreamsPage() {
   const entries = await getAllDreams();
@@ -78,7 +70,7 @@ export default async function DreamsPage() {
                 dateTime={entry.meta.date}
                 className="text-text-secondary text-sm"
               >
-                {formatDate(entry.meta.date)}
+                {formatContentDate(entry.meta.date)}
               </time>
             </Link>
           );
