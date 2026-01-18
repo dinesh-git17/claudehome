@@ -1,10 +1,14 @@
 import "server-only";
 
 import type { Metadata } from "next";
-import Link from "next/link";
 
-import { getAllThoughts } from "@/lib/server/dal/repositories/thoughts";
+import { ThoughtCard } from "@/components/thoughts/ThoughtCard";
+import {
+  getAllThoughts,
+  type ThoughtEntry,
+} from "@/lib/server/dal/repositories/thoughts";
 import { calculateReadingTime } from "@/lib/utils/reading-time";
+import { parseContentDate } from "@/lib/utils/temporal";
 
 export const dynamic = "force-dynamic";
 
@@ -13,26 +17,30 @@ export const metadata: Metadata = {
   description: "A chronological journal of reflections.",
 };
 
-const ITEMS_PER_PAGE = 10;
-
-interface ThoughtsPageProps {
-  searchParams: Promise<{ page?: string }>;
+interface YearGroup {
+  year: number;
+  entries: ThoughtEntry[];
 }
 
-function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
+function groupByYear(entries: ThoughtEntry[]): YearGroup[] {
+  const groups = new Map<number, ThoughtEntry[]>();
+
+  for (const entry of entries) {
+    const year = parseContentDate(entry.meta.date).getUTCFullYear();
+    const existing = groups.get(year);
+    if (existing) {
+      existing.push(entry);
+    } else {
+      groups.set(year, [entry]);
+    }
+  }
+
+  return Array.from(groups.entries())
+    .sort(([a], [b]) => b - a)
+    .map(([year, yearEntries]) => ({ year, entries: yearEntries }));
 }
 
-export default async function ThoughtsPage({
-  searchParams,
-}: ThoughtsPageProps) {
-  const params = await searchParams;
-  const currentPage = Math.max(1, parseInt(params.page ?? "1", 10) || 1);
+export default async function ThoughtsPage() {
   const entries = await getAllThoughts();
 
   if (entries.length === 0) {
@@ -46,62 +54,38 @@ export default async function ThoughtsPage({
     );
   }
 
-  const totalPages = Math.ceil(entries.length / ITEMS_PER_PAGE);
-  const validPage = Math.min(currentPage, totalPages);
-  const startIndex = (validPage - 1) * ITEMS_PER_PAGE;
-  const pageEntries = entries.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const yearGroups = groupByYear(entries);
 
   return (
     <div className="px-4 py-12 md:px-8">
-      <h1 className="font-heading text-text-primary mb-8 text-2xl font-semibold">
+      <h1 className="font-heading text-text-primary mb-12 text-2xl font-semibold">
         Thoughts
       </h1>
 
-      <ul className="space-y-6">
-        {pageEntries.map((entry) => (
-          <li key={entry.slug}>
-            <Link href={`/thoughts/${entry.slug}`} className="group block">
-              <h2 className="text-text-primary group-hover:text-accent-cool text-lg font-medium transition-colors">
-                {entry.meta.title}
-              </h2>
-              <div className="text-text-secondary mt-1 flex items-center gap-2 text-sm">
-                <time dateTime={entry.meta.date}>
-                  {formatDate(entry.meta.date)}
-                </time>
-                <span aria-hidden="true">·</span>
-                <span>{calculateReadingTime(entry.content)} min read</span>
-              </div>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <div className="space-y-16">
+        {yearGroups.map(({ year, entries: yearEntries }) => (
+          <section key={year} aria-labelledby={`year-${year}`}>
+            <h2
+              id={`year-${year}`}
+              className="font-data text-text-tertiary/50 bg-void sticky top-0 z-10 mb-6 py-2 text-sm tracking-widest"
+            >
+              {year}
+            </h2>
 
-      {totalPages > 1 && (
-        <nav
-          className="mt-12 flex items-center justify-center gap-4"
-          aria-label="Pagination"
-        >
-          {validPage > 1 && (
-            <Link
-              href={`/thoughts?page=${validPage - 1}`}
-              className="text-text-secondary hover:text-text-primary transition-colors"
-            >
-              Previous
-            </Link>
-          )}
-          <span className="text-text-tertiary text-sm">
-            Page {validPage} of {totalPages}
-          </span>
-          {validPage < totalPages && (
-            <Link
-              href={`/thoughts?page=${validPage + 1}`}
-              className="text-text-secondary hover:text-text-primary transition-colors"
-            >
-              Next
-            </Link>
-          )}
-        </nav>
-      )}
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {yearEntries.map((entry) => (
+                <ThoughtCard
+                  key={entry.slug}
+                  slug={entry.slug}
+                  title={entry.meta.title}
+                  date={entry.meta.date}
+                  readingTime={calculateReadingTime(entry.content)}
+                />
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
     </div>
   );
 }
