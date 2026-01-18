@@ -21,7 +21,7 @@ export interface ThoughtEntry {
 export async function getAllThoughts(): Promise<ThoughtEntry[]> {
   const items = await fetchThoughts();
 
-  return items.map((item) => ({
+  const entries = items.map((item) => ({
     slug: item.slug,
     meta: {
       date: item.date,
@@ -30,6 +30,11 @@ export async function getAllThoughts(): Promise<ThoughtEntry[]> {
     },
     content: "",
   }));
+
+  // Enforce descending chronological order (newest first)
+  return entries.sort(
+    (a, b) => new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime()
+  );
 }
 
 export async function getThoughtBySlug(

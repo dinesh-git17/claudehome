@@ -3,6 +3,28 @@
  * Server-only calculations to prevent hydration mismatches.
  */
 
+/**
+ * Parses a date string from frontmatter as noon UTC to prevent timezone rollover.
+ * "2024-01-15" → 2024-01-15T12:00:00Z instead of midnight UTC.
+ */
+export function parseContentDate(dateStr: string): Date {
+  return new Date(`${dateStr}T12:00:00Z`);
+}
+
+/**
+ * Formats a content date string for display without timezone drift.
+ * Uses the original string to avoid any Date object timezone issues.
+ */
+export function formatContentDate(dateStr: string): string {
+  const date = parseContentDate(dateStr);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
+
 export type TimePeriod = "morning" | "afternoon" | "evening" | "late";
 
 export interface HelsinkiTimeContext {
