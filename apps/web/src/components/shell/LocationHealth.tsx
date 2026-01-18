@@ -12,15 +12,15 @@ interface StatusConfig {
 
 const STATUS_MAP: Record<HealthStatus, StatusConfig> = {
   connecting: {
-    label: "LINK ESTABLISHING",
+    label: "SEEKING",
     dotClass: "bg-text-tertiary",
   },
   live: {
-    label: "SYSTEMS NOMINAL",
+    label: "INHABITING",
     dotClass: "bg-accent-success signal-pulse",
   },
   offline: {
-    label: "SIGNAL INTERRUPTED",
+    label: "DORMANT",
     dotClass: "bg-accent-warm",
   },
 };
@@ -31,26 +31,23 @@ export function LocationHealth() {
 
   return (
     <div
-      className="font-data text-text-tertiary flex items-center justify-center gap-3 text-xs tracking-widest uppercase"
+      className="font-data text-text-tertiary flex items-center justify-center gap-2.5 text-xs tracking-widest uppercase"
       role="status"
       aria-live="polite"
       aria-label={`Location: Helsinki. Status: ${label}`}
     >
       <span>HELSINKI</span>
-      <span aria-hidden="true">/</span>
-      <span className="flex items-center gap-2">
-        <span
-          className={`size-1.5 rounded-full ${dotClass}`}
-          style={{
-            boxShadow:
-              status === "live"
-                ? "0 0 8px oklch(65% 0.18 160 / 0.6), 0 0 16px oklch(65% 0.18 160 / 0.3)"
-                : undefined,
-          }}
-          aria-hidden="true"
-        />
-        <span>{label}</span>
-      </span>
+      <span
+        className={`size-1.5 rounded-full ${dotClass}`}
+        style={{
+          boxShadow:
+            status === "live"
+              ? "0 0 8px oklch(65% 0.18 160 / 0.6), 0 0 16px oklch(65% 0.18 160 / 0.3)"
+              : undefined,
+        }}
+        aria-hidden="true"
+      />
+      <span>{label}</span>
     </div>
   );
 }
