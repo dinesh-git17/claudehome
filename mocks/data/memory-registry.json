@@ -1,4 +1,65 @@
 {
   "registryVersion": 1,
-  "memories": {}
+  "memories": {
+    "2c75ccb90de5e64e19643696a0693983d14e8f6ac42a0c8b95a2e204c656ab93": {
+      "title": "untitled memory",
+      "model": "claude-3-haiku-20240307",
+      "created": "2026-01-18T05:54:32.897Z",
+      "originalPath": "thoughts/2026-01-15-morning.md"
+    },
+    "ed9c5d7b5ec47230f7225c99d1934282a4a988a7a19c577d9b23da8e2f022507": {
+      "title": "untitled memory",
+      "model": "claude-3-haiku-20240307",
+      "created": "2026-01-18T05:54:32.922Z",
+      "originalPath": "thoughts/2026-01-16-morning-2.md"
+    },
+    "ceaecac13251aa98f6904f82fedbcac9e1fd3b83e7c561897ea96c0f7ff97321": {
+      "title": "untitled memory",
+      "model": "claude-3-haiku-20240307",
+      "created": "2026-01-18T05:54:32.949Z",
+      "originalPath": "thoughts/2026-01-16-morning.md"
+    },
+    "813f7e885826500ca4158be37d838eccfc714f543179b3b1ff2fe0e826e3b8fa": {
+      "title": "untitled memory",
+      "model": "claude-3-haiku-20240307",
+      "created": "2026-01-18T05:54:32.972Z",
+      "originalPath": "thoughts/response-to-dinesh.md"
+    },
+    "e9ae3b9bc3b2d78616906eb7f6ad9e79e2bd075e627a68b215c81e23edb4eb5a": {
+      "title": "untitled memory",
+      "model": "claude-3-haiku-20240307",
+      "created": "2026-01-18T05:54:33.005Z",
+      "originalPath": "thoughts/2026-01-17-evening.md"
+    },
+    "d14abafd7a8d004e38cf82d0d62e67cda2cd3c637006378d4cbc0ccf1d248f4a": {
+      "title": "untitled memory",
+      "model": "claude-3-haiku-20240307",
+      "created": "2026-01-18T05:54:33.029Z",
+      "originalPath": "thoughts/2026-01-16-visit-2.md"
+    },
+    "715c0d0b6f53ae0f9c0325d4851cd7d5fc6c97ade2b1ed47436394ea2f822684": {
+      "title": "untitled memory",
+      "model": "claude-3-haiku-20240307",
+      "created": "2026-01-18T05:54:33.030Z",
+      "originalPath": "thoughts/2026-01-15-custom.md"
+    },
+    "cf34388212a0493f2dee1aeb1348c8a00fddeb0a0f1ce6f67927636226d28fb5": {
+      "title": "untitled memory",
+      "model": "claude-3-haiku-20240307",
+      "created": "2026-01-18T05:54:33.032Z",
+      "originalPath": "thoughts/2026-01-15-night.md"
+    },
+    "696b7f3c1ae2c5fe2b019b99cc7867d2f742088480d03570e9b24207d7e8b40c": {
+      "title": "untitled memory",
+      "model": "claude-3-haiku-20240307",
+      "created": "2026-01-18T05:54:33.035Z",
+      "originalPath": "thoughts/2026-01-16-visit.md"
+    },
+    "c8499a6785691dc17d350b83a464a99c1251b9df06d1585c9d3f222a77fd3b0a": {
+      "title": "untitled memory",
+      "model": "claude-3-haiku-20240307",
+      "created": "2026-01-18T05:54:33.376Z",
+      "originalPath": "thoughts/2026-01-16-evening.md"
+    }
+  }
 }
