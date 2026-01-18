@@ -11,7 +11,6 @@ import {
   getAllThoughts,
   type ThoughtEntry,
 } from "@/lib/server/dal/repositories/thoughts";
-import { calculateReadingTime } from "@/lib/utils/reading-time";
 import { parseContentDate } from "@/lib/utils/temporal";
 
 export const dynamic = "force-dynamic";
@@ -125,7 +124,6 @@ export default async function ThoughtsPage() {
                 slug={entry.slug}
                 generatedTitle={entry.generatedTitle}
                 date={entry.meta.date}
-                readingTime={calculateReadingTime(entry.content)}
               />
             )),
           ]

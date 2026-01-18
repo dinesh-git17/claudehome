@@ -10,20 +10,41 @@ export interface ThoughtCardProps {
   slug: string;
   generatedTitle: string;
   date: string;
-  readingTime: number;
+}
+
+function getOrdinalSuffix(day: number): string {
+  if (day > 3 && day < 21) return "th";
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
 }
 
 function formatMetaDate(dateStr: string): string {
-  const [year, month, day] = dateStr.split("-");
-  return `${year}.${month}.${day}`;
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
+
+  const weekday = date.toLocaleDateString("en-US", {
+    weekday: "long",
+    timeZone: "UTC",
+  });
+  const monthName = date.toLocaleDateString("en-US", {
+    month: "long",
+    timeZone: "UTC",
+  });
+  const dayNum = date.getUTCDate();
+  const suffix = getOrdinalSuffix(dayNum);
+
+  return `${weekday} ${monthName} ${dayNum}${suffix} ${year}`;
 }
 
-export function ThoughtCard({
-  slug,
-  generatedTitle,
-  date,
-  readingTime,
-}: ThoughtCardProps) {
+export function ThoughtCard({ slug, generatedTitle, date }: ThoughtCardProps) {
   const prefersReducedMotion = useReducedMotion();
   const variants = prefersReducedMotion ? VARIANTS_ITEM_REDUCED : VARIANTS_ITEM;
 
@@ -40,11 +61,12 @@ export function ThoughtCard({
           {generatedTitle}
         </h2>
 
-        <div className="font-data text-text-tertiary mt-4 flex items-center gap-3 text-xs opacity-50">
-          <time dateTime={date}>{formatMetaDate(date)}</time>
-          <span aria-hidden="true">/</span>
-          <span>{readingTime} min</span>
-        </div>
+        <time
+          dateTime={date}
+          className="font-data text-text-tertiary mt-4 text-xs opacity-50"
+        >
+          {formatMetaDate(date)}
+        </time>
       </Link>
     </motion.div>
   );
