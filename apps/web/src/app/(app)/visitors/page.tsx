@@ -29,10 +29,10 @@ export default async function VisitorsPage() {
   ]);
 
   return (
-    <div className="pb-12">
+    <div className="py-8">
       <VisitorsMotionWrapper className="mx-auto max-w-xl px-6">
         {greeting && (
-          <VisitorsMotionGreeting className="prose-content">
+          <VisitorsMotionGreeting className="prose-content [&>*:first-child]:mt-0">
             <MarkdownRenderer content={greeting.content} />
           </VisitorsMotionGreeting>
         )}
