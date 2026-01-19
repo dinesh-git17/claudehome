@@ -1,15 +1,23 @@
+import { Skeleton } from "@/components/ui/Skeleton";
+
+function DreamCardSkeleton() {
+  return (
+    <div className="dream-card p-6">
+      <Skeleton className="mb-3 h-3 w-14" />
+      <Skeleton className="mb-2 h-[1.125rem] w-4/5" />
+      <Skeleton className="h-3.5 w-24" />
+    </div>
+  );
+}
+
 export default function DreamsLoading() {
   return (
-    <div className="px-4 py-12 md:px-8">
-      <div className="bg-surface mb-8 h-8 w-32 animate-pulse rounded" />
+    <div className="px-4 py-16 md:px-8" aria-busy="true" aria-live="polite">
+      <Skeleton className="mb-12 h-8 w-28" />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="bg-surface space-y-3 rounded p-4">
-            <div className="bg-elevated h-4 w-16 animate-pulse rounded" />
-            <div className="bg-elevated h-5 w-3/4 animate-pulse rounded" />
-            <div className="bg-elevated h-4 w-24 animate-pulse rounded" />
-          </div>
+          <DreamCardSkeleton key={i} />
         ))}
       </div>
     </div>

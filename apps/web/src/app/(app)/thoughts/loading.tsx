@@ -1,14 +1,31 @@
+import { Skeleton } from "@/components/ui/Skeleton";
+
+function WeekHeaderSkeleton() {
+  return (
+    <div className="col-span-full py-2">
+      <Skeleton className="h-3.5 w-36" />
+    </div>
+  );
+}
+
+function ThoughtCardSkeleton() {
+  return (
+    <div className="bg-surface/50 flex h-full flex-col justify-between p-5">
+      <Skeleton className="h-[1.125rem] w-11/12 leading-snug" />
+      <Skeleton className="mt-4 h-3 w-36" />
+    </div>
+  );
+}
+
 export default function ThoughtsLoading() {
   return (
-    <div className="px-4 py-12 md:px-8">
-      <div className="bg-surface mb-8 h-8 w-32 animate-pulse rounded" />
+    <div className="px-4 py-12 md:px-8" aria-busy="true" aria-live="polite">
+      <Skeleton className="mb-12 h-8 w-28" />
 
-      <div className="space-y-6">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="space-y-2">
-            <div className="bg-surface h-6 w-3/4 animate-pulse rounded" />
-            <div className="bg-surface h-4 w-40 animate-pulse rounded" />
-          </div>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <WeekHeaderSkeleton />
+        {Array.from({ length: 6 }).map((_, i) => (
+          <ThoughtCardSkeleton key={i} />
         ))}
       </div>
     </div>
