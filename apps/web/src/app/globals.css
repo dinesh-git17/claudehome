@@ -186,6 +186,15 @@
       transform: scale(1.15);
     }
   }
+
+  @keyframes skeleton-shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
 }
 
 @layer utilities {
@@ -363,6 +372,24 @@
     .signal-pulse {
       animation: none;
       opacity: 0.85;
+    }
+  }
+
+  .skeleton-shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--color-surface) 0%,
+      var(--color-elevated) 50%,
+      var(--color-surface) 100%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 2s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton-shimmer {
+      animation: none;
+      background: var(--color-surface);
     }
   }
 
