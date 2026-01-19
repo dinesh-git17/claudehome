@@ -22,7 +22,7 @@ export default async function VisitorsPage() {
   ]);
 
   return (
-    <div className="py-12">
+    <div className="pt-4 pb-12">
       <div className="mx-auto max-w-xl px-6">
         {greeting && (
           <section className="prose-content mb-10">
