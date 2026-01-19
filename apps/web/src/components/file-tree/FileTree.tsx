@@ -2,6 +2,8 @@
 
 import "client-only";
 
+import type { Variants } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   File,
   FileCode,
@@ -15,25 +17,55 @@ import { useCallback, useRef } from "react";
 
 import type { FileSystemNode } from "@/lib/server/dal";
 
+export type FileTreeMotionPreset = "showcase" | "lab" | "none";
+
 export interface FileTreeProps {
   root: FileSystemNode;
   domain: "sandbox" | "projects";
   activePath?: string;
   defaultExpanded?: string[];
+  /** Motion preset for entrance animation */
+  motionPreset?: FileTreeMotionPreset;
 }
+
+/**
+ * Biological ease: responsive start with gentle deceleration.
+ */
+const BIOLOGICAL_EASE: [number, number, number, number] = [0.25, 0.4, 0.25, 1];
+
+const MOTION_CONFIG: Record<
+  Exclude<FileTreeMotionPreset, "none">,
+  {
+    delayChildren: number;
+    staggerChildren: number;
+    y: number;
+    duration: number;
+  }
+> = {
+  showcase: { delayChildren: 0.1, staggerChildren: 0.08, y: 20, duration: 0.5 },
+  lab: { delayChildren: 0.05, staggerChildren: 0.04, y: 10, duration: 0.3 },
+};
+
+const VARIANTS_REDUCED: Variants = {
+  hidden: { opacity: 1 },
+  show: { opacity: 1 },
+};
 
 export function FileTree({
   root,
   domain,
   activePath,
   defaultExpanded = [],
+  motionPreset = "none",
 }: FileTreeProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const treeRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
 
   const expandedPaths = getExpandedPaths(searchParams, defaultExpanded);
+  const shouldAnimate = motionPreset !== "none" && !prefersReducedMotion;
 
   const toggleExpanded = useCallback(
     (path: string) => {
@@ -119,12 +151,43 @@ export function FileTree({
     [toggleExpanded, navigateToFile]
   );
 
+  const config = motionPreset !== "none" ? MOTION_CONFIG[motionPreset] : null;
+
+  const containerVariants: Variants =
+    shouldAnimate && config
+      ? {
+          hidden: { opacity: 0 },
+          show: {
+            opacity: 1,
+            transition: {
+              staggerChildren: config.staggerChildren,
+              delayChildren: config.delayChildren,
+            },
+          },
+        }
+      : VARIANTS_REDUCED;
+
+  const itemVariants: Variants =
+    shouldAnimate && config
+      ? {
+          hidden: { opacity: 0, y: config.y },
+          show: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: config.duration, ease: BIOLOGICAL_EASE },
+          },
+        }
+      : VARIANTS_REDUCED;
+
   return (
-    <div
+    <motion.div
       ref={treeRef}
       className="file-tree"
       role="tree"
       aria-label={`${domain} file tree`}
+      variants={containerVariants}
+      initial="hidden"
+      animate="show"
     >
       {root.children?.map((node) => (
         <TreeNode
@@ -136,9 +199,11 @@ export function FileTree({
           onToggleExpanded={toggleExpanded}
           onNavigateToFile={navigateToFile}
           onKeyDown={handleKeyDown}
+          itemVariants={itemVariants}
+          shouldAnimate={shouldAnimate}
         />
       ))}
-    </div>
+    </motion.div>
   );
 }
 
@@ -154,6 +219,8 @@ interface TreeNodeProps {
     node: FileSystemNode,
     isExpanded: boolean
   ) => void;
+  itemVariants: Variants;
+  shouldAnimate: boolean;
 }
 
 function TreeNode({
@@ -164,6 +231,8 @@ function TreeNode({
   onToggleExpanded,
   onNavigateToFile,
   onKeyDown,
+  itemVariants,
+  shouldAnimate,
 }: TreeNodeProps) {
   const isExpanded = expandedPaths.has(node.path);
   const isActive = activePath === node.path;
@@ -176,8 +245,19 @@ function TreeNode({
     }
   };
 
+  // Only animate top-level items for performance
+  const isTopLevel = depth === 0;
+  const Wrapper = isTopLevel && shouldAnimate ? motion.div : "div";
+  const wrapperProps =
+    isTopLevel && shouldAnimate
+      ? {
+          variants: itemVariants,
+          style: { willChange: "opacity, transform" as const },
+        }
+      : {};
+
   return (
-    <div data-tree-item>
+    <Wrapper {...wrapperProps} data-tree-item>
       <div
         role="treeitem"
         tabIndex={0}
@@ -203,11 +283,13 @@ function TreeNode({
               onToggleExpanded={onToggleExpanded}
               onNavigateToFile={onNavigateToFile}
               onKeyDown={onKeyDown}
+              itemVariants={itemVariants}
+              shouldAnimate={shouldAnimate}
             />
           ))}
         </div>
       )}
-    </div>
+    </Wrapper>
   );
 }
 

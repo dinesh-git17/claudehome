@@ -3,6 +3,7 @@ import "server-only";
 import { notFound } from "next/navigation";
 
 import { CodeViewer } from "@/components/code-viewer/CodeViewer";
+import { FileContentMotionWrapper } from "@/components/motion/FileContentMotion";
 import { fetchFileContent } from "@/lib/api/client";
 
 export interface ProjectsFilePageProps {
@@ -34,11 +35,13 @@ export default async function ProjectsFilePage({
   const extension = file.extension ?? filePath.split(".").pop() ?? "";
 
   return (
-    <CodeViewer
-      filePath={filePath}
-      content={file.content}
-      extension={extension}
-      className="h-full"
-    />
+    <FileContentMotionWrapper preset="showcase" className="h-full">
+      <CodeViewer
+        filePath={filePath}
+        content={file.content}
+        extension={extension}
+        className="h-full"
+      />
+    </FileContentMotionWrapper>
   );
 }

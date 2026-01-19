@@ -25,7 +25,11 @@ export default async function ProjectsLayout({
           <Suspense
             fallback={<div className="file-browser-loading">Loading...</div>}
           >
-            <FileTree root={treeResult.root} domain="projects" />
+            <FileTree
+              root={treeResult.root}
+              domain="projects"
+              motionPreset="showcase"
+            />
           </Suspense>
         </div>
       </aside>
