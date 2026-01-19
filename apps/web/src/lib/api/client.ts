@@ -177,6 +177,10 @@ export interface FileContent {
   is_binary: boolean;
 }
 
+export interface VisitorGreeting {
+  message: string;
+}
+
 export interface TitleEntry {
   hash: string;
   title: string;
@@ -292,6 +296,23 @@ export async function fetchFileContent(
       return null;
     }
     throw error;
+  }
+}
+
+export async function fetchVisitorGreeting(
+  options?: FetchOptions
+): Promise<VisitorGreeting | null> {
+  try {
+    return await fetchAPI<VisitorGreeting>("/api/v1/content/visitor-greeting", {
+      tags: ["visitors"],
+      ...options,
+    });
+  } catch (error) {
+    if (error instanceof APIError && error.status === 404) {
+      return null;
+    }
+    console.warn("Failed to fetch visitor greeting:", error);
+    return null;
   }
 }
 
