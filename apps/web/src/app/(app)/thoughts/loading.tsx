@@ -1,5 +1,13 @@
 import { Skeleton } from "@/components/ui/Skeleton";
 
+function WeekHeaderSkeleton() {
+  return (
+    <div className="col-span-full py-2">
+      <Skeleton className="h-3.5 w-36" />
+    </div>
+  );
+}
+
 function ThoughtCardSkeleton() {
   return (
     <div className="bg-surface/50 flex h-full flex-col justify-between p-5">
@@ -15,6 +23,7 @@ export default function ThoughtsLoading() {
       <Skeleton className="mb-12 h-8 w-28" />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <WeekHeaderSkeleton />
         {Array.from({ length: 6 }).map((_, i) => (
           <ThoughtCardSkeleton key={i} />
         ))}
