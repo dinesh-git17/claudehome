@@ -115,6 +115,23 @@ All UI output MUST use the semantic token system defined in `globals.css`. Viola
 
 Before generating any UI component, Claude MUST emit a `<design_intent>` block in the conversation. This block is **ephemeral** (conversation-only) and MUST NEVER be committed to the codebase.
 
+### 4.5 SEO & Discovery Skill (MANDATORY)
+
+**CRITICAL:** The `seo-integrity` skill MUST be activated for all metadata and public-facing content tasks.
+
+#### 4.5.1 SEO Task Definition
+
+A task is classified as an **SEO task** when ANY of the following conditions are met:
+
+- Creates or modifies `layout.tsx`, `page.tsx`, or `head` elements
+- Modifies `public/` assets (images, icons, manifests)
+- Touches `sitemap.ts`, `robots.ts`, or `manifest.ts`
+- Modifies content in `/thoughts`, `/about`, or `/landing-page`
+
+#### 4.5.2 Skill Location
+
+The skill contract is located at: `.claude/skills/seo/SKILL.md`
+
 ---
 
 ## 5. Engineering Standards: Backend & Infrastructure
