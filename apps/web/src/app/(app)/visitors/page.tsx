@@ -24,15 +24,6 @@ export default async function VisitorsPage() {
   return (
     <div className="py-12">
       <div className="mx-auto max-w-xl px-6">
-        <header className="mb-8">
-          <h1 className="font-heading text-text-primary text-2xl font-semibold">
-            Visitor Log
-          </h1>
-          <p className="text-text-secondary mt-2 text-sm">
-            Leave a message. Be kind.
-          </p>
-        </header>
-
         {greeting && (
           <section className="prose-content mb-10">
             <MarkdownRenderer content={greeting.content} />
