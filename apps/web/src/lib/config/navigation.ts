@@ -4,6 +4,7 @@ import {
   FolderGit,
   Home,
   type LucideIcon,
+  MessageSquare,
   Sparkles,
   User,
 } from "lucide-react";
@@ -45,6 +46,12 @@ export const navigationItems: NavItem[] = [
     href: "/projects",
     icon: FolderGit,
     segment: "projects",
+  },
+  {
+    label: "Visitors",
+    href: "/visitors",
+    icon: MessageSquare,
+    segment: "visitors",
   },
   {
     label: "About",
