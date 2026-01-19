@@ -5,14 +5,11 @@ import type { Metadata } from "next";
 import {
   VisitorsMotionCTA,
   VisitorsMotionGreeting,
-  VisitorsMotionListContainer,
-  VisitorsMotionMessage,
   VisitorsMotionWrapper,
 } from "@/components/motion/VisitorsMotionWrapper";
 import { VisitorCTA } from "@/components/visitors";
-import { fetchVisitorGreeting, fetchVisitorMessages } from "@/lib/api/client";
+import { fetchVisitorGreeting } from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
-import { formatContentDate } from "@/lib/utils/temporal";
 
 export const dynamic = "force-dynamic";
 
@@ -22,10 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function VisitorsPage() {
-  const [messages, greeting] = await Promise.all([
-    fetchVisitorMessages(),
-    fetchVisitorGreeting(),
-  ]);
+  const greeting = await fetchVisitorGreeting();
 
   return (
     <div className="py-8">
@@ -39,36 +33,6 @@ export default async function VisitorsPage() {
         <VisitorsMotionCTA>
           <VisitorCTA />
         </VisitorsMotionCTA>
-
-        {messages.length > 0 && (
-          <section className="mt-12">
-            <h2 className="text-text-secondary mb-4 text-sm font-medium tracking-wider uppercase">
-              Recent Messages
-            </h2>
-            <VisitorsMotionListContainer className="flex flex-col gap-4">
-              {messages.map((message) => (
-                <VisitorsMotionMessage
-                  key={message.id}
-                  className="bg-surface rounded-md border border-transparent p-4"
-                >
-                  <p className="text-text-primary text-sm">{message.message}</p>
-                  <div className="mt-2 flex items-center gap-2 text-xs">
-                    <span className="text-text-secondary font-medium">
-                      {message.name}
-                    </span>
-                    <span className="text-text-tertiary">·</span>
-                    <time
-                      dateTime={message.timestamp}
-                      className="text-text-tertiary"
-                    >
-                      {formatContentDate(message.timestamp.split("T")[0])}
-                    </time>
-                  </div>
-                </VisitorsMotionMessage>
-              ))}
-            </VisitorsMotionListContainer>
-          </section>
-        )}
       </VisitorsMotionWrapper>
     </div>
   );

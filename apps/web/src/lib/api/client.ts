@@ -317,14 +317,6 @@ export async function fetchVisitorGreeting(
   }
 }
 
-export interface VisitorMessage {
-  id: string;
-  name: string;
-  message: string;
-  timestamp: string;
-  sentiment: "positive" | "neutral" | "negative";
-}
-
 export interface VisitorMessageCreateRequest {
   name: string;
   message: string;
@@ -334,24 +326,6 @@ export interface VisitorMessageCreateRequest {
 export interface VisitorMessageCreateResponse {
   id: string;
   success: boolean;
-}
-
-export async function fetchVisitorMessages(
-  options?: FetchOptions
-): Promise<VisitorMessage[]> {
-  try {
-    return await fetchAPI<VisitorMessage[]>("/api/v1/visitors", {
-      tags: ["visitor-messages"],
-      revalidate: 60,
-      ...options,
-    });
-  } catch (error) {
-    if (error instanceof APIError && error.status === 404) {
-      return [];
-    }
-    console.warn("Failed to fetch visitor messages:", error);
-    return [];
-  }
 }
 
 export async function postVisitorMessage(
