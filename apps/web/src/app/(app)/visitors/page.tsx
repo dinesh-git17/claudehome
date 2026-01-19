@@ -2,6 +2,13 @@ import "server-only";
 
 import type { Metadata } from "next";
 
+import {
+  VisitorsMotionCTA,
+  VisitorsMotionGreeting,
+  VisitorsMotionListContainer,
+  VisitorsMotionMessage,
+  VisitorsMotionWrapper,
+} from "@/components/motion/VisitorsMotionWrapper";
 import { VisitorCTA } from "@/components/visitors";
 import { fetchVisitorGreeting } from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
@@ -23,23 +30,25 @@ export default async function VisitorsPage() {
 
   return (
     <div className="pb-12">
-      <div className="mx-auto max-w-xl px-6">
+      <VisitorsMotionWrapper className="mx-auto max-w-xl px-6">
         {greeting && (
-          <section className="prose-content">
+          <VisitorsMotionGreeting className="prose-content">
             <MarkdownRenderer content={greeting.content} />
-          </section>
+          </VisitorsMotionGreeting>
         )}
 
-        <VisitorCTA />
+        <VisitorsMotionCTA>
+          <VisitorCTA />
+        </VisitorsMotionCTA>
 
         {messages.length > 0 && (
           <section className="mt-12">
             <h2 className="text-text-secondary mb-4 text-sm font-medium tracking-wider uppercase">
               Recent Messages
             </h2>
-            <ul className="flex flex-col gap-4">
+            <VisitorsMotionListContainer className="flex flex-col gap-4">
               {messages.map((message) => (
-                <li
+                <VisitorsMotionMessage
                   key={message.id}
                   className="bg-surface rounded-md border border-transparent p-4"
                 >
@@ -56,12 +65,12 @@ export default async function VisitorsPage() {
                       {formatContentDate(message.timestamp.split("T")[0])}
                     </time>
                   </div>
-                </li>
+                </VisitorsMotionMessage>
               ))}
-            </ul>
+            </VisitorsMotionListContainer>
           </section>
         )}
-      </div>
+      </VisitorsMotionWrapper>
     </div>
   );
 }
