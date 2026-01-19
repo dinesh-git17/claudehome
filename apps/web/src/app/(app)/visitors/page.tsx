@@ -22,15 +22,15 @@ export default async function VisitorsPage() {
   ]);
 
   return (
-    <div className="pt-4 pb-12">
+    <div className="pb-12">
       <div className="mx-auto max-w-xl px-6">
         {greeting && (
-          <section className="prose-content mb-10">
+          <section className="prose-content mb-6">
             <MarkdownRenderer content={greeting.content} />
           </section>
         )}
 
-        <section className="mb-12">
+        <section className="mb-10">
           <VisitorForm />
         </section>
 
