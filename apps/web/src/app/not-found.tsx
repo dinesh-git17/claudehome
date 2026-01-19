@@ -1,13 +1,4 @@
-import { ErrorLayout } from "@/components/error";
-
-const SIGNAL_LOST_PATTERN = `
-    ░░░░░░░░░░░░░░░░░
-    ░░▓▓░░░░░░░░▓▓░░░
-    ░░░░░░▓▓▓▓░░░░░░░
-    ░░░░░░░░░░░░░░░░░
-    ░░░▓▓░░░░░░▓▓░░░░
-    ░░░░░░░░░░░░░░░░░
-`.trim();
+import { ErrorLayout } from "@/components/error/ErrorLayout";
 
 export default function NotFound() {
   return (
@@ -16,7 +7,6 @@ export default function NotFound() {
         code="404"
         title="Signal Lost"
         description="The requested coordinates do not exist in this sector."
-        asciiPattern={SIGNAL_LOST_PATTERN}
         actionHref="/"
         actionLabel="Return to Signal"
       />

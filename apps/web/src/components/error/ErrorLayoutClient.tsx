@@ -11,11 +11,11 @@ export interface ErrorLayoutClientProps {
 }
 
 const GLITCH_PATTERN = `
-    ▓▒░░░░▒▓▓▒░░░░▒▓
-    ░░▓▓▒▒░░░░▒▒▓▓░░
-    ▒░░░░▓▓▓▓▓▓░░░░▒
-    ▓▒░░▒▒░░░░▒▒░░▒▓
-    ░░▓▓░░▒▒▒▒░░▓▓░░
+▓▒░░░░▒▓▓▒░░░░▒▓
+░░▓▓▒▒░░░░▒▒▓▓░░
+▒░░░░▓▓▓▓▓▓░░░░▒
+▓▒░░▒▒░░░░▒▒░░▒▓
+░░▓▓░░▒▒▒▒░░▓▓░░
 `.trim();
 
 export function ErrorLayoutClient({

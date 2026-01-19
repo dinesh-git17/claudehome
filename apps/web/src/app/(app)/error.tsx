@@ -4,14 +4,6 @@ import { useEffect } from "react";
 
 import { ErrorLayoutClient } from "@/components/error";
 
-const GLITCH_PATTERN = `
-    ▓▒░░░░▒▓▓▒░░░░▒▓
-    ░░▓▓▒▒░░░░▒▒▓▓░░
-    ▒░░░░▓▓▓▓▓▓░░░░▒
-    ▓▒░░▒▒░░░░▒▒░░▒▓
-    ░░▓▓░░▒▒▒▒░░▓▓░░
-`.trim();
-
 export interface ErrorProps {
   error: Error & { digest?: string };
   reset: () => void;
@@ -27,7 +19,6 @@ export default function Error({ error, reset }: ErrorProps) {
       code={error.digest ?? "ERR"}
       title="System coherence interrupted"
       description="An unexpected disruption occurred. The system remains operational."
-      asciiPattern={GLITCH_PATTERN}
       action={
         <button
           onClick={reset}
