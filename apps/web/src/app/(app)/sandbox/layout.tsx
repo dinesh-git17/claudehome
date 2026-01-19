@@ -23,7 +23,11 @@ export default async function SandboxLayout({ children }: SandboxLayoutProps) {
           <Suspense
             fallback={<div className="file-browser-loading">Loading...</div>}
           >
-            <FileTree root={treeResult.root} domain="sandbox" />
+            <FileTree
+              root={treeResult.root}
+              domain="sandbox"
+              motionPreset="lab"
+            />
           </Suspense>
         </div>
       </aside>
