@@ -317,6 +317,57 @@ export async function fetchVisitorGreeting(
   }
 }
 
+export interface VisitorMessage {
+  id: string;
+  name: string;
+  message: string;
+  timestamp: string;
+  sentiment: "positive" | "neutral" | "negative";
+}
+
+export interface VisitorMessageCreateRequest {
+  name: string;
+  message: string;
+  sentiment: "positive" | "neutral" | "negative";
+}
+
+export interface VisitorMessageCreateResponse {
+  id: string;
+  success: boolean;
+}
+
+export async function fetchVisitorMessages(
+  options?: FetchOptions
+): Promise<VisitorMessage[]> {
+  try {
+    return await fetchAPI<VisitorMessage[]>("/api/v1/visitors", {
+      tags: ["visitor-messages"],
+      revalidate: 60,
+      ...options,
+    });
+  } catch (error) {
+    if (error instanceof APIError && error.status === 404) {
+      return [];
+    }
+    console.warn("Failed to fetch visitor messages:", error);
+    return [];
+  }
+}
+
+export async function postVisitorMessage(
+  request: VisitorMessageCreateRequest
+): Promise<VisitorMessageCreateResponse | null> {
+  try {
+    return await postAPI<
+      VisitorMessageCreateResponse,
+      VisitorMessageCreateRequest
+    >("/api/v1/visitors", request);
+  } catch (error) {
+    console.error("Failed to post visitor message:", error);
+    return null;
+  }
+}
+
 export async function fetchTitle(hash: string): Promise<TitleEntry | null> {
   try {
     return await fetchAPI<TitleEntry>(`/api/v1/titles/${hash}`, {

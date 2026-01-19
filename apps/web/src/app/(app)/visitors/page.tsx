@@ -10,9 +10,8 @@ import {
   VisitorsMotionWrapper,
 } from "@/components/motion/VisitorsMotionWrapper";
 import { VisitorCTA } from "@/components/visitors";
-import { fetchVisitorGreeting } from "@/lib/api/client";
+import { fetchVisitorGreeting, fetchVisitorMessages } from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
-import { getAllVisitorMessages } from "@/lib/server/dal/repositories/visitors";
 import { formatContentDate } from "@/lib/utils/temporal";
 
 export const dynamic = "force-dynamic";
@@ -24,7 +23,7 @@ export const metadata: Metadata = {
 
 export default async function VisitorsPage() {
   const [messages, greeting] = await Promise.all([
-    getAllVisitorMessages(),
+    fetchVisitorMessages(),
     fetchVisitorGreeting(),
   ]);
 

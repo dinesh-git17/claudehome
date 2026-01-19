@@ -113,16 +113,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     );
   }
 
-  const { saveVisitorMessage } =
-    await import("@/lib/server/dal/repositories/visitors");
+  const { postVisitorMessage } = await import("@/lib/api/client");
 
-  const saveResult = await saveVisitorMessage({
+  const result = await postVisitorMessage({
     name: sanitizedName,
     message: sanitizedMessage,
     sentiment: moderationResult.sentiment,
   });
 
-  if (!saveResult.success) {
+  if (!result) {
     return NextResponse.json(
       { error: "Failed to save message. Please try again." },
       { status: 500 }
@@ -130,7 +129,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
 
   return NextResponse.json(
-    { success: true, id: saveResult.id },
+    { success: true, id: result.id },
     {
       status: 201,
       headers: {
