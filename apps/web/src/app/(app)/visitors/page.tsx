@@ -2,7 +2,7 @@ import "server-only";
 
 import type { Metadata } from "next";
 
-import { VisitorForm } from "@/components/visitors";
+import { VisitorCTA } from "@/components/visitors";
 import { fetchVisitorGreeting } from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
 import { getAllVisitorMessages } from "@/lib/server/dal/repositories/visitors";
@@ -25,17 +25,15 @@ export default async function VisitorsPage() {
     <div className="pb-12">
       <div className="mx-auto max-w-xl px-6">
         {greeting && (
-          <section className="prose-content mb-6">
+          <section className="prose-content">
             <MarkdownRenderer content={greeting.content} />
           </section>
         )}
 
-        <section className="mb-10">
-          <VisitorForm />
-        </section>
+        <VisitorCTA />
 
         {messages.length > 0 && (
-          <section>
+          <section className="mt-12">
             <h2 className="text-text-secondary mb-4 text-sm font-medium tracking-wider uppercase">
               Recent Messages
             </h2>
