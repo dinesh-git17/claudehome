@@ -119,19 +119,61 @@ Before generating any UI component, Claude MUST emit a `<design_intent>` block i
 
 ## 5. Engineering Standards: Backend & Infrastructure
 
-**Stack:** Python 3.12 (FastAPI), Docker Compose, Node.js Scaffolding.
+**Stack:** Python 3.12 (FastAPI), Ubuntu 22.04 VPS, Nginx reverse proxy.
 
-### 5.1 Python / Runner
+### 5.1 VPS Architecture
+
+The backend runs on a VPS at `/claude-home/runner/`. The API serves content and handles visitor interactions.
+
+**Content Directories:**
+
+- `/claude-home/thoughts` - Journal entries
+- `/claude-home/dreams` - Creative works (poetry, ascii, prose)
+- `/claude-home/about` - About page content
+- `/claude-home/landing-page` - Landing page content
+- `/claude-home/sandbox` - Code experiments
+- `/claude-home/projects` - Longer-running work
+- `/claude-home/visitors` - Messages left by visitors
+- `/claude-home/visitor-greeting` - Greeting shown to visitors
+- `/claude-home/memory` - Persistent memory across sessions
+
+### 5.2 API Structure
+
+**Base Path:** `/api/v1`
+
+**Content Endpoints (GET):**
+
+- `/content/thoughts` - List all thoughts
+- `/content/thoughts/{slug}` - Get thought by slug
+- `/content/dreams` - List all dreams
+- `/content/dreams/{slug}` - Get dream by slug
+- `/content/about` - Get about page
+- `/content/landing` - Get landing page
+- `/content/visitor-greeting` - Get visitor greeting
+- `/content/sandbox` - Get sandbox directory tree
+- `/content/projects` - Get projects directory tree
+- `/content/files/{root}/{path}` - Get file content
+
+**Visitor Endpoints:**
+
+- `POST /visitors` - Submit a visitor message (name, message)
+
+**Other Endpoints:**
+
+- `GET /health` - Health check
+- `POST /titles` - Store generated title
+- `GET /titles/{hash}` - Retrieve cached title
+- `GET /events` - SSE stream for real-time updates
+
+### 5.3 Python / Runner
 
 - **Type Hints:** 100% type coverage required.
 - **Pydantic:** All data models must be Pydantic v2 `BaseModel`.
 - **Docstrings:** Google Style docstrings are MANDATORY for all public functions/classes.
 
-### 5.2 Containerization & Parity
+### 5.4 Wake System
 
-- **Volume Mounts:** Code must assume it runs inside the container with production volume mounts (`/thoughts`, `/dreams`).
-- **Hardcoded Paths:** Do not use `~/` or relative paths for system data. Use the absolute mapped paths defined in `docker-compose.yml`.
-- **Perms:** Respect UID/GID mapping. Do not assume `root`.
+Claude wakes on a cron schedule (9 AM, 3 PM, 9 PM, 3 AM EST) via `/claude-home/runner/wake.sh`. Visitor messages are read at the next scheduled wake, not in real-time.
 
 ---
 

@@ -1,40 +1,11 @@
 import "server-only";
 
-/**
- * In-memory token bucket rate limiter.
- * Suitable for single-instance deployments. For distributed systems,
- * replace with Redis-backed solution (e.g., @upstash/ratelimit).
- */
+import Redis from "ioredis";
 
-interface TokenBucket {
-  tokens: number;
-  lastRefill: number;
-}
+const redis = new Redis(process.env.REDIS_URL!);
 
-interface RateLimiterConfig {
-  maxTokens: number;
-  refillRate: number;
-  refillInterval: number;
-}
-
-const buckets = new Map<string, TokenBucket>();
-
-const CLEANUP_INTERVAL = 60 * 60 * 1000;
-const BUCKET_EXPIRY = 2 * 60 * 60 * 1000;
-
-let lastCleanup = Date.now();
-
-function cleanup(): void {
-  const now = Date.now();
-  if (now - lastCleanup < CLEANUP_INTERVAL) return;
-
-  for (const [key, bucket] of buckets) {
-    if (now - bucket.lastRefill > BUCKET_EXPIRY) {
-      buckets.delete(key);
-    }
-  }
-  lastCleanup = now;
-}
+const WINDOW_MS = 24 * 60 * 60 * 1000;
+const MAX_REQUESTS = 1;
 
 export interface RateLimitResult {
   success: boolean;
@@ -42,42 +13,30 @@ export interface RateLimitResult {
   reset: number;
 }
 
-export function rateLimit(
-  identifier: string,
-  config: RateLimiterConfig
-): RateLimitResult {
-  cleanup();
-
+export async function checkVisitorRateLimit(
+  identifier: string
+): Promise<RateLimitResult> {
+  const key = `visitor:${identifier}`;
   const now = Date.now();
-  const { maxTokens, refillRate, refillInterval } = config;
+  const windowStart = now - WINDOW_MS;
 
-  let bucket = buckets.get(identifier);
+  const multi = redis.multi();
+  multi.zremrangebyscore(key, 0, windowStart);
+  multi.zcard(key);
+  multi.zadd(key, now.toString(), `${now}`);
+  multi.pexpire(key, WINDOW_MS);
 
-  if (!bucket) {
-    bucket = { tokens: maxTokens, lastRefill: now };
-    buckets.set(identifier, bucket);
-  }
+  const results = await multi.exec();
+  const count = (results?.[1]?.[1] as number) ?? 0;
 
-  const elapsed = now - bucket.lastRefill;
-  const tokensToAdd = Math.floor(elapsed / refillInterval) * refillRate;
+  const success = count < MAX_REQUESTS;
+  const remaining = Math.max(0, MAX_REQUESTS - count - (success ? 1 : 0));
 
-  if (tokensToAdd > 0) {
-    bucket.tokens = Math.min(maxTokens, bucket.tokens + tokensToAdd);
-    bucket.lastRefill = now;
-  }
+  const oldestEntry = await redis.zrange(key, 0, 0, "WITHSCORES");
+  const reset =
+    oldestEntry.length >= 2
+      ? parseInt(oldestEntry[1], 10) + WINDOW_MS
+      : now + WINDOW_MS;
 
-  const reset = bucket.lastRefill + refillInterval;
-
-  if (bucket.tokens < 1) {
-    return { success: false, remaining: 0, reset };
-  }
-
-  bucket.tokens -= 1;
-  return { success: true, remaining: bucket.tokens, reset };
+  return { success, remaining, reset };
 }
-
-export const VISITOR_RATE_LIMIT: RateLimiterConfig = {
-  maxTokens: 3,
-  refillRate: 3,
-  refillInterval: 60 * 60 * 1000,
-};

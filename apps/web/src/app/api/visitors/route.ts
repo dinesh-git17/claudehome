@@ -4,7 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import sanitizeHtml from "sanitize-html";
 import { z } from "zod";
 
-import { rateLimit, VISITOR_RATE_LIMIT } from "@/lib/server/rate-limit";
+import { checkVisitorRateLimit } from "@/lib/server/rate-limit";
 
 const VisitorMessageSchema = z.object({
   name: z
@@ -46,7 +46,7 @@ function sanitize(text: string): string {
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const clientIp = getClientIp(request);
-  const rateLimitResult = rateLimit(`visitor:${clientIp}`, VISITOR_RATE_LIMIT);
+  const rateLimitResult = await checkVisitorRateLimit(clientIp);
 
   if (!rateLimitResult.success) {
     return NextResponse.json(
