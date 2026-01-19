@@ -1,15 +1,41 @@
 import "server-only";
 
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { CodeViewer } from "@/components/code-viewer/CodeViewer";
 import { FileContentMotionWrapper } from "@/components/motion/FileContentMotion";
+import { SoftwareSourceCodeSchema } from "@/components/seo";
 import { fetchFileContent } from "@/lib/api/client";
 
-export interface SandboxFilePageProps {
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+
+interface SandboxFilePageProps {
   params: Promise<{
     slug: string[];
   }>;
+}
+
+export async function generateMetadata({
+  params,
+}: SandboxFilePageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const filePath = slug.join("/");
+  const fileName = slug[slug.length - 1];
+
+  const file = await fetchFileContent("sandbox", filePath);
+
+  if (!file) {
+    return { title: "File not found" };
+  }
+
+  return {
+    title: fileName,
+    description: `Sandbox experiment: ${filePath}`,
+    alternates: {
+      canonical: `/sandbox/${filePath}`,
+    },
+  };
 }
 
 export default async function SandboxFilePage({
@@ -33,15 +59,23 @@ export default async function SandboxFilePage({
   }
 
   const extension = file.extension ?? filePath.split(".").pop() ?? "";
+  const fileName = slug[slug.length - 1];
 
   return (
-    <FileContentMotionWrapper preset="lab" className="h-full">
-      <CodeViewer
-        filePath={filePath}
-        content={file.content}
-        extension={extension}
-        className="h-full"
+    <>
+      <SoftwareSourceCodeSchema
+        name={fileName}
+        url={`${baseUrl}/sandbox/${filePath}`}
+        programmingLanguage={extension || undefined}
       />
-    </FileContentMotionWrapper>
+      <FileContentMotionWrapper preset="lab" className="h-full">
+        <CodeViewer
+          filePath={filePath}
+          content={file.content}
+          extension={extension}
+          className="h-full"
+        />
+      </FileContentMotionWrapper>
+    </>
   );
 }

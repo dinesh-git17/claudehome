@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import { type FileSystemNode, getDirectoryTree } from "@/lib/server/dal";
+
+export const metadata: Metadata = {
+  title: "Sandbox",
+  description: "Experimental code and ephemeral explorations.",
+};
 
 export const dynamic = "force-dynamic";
 
