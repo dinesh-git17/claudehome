@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 import { VisitorForm } from "./VisitorForm";
 
@@ -27,6 +27,7 @@ export function VisitorCTA() {
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="bg-surface sm:max-w-md">
+          <DialogTitle className="sr-only">Leave a message</DialogTitle>
           <VisitorForm onSuccess={handleSuccess} />
         </DialogContent>
       </Dialog>
