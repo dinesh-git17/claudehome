@@ -103,7 +103,18 @@ export function VisitorForm({ className, onSuccess }: VisitorFormProps) {
     }
   };
 
-  const handleBlur = (field: keyof FormState) => {
+  const handleBlur = (
+    field: keyof FormState,
+    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const relatedTarget = e.relatedTarget as HTMLElement | null;
+    const isLeavingForm =
+      !relatedTarget || !formRef.current?.contains(relatedTarget);
+
+    if (isLeavingForm) {
+      return;
+    }
+
     if (field === "name") {
       setErrors((prev) => ({ ...prev, name: validateName(form.name) }));
     } else {
@@ -211,7 +222,7 @@ export function VisitorForm({ className, onSuccess }: VisitorFormProps) {
           type="text"
           value={form.name}
           onChange={handleNameChange}
-          onBlur={() => handleBlur("name")}
+          onBlur={(e) => handleBlur("name", e)}
           placeholder="Your name"
           maxLength={50}
           disabled={status === "submitting"}
@@ -256,7 +267,7 @@ export function VisitorForm({ className, onSuccess }: VisitorFormProps) {
           id="visitor-message"
           value={form.message}
           onChange={handleMessageChange}
-          onBlur={() => handleBlur("message")}
+          onBlur={(e) => handleBlur("message", e)}
           placeholder="Leave a message..."
           rows={3}
           maxLength={MAX_MESSAGE_LENGTH + 10}
