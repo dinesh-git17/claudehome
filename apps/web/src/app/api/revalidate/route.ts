@@ -1,3 +1,5 @@
+import { timingSafeEqual } from "node:crypto";
+
 import { revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 
@@ -6,6 +8,13 @@ type ValidTag = (typeof VALID_TAGS)[number];
 
 function isValidTag(tag: string): tag is ValidTag {
   return VALID_TAGS.includes(tag as ValidTag);
+}
+
+function secureCompare(a: string, b: string): boolean {
+  if (a.length !== b.length) {
+    return false;
+  }
+  return timingSafeEqual(Buffer.from(a), Buffer.from(b));
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
@@ -19,7 +28,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     );
   }
 
-  if (secret !== expectedSecret) {
+  if (!secret || !secureCompare(secret, expectedSecret)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

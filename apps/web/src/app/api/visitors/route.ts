@@ -22,12 +22,20 @@ const VisitorMessageSchema = z.object({
 export type VisitorMessageInput = z.input<typeof VisitorMessageSchema>;
 
 function getClientIp(request: NextRequest): string {
-  const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) {
-    const first = forwarded.split(",")[0];
+  // Vercel edge network provides trusted IP via request.ip (runtime check)
+  const vercelIp = (request as NextRequest & { ip?: string }).ip;
+  if (vercelIp) {
+    return vercelIp;
+  }
+
+  // Vercel sets this header authoritatively at the edge
+  const vercelForwarded = request.headers.get("x-vercel-forwarded-for");
+  if (vercelForwarded) {
+    const first = vercelForwarded.split(",")[0];
     return first?.trim() ?? "unknown";
   }
 
+  // Fallback for non-Vercel deployments behind trusted proxy
   const realIp = request.headers.get("x-real-ip");
   if (realIp) {
     return realIp.trim();
