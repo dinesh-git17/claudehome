@@ -118,7 +118,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const result = await postVisitorMessage({
     name: sanitizedName,
     message: sanitizedMessage,
-    sentiment: moderationResult.sentiment,
   });
 
   if (!result) {

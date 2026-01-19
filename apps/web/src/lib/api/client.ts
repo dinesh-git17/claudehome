@@ -321,7 +321,6 @@ export async function fetchVisitorGreeting(
 export interface VisitorMessageCreateRequest {
   name: string;
   message: string;
-  sentiment: "positive" | "neutral" | "negative";
 }
 
 export interface VisitorMessageCreateResponse {
