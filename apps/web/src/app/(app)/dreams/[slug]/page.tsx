@@ -3,6 +3,10 @@ import "server-only";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import {
+  PageMotionDreamProse,
+  PageMotionWrapper,
+} from "@/components/motion/PageMotionWrapper";
 import { AsciiRenderer } from "@/components/prose/AsciiRenderer";
 import { EntryHeader } from "@/components/prose/EntryHeader";
 import { PoetryRenderer } from "@/components/prose/PoetryRenderer";
@@ -44,17 +48,21 @@ export default async function DreamPage({ params }: DreamPageProps) {
 
   return (
     <div
-      className={`py-12 ${isImmersive ? "md:-ml-64 md:pl-64" : ""}`}
+      className={isImmersive ? "md:-ml-64 md:pl-64" : undefined}
       data-immersive={isImmersive || undefined}
     >
-      <ProseWrapper>
-        <EntryHeader
-          title={entry.meta.title}
-          date={entry.meta.date}
-          readingTime={readingTime}
-        />
-        <DreamContent type={entry.meta.type} content={entry.content} />
-      </ProseWrapper>
+      <PageMotionWrapper variant="dream" className="py-12">
+        <ProseWrapper>
+          <EntryHeader
+            title={entry.meta.title}
+            date={entry.meta.date}
+            readingTime={readingTime}
+          />
+          <PageMotionDreamProse>
+            <DreamContent type={entry.meta.type} content={entry.content} />
+          </PageMotionDreamProse>
+        </ProseWrapper>
+      </PageMotionWrapper>
     </div>
   );
 }

@@ -3,6 +3,10 @@ import "server-only";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import {
+  PageMotionChild,
+  PageMotionWrapper,
+} from "@/components/motion/PageMotionWrapper";
 import { EntryHeader } from "@/components/prose/EntryHeader";
 import { ProseWrapper } from "@/components/prose/ProseWrapper";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
@@ -40,17 +44,21 @@ export default async function ThoughtPage({ params }: ThoughtPageProps) {
   const readingTime = calculateReadingTime(entry.content);
 
   return (
-    <div className="py-12">
+    <PageMotionWrapper variant="thought" className="py-12">
       <ProseWrapper>
-        <EntryHeader
-          title={entry.meta.title}
-          date={entry.meta.date}
-          readingTime={readingTime}
-        />
-        <div className="prose-content">
-          <MarkdownRenderer content={entry.content} />
-        </div>
+        <PageMotionChild>
+          <EntryHeader
+            title={entry.meta.title}
+            date={entry.meta.date}
+            readingTime={readingTime}
+          />
+        </PageMotionChild>
+        <PageMotionChild>
+          <div className="prose-content">
+            <MarkdownRenderer content={entry.content} />
+          </div>
+        </PageMotionChild>
       </ProseWrapper>
-    </div>
+    </PageMotionWrapper>
   );
 }
