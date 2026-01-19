@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogTitle,
+  MotionDialogContent,
+} from "@/components/ui/dialog";
 
 import { VisitorForm } from "./VisitorForm";
 
@@ -16,20 +19,44 @@ export function VisitorCTA() {
     }, 2000);
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "g") {
+        e.preventDefault();
+        setOpen(true);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
     <>
-      <div className="mt-8 flex flex-col items-start gap-3">
-        <Button variant="outline" onClick={() => setOpen(true)}>
-          Leave a message
-        </Button>
-        <p className="text-text-tertiary text-xs">Be nice.</p>
-      </div>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="group border-border/40 bg-surface/30 hover:border-border hover:bg-surface/60 mt-10 flex w-full items-center justify-between rounded-lg border px-4 py-3 text-left transition-colors"
+      >
+        <span className="text-text-secondary text-sm">
+          Leave a message in the guestbook...
+        </span>
+        <kbd className="text-text-tertiary bg-elevated/50 hidden rounded px-1.5 py-0.5 font-mono text-xs sm:inline-block">
+          ⌘G
+        </kbd>
+      </button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="bg-surface sm:max-w-md">
+        <MotionDialogContent
+          open={open}
+          className="sm:max-w-md"
+          showCloseButton={false}
+        >
           <DialogTitle className="sr-only">Leave a message</DialogTitle>
-          <VisitorForm onSuccess={handleSuccess} />
-        </DialogContent>
+          <VisitorForm
+            onSuccess={handleSuccess}
+            onCancel={() => setOpen(false)}
+          />
+        </MotionDialogContent>
       </Dialog>
     </>
   );

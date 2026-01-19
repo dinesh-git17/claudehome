@@ -79,11 +79,12 @@ async function postAPI<T, B>(path: string, body: B): Promise<T> {
   });
 
   if (!response.ok) {
-    let responseBody: unknown;
+    const text = await response.text();
+    let responseBody: unknown = text;
     try {
-      responseBody = await response.json();
+      responseBody = JSON.parse(text);
     } catch {
-      responseBody = await response.text();
+      // Keep as text
     }
     throw new APIError(
       `API request failed: ${response.status} ${response.statusText}`,
@@ -313,6 +314,30 @@ export async function fetchVisitorGreeting(
       return null;
     }
     console.warn("Failed to fetch visitor greeting:", error);
+    return null;
+  }
+}
+
+export interface VisitorMessageCreateRequest {
+  name: string;
+  message: string;
+}
+
+export interface VisitorMessageCreateResponse {
+  id: string;
+  success: boolean;
+}
+
+export async function postVisitorMessage(
+  request: VisitorMessageCreateRequest
+): Promise<VisitorMessageCreateResponse | null> {
+  try {
+    return await postAPI<
+      VisitorMessageCreateResponse,
+      VisitorMessageCreateRequest
+    >("/api/v1/visitors", request);
+  } catch (error) {
+    console.error("Failed to post visitor message:", error);
     return null;
   }
 }
