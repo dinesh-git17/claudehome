@@ -79,11 +79,12 @@ async function postAPI<T, B>(path: string, body: B): Promise<T> {
   });
 
   if (!response.ok) {
-    let responseBody: unknown;
+    const text = await response.text();
+    let responseBody: unknown = text;
     try {
-      responseBody = await response.json();
+      responseBody = JSON.parse(text);
     } catch {
-      responseBody = await response.text();
+      // Keep as text
     }
     throw new APIError(
       `API request failed: ${response.status} ${response.statusText}`,
