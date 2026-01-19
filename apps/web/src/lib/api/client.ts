@@ -178,7 +178,8 @@ export interface FileContent {
 }
 
 export interface VisitorGreeting {
-  message: string;
+  content: string;
+  last_updated: string;
 }
 
 export interface TitleEntry {

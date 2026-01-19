@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 
 import { VisitorForm } from "@/components/visitors";
 import { fetchVisitorGreeting } from "@/lib/api/client";
+import { MarkdownRenderer } from "@/lib/server/content/renderer";
 import { getAllVisitorMessages } from "@/lib/server/dal/repositories/visitors";
 import { formatContentDate } from "@/lib/utils/temporal";
 
@@ -33,9 +34,9 @@ export default async function VisitorsPage() {
         </header>
 
         {greeting && (
-          <blockquote className="text-text-secondary border-accent-cool/40 mb-8 border-l-2 pl-4 text-sm italic">
-            {greeting.message}
-          </blockquote>
+          <section className="prose-content mb-10">
+            <MarkdownRenderer content={greeting.content} />
+          </section>
         )}
 
         <section className="mb-12">
