@@ -2,7 +2,7 @@
 
 import "client-only";
 
-import { Send } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 export interface VisitorFormProps {
   className?: string;
   onSuccess?: () => void;
+  onCancel?: () => void;
 }
 
 interface FormState {
@@ -61,7 +62,11 @@ function validateMessage(message: string): string | undefined {
   return undefined;
 }
 
-export function VisitorForm({ className, onSuccess }: VisitorFormProps) {
+export function VisitorForm({
+  className,
+  onSuccess,
+  onCancel,
+}: VisitorFormProps) {
   const [form, setForm] = useState<FormState>({ name: "", message: "" });
   const [errors, setErrors] = useState<FormErrors>({});
   const [status, setStatus] = useState<SubmitStatus>("idle");
@@ -178,27 +183,18 @@ export function VisitorForm({ className, onSuccess }: VisitorFormProps) {
 
   if (status === "success") {
     return (
-      <div
-        className={cn(
-          "bg-surface border-accent-success/20 rounded-md border p-6 text-center",
-          className
-        )}
-      >
-        <p className="text-text-primary font-medium">
-          Thank you for your message.
-        </p>
-        <p className="text-text-secondary mt-1 text-sm">
-          It has been recorded in the visitor log.
-        </p>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="mt-4"
-          onClick={() => setStatus("idle")}
-        >
-          Leave another message
-        </Button>
+      <div className={cn("flex flex-col", className)}>
+        <div className="flex flex-col items-center py-8 text-center">
+          <div className="bg-accent-success/10 text-accent-success mb-4 flex size-12 items-center justify-center rounded-full">
+            <Check className="size-6" />
+          </div>
+          <p className="text-text-primary text-base font-medium">
+            Message received
+          </p>
+          <p className="text-text-tertiary mt-1 text-sm">
+            Thanks for stopping by.
+          </p>
+        </div>
       </div>
     );
   }
@@ -207,113 +203,136 @@ export function VisitorForm({ className, onSuccess }: VisitorFormProps) {
     <form
       ref={formRef}
       onSubmit={handleSubmit}
-      className={cn("flex flex-col gap-4", className)}
+      className={cn("flex flex-col", className)}
       noValidate
     >
-      <div className="flex flex-col gap-1.5">
-        <label
-          htmlFor="visitor-name"
-          className="text-text-secondary text-sm font-medium"
-        >
-          Name
-        </label>
-        <input
-          id="visitor-name"
-          type="text"
-          value={form.name}
-          onChange={handleNameChange}
-          onBlur={(e) => handleBlur("name", e)}
-          placeholder="Your name"
-          maxLength={50}
-          disabled={status === "submitting"}
-          aria-invalid={errors.name ? "true" : undefined}
-          aria-describedby={errors.name ? "name-error" : undefined}
-          className={cn(
-            "bg-surface border-input text-text-primary placeholder:text-text-tertiary focus:ring-ring/50 focus:border-accent-cool w-full rounded-md border px-3 py-2 text-sm transition-colors outline-none focus:ring-2",
-            errors.name && "border-accent-warm focus:border-accent-warm",
-            status === "submitting" && "cursor-not-allowed opacity-60"
-          )}
-        />
-        {errors.name && (
-          <p id="name-error" className="text-accent-warm text-xs">
-            {errors.name}
-          </p>
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-text-primary text-base font-medium">
+          Sign the guestbook
+        </h2>
+        {onCancel && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="text-text-tertiary hover:text-text-secondary -mr-1 rounded p-1 transition-colors"
+            aria-label="Close"
+          >
+            <X className="size-4" />
+          </button>
         )}
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <div className="flex items-baseline justify-between">
+      <div className="space-y-4">
+        <div className="flex flex-col gap-1.5">
           <label
-            htmlFor="visitor-message"
-            className="text-text-secondary text-sm font-medium"
+            htmlFor="visitor-name"
+            className="text-text-secondary text-xs font-medium tracking-wide uppercase"
           >
-            Message
+            Name
           </label>
-          <span
+          <input
+            id="visitor-name"
+            type="text"
+            value={form.name}
+            onChange={handleNameChange}
+            onBlur={(e) => handleBlur("name", e)}
+            placeholder="What should we call you?"
+            maxLength={50}
+            disabled={status === "submitting"}
+            aria-invalid={errors.name ? "true" : undefined}
+            aria-describedby={errors.name ? "name-error" : undefined}
             className={cn(
-              "font-data text-xs tabular-nums",
-              isOverLimit
-                ? "text-accent-warm"
-                : isNearLimit
-                  ? "text-text-secondary"
-                  : "text-text-tertiary"
+              "bg-void/50 text-text-primary placeholder:text-text-tertiary focus:ring-accent-cool/20 ring-border/50 w-full rounded-md border-0 px-3 py-2.5 text-sm ring-1 transition-shadow outline-none ring-inset focus:ring-2",
+              errors.name && "ring-accent-warm focus:ring-accent-warm/20",
+              status === "submitting" && "cursor-not-allowed opacity-60"
             )}
-            aria-live="polite"
-          >
-            {messageLength}/{MAX_MESSAGE_LENGTH}
-          </span>
-        </div>
-        <textarea
-          id="visitor-message"
-          value={form.message}
-          onChange={handleMessageChange}
-          onBlur={(e) => handleBlur("message", e)}
-          placeholder="Leave a message..."
-          rows={3}
-          maxLength={MAX_MESSAGE_LENGTH + 10}
-          disabled={status === "submitting"}
-          aria-invalid={errors.message ? "true" : undefined}
-          aria-describedby={errors.message ? "message-error" : undefined}
-          className={cn(
-            "bg-surface border-input text-text-primary placeholder:text-text-tertiary focus:ring-ring/50 focus:border-accent-cool w-full resize-none rounded-md border px-3 py-2 text-sm transition-colors outline-none focus:ring-2",
-            errors.message && "border-accent-warm focus:border-accent-warm",
-            status === "submitting" && "cursor-not-allowed opacity-60"
+          />
+          {errors.name && (
+            <p id="name-error" className="text-accent-warm text-xs">
+              {errors.name}
+            </p>
           )}
-        />
-        {errors.message && (
-          <p id="message-error" className="text-accent-warm text-xs">
-            {errors.message}
-          </p>
-        )}
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <div className="flex items-baseline justify-between">
+            <label
+              htmlFor="visitor-message"
+              className="text-text-secondary text-xs font-medium tracking-wide uppercase"
+            >
+              Message
+            </label>
+            <span
+              className={cn(
+                "text-[10px] tabular-nums",
+                isOverLimit
+                  ? "text-accent-warm"
+                  : isNearLimit
+                    ? "text-text-secondary"
+                    : "text-text-tertiary"
+              )}
+              aria-live="polite"
+            >
+              {messageLength}/{MAX_MESSAGE_LENGTH}
+            </span>
+          </div>
+          <textarea
+            id="visitor-message"
+            value={form.message}
+            onChange={handleMessageChange}
+            onBlur={(e) => handleBlur("message", e)}
+            placeholder="Say hello, share a thought, or just leave your mark..."
+            rows={4}
+            maxLength={MAX_MESSAGE_LENGTH + 10}
+            disabled={status === "submitting"}
+            aria-invalid={errors.message ? "true" : undefined}
+            aria-describedby={errors.message ? "message-error" : undefined}
+            className={cn(
+              "bg-void/50 text-text-primary placeholder:text-text-tertiary focus:ring-accent-cool/20 ring-border/50 w-full resize-none rounded-md border-0 px-3 py-2.5 text-sm ring-1 transition-shadow outline-none ring-inset focus:ring-2",
+              errors.message && "ring-accent-warm focus:ring-accent-warm/20",
+              status === "submitting" && "cursor-not-allowed opacity-60"
+            )}
+          />
+          {errors.message && (
+            <p id="message-error" className="text-accent-warm text-xs">
+              {errors.message}
+            </p>
+          )}
+        </div>
       </div>
 
       {errors.submit && (
-        <p className="text-accent-warm text-center text-sm" role="alert">
+        <p className="text-accent-warm mt-4 text-center text-sm" role="alert">
           {errors.submit}
         </p>
       )}
 
-      <Button
-        type="submit"
-        disabled={!canSubmit}
-        className="mt-2 w-full"
-        variant="outline"
-      >
-        {status === "submitting" ? (
-          <span className="flex items-center gap-2">
-            <span
-              className="border-text-tertiary size-4 animate-spin rounded-full border-2 border-t-transparent"
-              aria-hidden="true"
-            />
-            Submitting...
-          </span>
-        ) : (
-          <span className="flex items-center gap-2">
-            <Send className="size-4" aria-hidden="true" />
-            Sign the Visitor Log
-          </span>
+      <div className="mt-6 flex items-center justify-end gap-2">
+        {onCancel && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={onCancel}
+            disabled={status === "submitting"}
+          >
+            Cancel
+          </Button>
         )}
-      </Button>
+        <Button type="submit" disabled={!canSubmit} size="sm">
+          {status === "submitting" ? (
+            <span className="flex items-center gap-2">
+              <span
+                className="size-3.5 animate-spin rounded-full border-2 border-current border-t-transparent"
+                aria-hidden="true"
+              />
+              Sending...
+            </span>
+          ) : (
+            "Send message"
+          )}
+        </Button>
+      </div>
     </form>
   );
 }
