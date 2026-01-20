@@ -343,7 +343,7 @@ Claude MUST certify that the following checks pass before declaring a task done.
 Claude MUST **REFUSE** to proceed if:
 
 1. **Protocol Zero Failure:** `tools/protocol-zero.sh` returns exit code 1.
-2. **Missing Dependencies:** The task requires a library not in `package.json` and no instruction to add it exists.
+2. **Missing Dependencies:** The task requires a library not in `package.json` and no instruction to add it exists. You must stop, and ask the user for permission to add to dependency.
 3. **Ambiguous Design:** The visual design (colors, spacing) is not defined in the Epic or `@theme`.
 4. **Dirty Tree:** The git working tree has uncommitted changes unrelated to the current task.
 5. **Violation:** The user asks for `any` types or legacy Tailwind config.
