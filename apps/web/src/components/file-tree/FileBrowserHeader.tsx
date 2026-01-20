@@ -2,24 +2,14 @@
 
 import "client-only";
 
+import { motion, useReducedMotion } from "framer-motion";
 import { FolderOpen } from "lucide-react";
-import { useEffect, useState } from "react";
 
 import { useFileExplorerContext } from "./FileExplorerProvider";
 
-const DISCOVERY_PULSE_DURATION = 3000;
-
 export function FileBrowserHeader() {
   const { toggle, domain, isMobile } = useFileExplorerContext();
-  const [isPulsing, setIsPulsing] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsPulsing(false);
-    }, DISCOVERY_PULSE_DURATION);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const prefersReducedMotion = useReducedMotion();
 
   if (!isMobile) {
     return null;
@@ -30,20 +20,28 @@ export function FileBrowserHeader() {
       <button
         type="button"
         onClick={toggle}
-        className="bg-surface text-text-primary hover:bg-elevated flex h-10 items-center gap-2 rounded-md px-3 text-sm font-medium transition-colors active:scale-[0.98]"
+        className="text-text-primary hover:bg-surface flex h-10 items-center gap-2 rounded-md px-3 text-sm font-medium transition-colors active:scale-[0.98]"
         aria-label={`Open ${domain} file explorer`}
       >
-        <span
+        <motion.span
           className="flex items-center gap-2"
-          style={
-            isPulsing
-              ? { animation: "discovery-pulse 0.8s ease-in-out 3" }
-              : undefined
+          animate={
+            prefersReducedMotion
+              ? {}
+              : {
+                  scale: [1, 1.1, 1],
+                  opacity: [1, 0.7, 1],
+                }
           }
+          transition={{
+            duration: 0.8,
+            repeat: 3,
+            ease: "easeInOut",
+          }}
         >
           <FolderOpen className="size-4" aria-hidden="true" />
           <span>Files</span>
-        </span>
+        </motion.span>
       </button>
     </div>
   );

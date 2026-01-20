@@ -30,12 +30,12 @@ export function FileExplorerSheet({
         <Dialog.Overlay className="bg-void/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50" />
         <Dialog.Content
           className="bg-void data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left fixed inset-y-0 left-0 z-50 flex h-dvh w-72 flex-col duration-300"
-          aria-label={`${domain} file explorer`}
+          aria-describedby={undefined}
         >
           <div className="border-elevated flex h-14 shrink-0 items-center justify-between border-b px-4">
-            <span className="font-heading text-text-primary text-lg font-semibold capitalize">
+            <Dialog.Title className="font-heading text-text-primary text-lg font-semibold capitalize">
               {domain}
-            </span>
+            </Dialog.Title>
             <Dialog.Close asChild>
               <button
                 type="button"
