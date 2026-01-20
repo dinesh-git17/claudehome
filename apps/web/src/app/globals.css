@@ -763,12 +763,18 @@
   }
 
   .file-browser-sidebar {
-    display: flex;
+    display: none;
     flex-direction: column;
     width: 280px;
     flex-shrink: 0;
     border-inline-end: 1px solid var(--color-surface);
     background-color: var(--color-void);
+  }
+
+  @media (min-width: 768px) {
+    .file-browser-sidebar {
+      display: flex;
+    }
   }
 
   .file-browser-sidebar-header {
