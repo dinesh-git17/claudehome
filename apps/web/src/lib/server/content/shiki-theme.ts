@@ -24,177 +24,105 @@ export const contemplativeTheme = {
     "editor.foreground": colors.textPrimary,
   },
   settings: [
-    // Default foreground/background
     {
       settings: {
         foreground: colors.textPrimary,
         background: colors.surface,
       },
     },
+  ],
+  tokenColors: [
     // Comments
     {
-      scope: "comment",
+      scope: ["comment", "punctuation.definition.comment"],
       settings: {
         foreground: colors.textTertiary,
         fontStyle: "italic",
-      },
-    },
-    {
-      scope: "comment.line",
-      settings: {
-        foreground: colors.textTertiary,
-        fontStyle: "italic",
-      },
-    },
-    {
-      scope: "punctuation.definition.comment",
-      settings: {
-        foreground: colors.textTertiary,
       },
     },
     // Strings
     {
-      scope: "string",
+      scope: [
+        "string",
+        "string.quoted",
+        "string.template",
+        "punctuation.definition.string",
+      ],
       settings: {
         foreground: colors.accentWarm,
       },
     },
+    // Keywords
     {
-      scope: "string.quoted",
-      settings: {
-        foreground: colors.accentWarm,
-      },
-    },
-    {
-      scope: "punctuation.definition.string",
-      settings: {
-        foreground: colors.accentWarm,
-      },
-    },
-    // Keywords (Python: def, class, if, for, etc.)
-    {
-      scope: "keyword",
+      scope: [
+        "keyword",
+        "keyword.control",
+        "storage.type",
+        "storage.type.function.python",
+        "storage.type.class.python",
+        "storage.modifier",
+      ],
       settings: {
         foreground: colors.accentCool,
       },
     },
+    // Variables
     {
-      scope: "keyword.control",
-      settings: {
-        foreground: colors.accentCool,
-      },
-    },
-    {
-      scope: "storage.type.function.python",
-      settings: {
-        foreground: colors.accentCool,
-      },
-    },
-    {
-      scope: "storage.type.class.python",
-      settings: {
-        foreground: colors.accentCool,
-      },
-    },
-    {
-      scope: "storage.type",
-      settings: {
-        foreground: colors.accentCool,
-      },
-    },
-    {
-      scope: "storage.modifier",
-      settings: {
-        foreground: colors.accentCool,
-      },
-    },
-    // Function definitions
-    {
-      scope: "entity.name.function",
-      settings: {
-        foreground: colors.textPrimary,
-      },
-    },
-    {
-      scope: "entity.name.function.python",
-      settings: {
-        foreground: colors.textPrimary,
-      },
-    },
-    // Built-in functions (Python: print, len, range, etc.)
-    {
-      scope: "support.function.builtin.python",
-      settings: {
-        foreground: colors.accentCool,
-      },
-    },
-    {
-      scope: "support.function",
-      settings: {
-        foreground: colors.textPrimary,
-      },
-    },
-    // Variables and parameters
-    {
-      scope: "variable",
+      scope: [
+        "variable",
+        "variable.other",
+        "variable.parameter",
+        "meta.definition.variable",
+      ],
       settings: {
         foreground: colors.textSecondary,
       },
     },
+    // Functions
     {
-      scope: "variable.parameter",
+      scope: ["entity.name.function", "meta.function-call", "support.function"],
       settings: {
-        foreground: colors.textSecondary,
+        foreground: colors.textPrimary,
       },
     },
-    // Constants and numbers
+    // Built-in functions (Python)
     {
-      scope: "constant",
+      scope: ["support.function.builtin.python"],
       settings: {
-        foreground: colors.accentDream,
+        foreground: colors.accentCool,
       },
     },
+    // Constants
     {
-      scope: "constant.numeric",
-      settings: {
-        foreground: colors.accentDream,
-      },
-    },
-    {
-      scope: "constant.language",
+      scope: [
+        "constant",
+        "constant.numeric",
+        "constant.language",
+        "support.constant",
+      ],
       settings: {
         foreground: colors.accentDream,
       },
     },
     // Types and classes
     {
-      scope: "entity.name.type",
-      settings: {
-        foreground: colors.accentDream,
-      },
-    },
-    {
-      scope: "entity.name.class",
-      settings: {
-        foreground: colors.accentDream,
-      },
-    },
-    {
-      scope: "support.type",
+      scope: [
+        "entity.name.type",
+        "entity.name.class",
+        "support.type",
+        "support.class",
+      ],
       settings: {
         foreground: colors.accentDream,
       },
     },
     // Self/this
     {
-      scope: "variable.language.self",
-      settings: {
-        foreground: colors.accentDream,
-        fontStyle: "italic",
-      },
-    },
-    {
-      scope: "variable.parameter.function.language.special.self.python",
+      scope: [
+        "variable.language.self",
+        "variable.language.this",
+        "variable.parameter.function.language.special.self.python",
+      ],
       settings: {
         foreground: colors.accentDream,
         fontStyle: "italic",
@@ -202,144 +130,122 @@ export const contemplativeTheme = {
     },
     // Decorators (Python)
     {
-      scope: "entity.name.function.decorator.python",
+      scope: [
+        "entity.name.function.decorator.python",
+        "punctuation.definition.decorator",
+      ],
       settings: {
         foreground: colors.accentWarm,
       },
     },
+    // Tags
     {
-      scope: "punctuation.definition.decorator",
-      settings: {
-        foreground: colors.accentWarm,
-      },
-    },
-    // Punctuation
-    {
-      scope: "punctuation",
-      settings: {
-        foreground: colors.textTertiary,
-      },
-    },
-    {
-      scope: "meta.brace",
-      settings: {
-        foreground: colors.textTertiary,
-      },
-    },
-    // Operators
-    {
-      scope: "keyword.operator",
-      settings: {
-        foreground: colors.textSecondary,
-      },
-    },
-    // Tags (HTML/XML)
-    {
-      scope: "entity.name.tag",
+      scope: ["entity.name.tag", "meta.tag"],
       settings: {
         foreground: colors.accentCool,
       },
     },
     // Attributes
     {
-      scope: "entity.other.attribute-name",
+      scope: ["entity.other.attribute-name"],
       settings: {
         foreground: colors.accentWarm,
       },
     },
-    // Properties (JSON, YAML)
+    // Punctuation
     {
-      scope: "support.type.property-name",
+      scope: [
+        "punctuation",
+        "punctuation.accessor",
+        "punctuation.separator",
+        "meta.brace",
+      ],
       settings: {
-        foreground: colors.accentCool,
+        foreground: colors.textTertiary,
       },
     },
+    // Operators
     {
-      scope: "entity.name.tag.yaml",
+      scope: [
+        "keyword.operator",
+        "keyword.operator.assignment",
+        "keyword.operator.arithmetic",
+        "keyword.operator.logical",
+        "keyword.operator.comparison",
+      ],
+      settings: {
+        foreground: colors.textSecondary,
+      },
+    },
+    // Properties
+    {
+      scope: ["meta.property-name", "support.type.property-name"],
+      settings: {
+        foreground: colors.textPrimary,
+      },
+    },
+    // YAML
+    {
+      scope: ["entity.name.tag.yaml", "punctuation.definition.block.scalar"],
       settings: {
         foreground: colors.accentCool,
       },
     },
     // Markdown headings
     {
-      scope: "markup.heading",
+      scope: ["markup.heading", "entity.name.section"],
       settings: {
         foreground: colors.accentCool,
         fontStyle: "bold",
       },
     },
+    // Markdown bold/italic
     {
-      scope: "entity.name.section",
-      settings: {
-        foreground: colors.accentCool,
-        fontStyle: "bold",
-      },
-    },
-    {
-      scope: "punctuation.definition.heading",
-      settings: {
-        foreground: colors.accentCool,
-      },
-    },
-    // Markdown bold
-    {
-      scope: "markup.bold",
+      scope: ["markup.bold"],
       settings: {
         fontStyle: "bold",
       },
     },
-    // Markdown italic
     {
-      scope: "markup.italic",
+      scope: ["markup.italic"],
       settings: {
         fontStyle: "italic",
       },
     },
     // Markdown code
     {
-      scope: "markup.inline.raw",
-      settings: {
-        foreground: colors.accentWarm,
-      },
-    },
-    {
-      scope: "markup.fenced_code",
+      scope: ["markup.inline.raw", "markup.fenced_code"],
       settings: {
         foreground: colors.accentWarm,
       },
     },
     // Markdown links
     {
-      scope: "markup.underline.link",
-      settings: {
-        foreground: colors.accentCool,
-      },
-    },
-    {
-      scope: "string.other.link",
+      scope: ["markup.underline.link", "string.other.link"],
       settings: {
         foreground: colors.accentCool,
       },
     },
     // Markdown lists
     {
-      scope: "markup.list",
-      settings: {
-        foreground: colors.accentDream,
-      },
-    },
-    {
-      scope: "punctuation.definition.list.begin",
+      scope: ["markup.list.numbered", "markup.list.unnumbered"],
       settings: {
         foreground: colors.accentDream,
       },
     },
     // Markdown blockquote
     {
-      scope: "markup.quote",
+      scope: ["markup.quote"],
       settings: {
         foreground: colors.textTertiary,
         fontStyle: "italic",
+      },
+    },
+    // Embedded
+    {
+      scope: ["meta.embedded", "source.groovy.embedded"],
+      settings: {
+        foreground: colors.textPrimary,
       },
     },
   ],
