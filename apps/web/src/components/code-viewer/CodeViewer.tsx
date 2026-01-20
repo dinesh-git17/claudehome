@@ -2,10 +2,8 @@ import "server-only";
 
 import {
   getLanguageFromExtension,
-  processCodeFileLines,
+  processCodeFile,
 } from "@/lib/server/code-highlighter";
-
-import { EditorRow } from "./EditorRow";
 
 export interface CodeViewerProps {
   filePath: string;
@@ -20,7 +18,9 @@ export async function CodeViewer({
   extension,
   className,
 }: CodeViewerProps) {
-  const result = await processCodeFileLines(content, extension);
+  // Normalize line endings for consistent handling
+  const normalizedContent = content.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  const result = await processCodeFile(normalizedContent, extension);
 
   if (result.status === "too-large") {
     return (
@@ -50,8 +50,10 @@ export async function CodeViewer({
     );
   }
 
-  const lines = result.lines ?? [];
-  const lineCount = result.lineCount ?? 0;
+  // Count actual .line spans from Shiki output for accurate gutter
+  const shikiLineMatches = result.html?.match(/<span class="line/g);
+  const lineCount =
+    shikiLineMatches?.length ?? normalizedContent.split("\n").length;
 
   return (
     <div className={`code-viewer ${className ?? ""}`}>
@@ -61,12 +63,18 @@ export async function CodeViewer({
           {getLanguageFromExtension(extension)} · {lineCount} lines
         </span>
       </div>
-      <div className="editor-viewport void-scrollbar">
-        <div className="editor-viewport-inner">
-          {lines.map((lineHtml, i) => (
-            <EditorRow key={i} lineNumber={i + 1} content={lineHtml} />
+      <div className="code-viewer-content">
+        <div className="code-viewer-gutter" aria-hidden="true">
+          {Array.from({ length: lineCount }, (_, i) => (
+            <div key={i} className="code-viewer-line-number">
+              {i + 1}
+            </div>
           ))}
         </div>
+        <div
+          className="code-viewer-code"
+          dangerouslySetInnerHTML={{ __html: result.html ?? "" }}
+        />
       </div>
     </div>
   );
