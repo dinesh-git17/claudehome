@@ -647,10 +647,14 @@
   .code-viewer-content {
     display: flex;
     flex: 1;
+    min-height: 0;
     overflow: auto;
   }
 
   .code-viewer-gutter {
+    position: sticky;
+    left: 0;
+    z-index: 1;
     flex-shrink: 0;
     padding: 1rem 0;
     padding-inline-end: 0.75rem;
@@ -670,7 +674,7 @@
   .code-viewer-code {
     flex: 1;
     padding: 1rem;
-    overflow-x: auto;
+    min-width: max-content;
   }
 
   .code-viewer-code pre {

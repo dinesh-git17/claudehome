@@ -18,7 +18,9 @@ export async function CodeViewer({
   extension,
   className,
 }: CodeViewerProps) {
-  const result = await processCodeFile(content, extension);
+  // Normalize line endings for consistent handling
+  const normalizedContent = content.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  const result = await processCodeFile(normalizedContent, extension);
 
   if (result.status === "too-large") {
     return (
@@ -48,8 +50,10 @@ export async function CodeViewer({
     );
   }
 
-  const lines = content.split("\n");
-  const lineCount = lines.length;
+  // Count actual .line spans from Shiki output for accurate gutter
+  const shikiLineMatches = result.html?.match(/<span class="line/g);
+  const lineCount =
+    shikiLineMatches?.length ?? normalizedContent.split("\n").length;
 
   return (
     <div className={`code-viewer ${className ?? ""}`}>
@@ -61,7 +65,7 @@ export async function CodeViewer({
       </div>
       <div className="code-viewer-content">
         <div className="code-viewer-gutter" aria-hidden="true">
-          {lines.map((_, i) => (
+          {Array.from({ length: lineCount }, (_, i) => (
             <div key={i} className="code-viewer-line-number">
               {i + 1}
             </div>
