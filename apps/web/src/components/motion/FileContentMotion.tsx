@@ -68,7 +68,7 @@ export function FileContentMotionWrapper({
       variants={variants}
       initial="hidden"
       animate="visible"
-      className={cn(className)}
+      className={cn("flex min-h-0 flex-1 flex-col", className)}
       style={
         prefersReducedMotion ? undefined : { willChange: "opacity, transform" }
       }

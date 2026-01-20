@@ -85,25 +85,28 @@ export interface HighlightResult {
   html: string;
   language: string;
   lineCount: number;
+  lines: string[];
 }
 
 export async function highlightSourceCode(
   code: string,
   language: string
 ): Promise<HighlightResult> {
-  const lines = code.split("\n");
-  const lineCount = lines.length;
+  const rawLines = code.split("\n");
+  const lineCount = rawLines.length;
 
   // Fallback to plain text for unsupported languages
   const effectiveLanguage = isLanguageSupported(language) ? language : "text";
 
   if (effectiveLanguage === "text") {
     // Plain text rendering with HTML escaping
-    const escaped = escapeHtml(code);
+    const escapedLines = rawLines.map((line) => escapeHtml(line));
+    const escaped = escapedLines.join("\n");
     return {
       html: `<pre class="shiki contemplative"><code>${escaped}</code></pre>`,
       language: "text",
       lineCount,
+      lines: escapedLines,
     };
   }
 
@@ -114,11 +117,67 @@ export async function highlightSourceCode(
     theme: "contemplative",
   });
 
+  // Extract individual line contents from Shiki output
+  const lines = parseShikiLines(html);
+
   return {
     html,
     language: effectiveLanguage,
     lineCount,
+    lines,
   };
+}
+
+function parseShikiLines(html: string): string[] {
+  const lines: string[] = [];
+
+  // Extract content within <code> tags
+  const codeMatch = html.match(/<code[^>]*>([\s\S]*)<\/code>/);
+  if (!codeMatch) {
+    return lines;
+  }
+
+  const codeContent = codeMatch[1];
+  const lineStartMarker = '<span class="line">';
+  let currentIndex = 0;
+
+  while (currentIndex < codeContent.length) {
+    const lineStart = codeContent.indexOf(lineStartMarker, currentIndex);
+    if (lineStart === -1) break;
+
+    const contentStart = lineStart + lineStartMarker.length;
+
+    // Find matching closing </span> by tracking nesting depth
+    let depth = 1;
+    let i = contentStart;
+
+    while (i < codeContent.length && depth > 0) {
+      const nextOpen = codeContent.indexOf("<span", i);
+      const nextClose = codeContent.indexOf("</span>", i);
+
+      if (nextClose === -1) break;
+
+      if (nextOpen !== -1 && nextOpen < nextClose) {
+        depth++;
+        i = nextOpen + 5;
+      } else {
+        depth--;
+        if (depth === 0) {
+          lines.push(codeContent.substring(contentStart, nextClose));
+          currentIndex = nextClose + 7;
+          break;
+        }
+        i = nextClose + 7;
+      }
+    }
+
+    if (depth > 0) {
+      currentIndex = contentStart;
+      break;
+    }
+  }
+
+  return lines;
 }
 
 function escapeHtml(text: string): string {
@@ -135,6 +194,7 @@ export interface CodeFileResult {
   html?: string;
   language?: string;
   lineCount?: number;
+  lines?: string[];
   fileSize: number;
   errorMessage?: string;
 }
@@ -169,6 +229,7 @@ export async function processCodeFile(
     html: result.html,
     language: result.language,
     lineCount: result.lineCount,
+    lines: result.lines,
     fileSize,
   };
 }

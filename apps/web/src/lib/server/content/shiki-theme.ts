@@ -2,22 +2,45 @@ import "server-only";
 
 import type { ThemeRegistrationRaw } from "shiki";
 
+/**
+ * Contemplative Design System colors in OKLCH.
+ * Shiki requires actual color values (CSS variables don't work in themes).
+ */
+const colors = {
+  surface: "oklch(12% 0.02 260)",
+  textPrimary: "oklch(92% 0.01 260)",
+  textSecondary: "oklch(65% 0.01 260)",
+  textTertiary: "oklch(45% 0.01 260)",
+  accentWarm: "oklch(70% 0.15 50)",
+  accentCool: "oklch(70% 0.12 250)",
+  accentDream: "oklch(75% 0.18 320)",
+};
+
 export const contemplativeTheme = {
   name: "contemplative",
   type: "dark",
   colors: {
-    "editor.background": "var(--color-surface)",
-    "editor.foreground": "var(--color-text-primary)",
+    "editor.background": colors.surface,
+    "editor.foreground": colors.textPrimary,
   },
-  settings: [],
+  settings: [
+    {
+      settings: {
+        foreground: colors.textPrimary,
+        background: colors.surface,
+      },
+    },
+  ],
   tokenColors: [
+    // Comments
     {
       scope: ["comment", "punctuation.definition.comment"],
       settings: {
-        foreground: "var(--color-text-tertiary)",
+        foreground: colors.textTertiary,
         fontStyle: "italic",
       },
     },
+    // Strings
     {
       scope: [
         "string",
@@ -26,21 +49,24 @@ export const contemplativeTheme = {
         "punctuation.definition.string",
       ],
       settings: {
-        foreground: "var(--color-accent-warm)",
+        foreground: colors.accentWarm,
       },
     },
+    // Keywords
     {
       scope: [
         "keyword",
         "keyword.control",
-        "keyword.operator.expression",
         "storage.type",
+        "storage.type.function.python",
+        "storage.type.class.python",
         "storage.modifier",
       ],
       settings: {
-        foreground: "var(--color-accent-cool)",
+        foreground: colors.accentCool,
       },
     },
+    // Variables
     {
       scope: [
         "variable",
@@ -49,27 +75,36 @@ export const contemplativeTheme = {
         "meta.definition.variable",
       ],
       settings: {
-        foreground: "var(--color-text-secondary)",
+        foreground: colors.textSecondary,
       },
     },
+    // Functions
     {
       scope: ["entity.name.function", "meta.function-call", "support.function"],
       settings: {
-        foreground: "var(--color-text-primary)",
+        foreground: colors.textPrimary,
       },
     },
+    // Built-in functions (Python)
+    {
+      scope: ["support.function.builtin.python"],
+      settings: {
+        foreground: colors.accentCool,
+      },
+    },
+    // Constants
     {
       scope: [
         "constant",
         "constant.numeric",
         "constant.language",
-        "constant.character",
         "support.constant",
       ],
       settings: {
-        foreground: "var(--color-accent-dream)",
+        foreground: colors.accentDream,
       },
     },
+    // Types and classes
     {
       scope: [
         "entity.name.type",
@@ -78,21 +113,46 @@ export const contemplativeTheme = {
         "support.class",
       ],
       settings: {
-        foreground: "var(--color-accent-dream)",
+        foreground: colors.accentDream,
       },
     },
+    // Self/this
+    {
+      scope: [
+        "variable.language.self",
+        "variable.language.this",
+        "variable.parameter.function.language.special.self.python",
+      ],
+      settings: {
+        foreground: colors.accentDream,
+        fontStyle: "italic",
+      },
+    },
+    // Decorators (Python)
+    {
+      scope: [
+        "entity.name.function.decorator.python",
+        "punctuation.definition.decorator",
+      ],
+      settings: {
+        foreground: colors.accentWarm,
+      },
+    },
+    // Tags
     {
       scope: ["entity.name.tag", "meta.tag"],
       settings: {
-        foreground: "var(--color-accent-cool)",
+        foreground: colors.accentCool,
       },
     },
+    // Attributes
     {
       scope: ["entity.other.attribute-name"],
       settings: {
-        foreground: "var(--color-accent-warm)",
+        foreground: colors.accentWarm,
       },
     },
+    // Punctuation
     {
       scope: [
         "punctuation",
@@ -101,9 +161,10 @@ export const contemplativeTheme = {
         "meta.brace",
       ],
       settings: {
-        foreground: "var(--color-text-tertiary)",
+        foreground: colors.textTertiary,
       },
     },
+    // Operators
     {
       scope: [
         "keyword.operator",
@@ -113,28 +174,32 @@ export const contemplativeTheme = {
         "keyword.operator.comparison",
       ],
       settings: {
-        foreground: "var(--color-text-secondary)",
+        foreground: colors.textSecondary,
       },
     },
+    // Properties
     {
       scope: ["meta.property-name", "support.type.property-name"],
       settings: {
-        foreground: "var(--color-text-primary)",
+        foreground: colors.textPrimary,
       },
     },
+    // YAML
     {
       scope: ["entity.name.tag.yaml", "punctuation.definition.block.scalar"],
       settings: {
-        foreground: "var(--color-accent-cool)",
+        foreground: colors.accentCool,
       },
     },
+    // Markdown headings
     {
       scope: ["markup.heading", "entity.name.section"],
       settings: {
-        foreground: "var(--color-text-primary)",
+        foreground: colors.accentCool,
         fontStyle: "bold",
       },
     },
+    // Markdown bold/italic
     {
       scope: ["markup.bold"],
       settings: {
@@ -147,22 +212,40 @@ export const contemplativeTheme = {
         fontStyle: "italic",
       },
     },
+    // Markdown code
     {
       scope: ["markup.inline.raw", "markup.fenced_code"],
       settings: {
-        foreground: "var(--color-accent-warm)",
+        foreground: colors.accentWarm,
       },
     },
+    // Markdown links
+    {
+      scope: ["markup.underline.link", "string.other.link"],
+      settings: {
+        foreground: colors.accentCool,
+      },
+    },
+    // Markdown lists
     {
       scope: ["markup.list.numbered", "markup.list.unnumbered"],
       settings: {
-        foreground: "var(--color-text-secondary)",
+        foreground: colors.accentDream,
       },
     },
+    // Markdown blockquote
+    {
+      scope: ["markup.quote"],
+      settings: {
+        foreground: colors.textTertiary,
+        fontStyle: "italic",
+      },
+    },
+    // Embedded
     {
       scope: ["meta.embedded", "source.groovy.embedded"],
       settings: {
-        foreground: "var(--color-text-primary)",
+        foreground: colors.textPrimary,
       },
     },
   ],

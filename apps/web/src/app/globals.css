@@ -645,52 +645,25 @@
   }
 
   .code-viewer-content {
-    display: flex;
     flex: 1;
     min-height: 0;
     overflow: auto;
+    outline: none;
   }
 
-  .code-viewer-gutter {
-    position: sticky;
-    left: 0;
-    z-index: 1;
-    flex-shrink: 0;
-    padding: 1rem 0;
-    padding-inline-end: 0.75rem;
-    padding-inline-start: 1rem;
-    text-align: end;
-    color: var(--color-text-tertiary);
-    background-color: var(--color-surface);
-    border-inline-end: 1px solid var(--color-elevated);
-    user-select: none;
+  .code-viewer-content:focus-visible {
+    outline: 1px solid var(--color-accent-cool);
+    outline-offset: -1px;
   }
 
-  .code-viewer-line-number {
-    height: 1.5em;
-    line-height: 1.5;
+  .code-viewer-pre {
+    margin: 0;
+    padding: 1rem;
+    padding-inline-start: 0;
   }
 
   .code-viewer-code {
-    flex: 1;
-    padding: 1rem;
-    min-width: max-content;
-  }
-
-  .code-viewer-code pre {
-    margin: 0;
-    padding: 0;
-    background: transparent !important;
-  }
-
-  .code-viewer-code code {
     display: block;
-  }
-
-  .code-viewer-code .line {
-    display: block;
-    height: 1.5em;
-    line-height: 1.5;
   }
 
   .code-viewer-error {
@@ -698,6 +671,65 @@
     flex-direction: column;
     height: 100%;
     background-color: var(--color-surface);
+  }
+
+  /* CodeRow: Atomic row component (line number + content) */
+  .code-row {
+    display: flex;
+    align-items: flex-start;
+    min-height: 1.5em;
+    line-height: 1.5;
+  }
+
+  .code-row-gutter {
+    position: sticky;
+    left: 0;
+    flex-shrink: 0;
+    width: 3.5rem;
+    padding-inline-start: 1rem;
+    padding-inline-end: 0.75rem;
+    text-align: end;
+    color: var(--color-text-tertiary);
+    background-color: var(--color-surface);
+    user-select: none;
+  }
+
+  .code-row-content {
+    flex: 1;
+    min-width: 0;
+    padding-inline-end: 1rem;
+  }
+
+  .code-row-line {
+    display: block;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* Mobile: Reduce gutter width to maximize content space */
+  @media (max-width: 600px) {
+    .code-viewer {
+      font-size: 0.8125rem;
+    }
+
+    .code-viewer-header {
+      padding: 0.5rem 0.75rem;
+    }
+
+    .code-viewer-pre {
+      padding: 0.75rem;
+      padding-inline-start: 0;
+    }
+
+    .code-row-gutter {
+      width: 2.5rem;
+      padding-inline-start: 0.5rem;
+      padding-inline-end: 0.5rem;
+    }
+
+    .code-row-content {
+      padding-inline-end: 0.75rem;
+    }
   }
 
   /* File Tree Component */
@@ -755,15 +787,9 @@
   /* File Browser Layout */
   .file-browser {
     display: flex;
-    height: calc(
-      100dvh - 3.5rem - 2rem
-    ); /* viewport - mobile header - padding */
-  }
-
-  @media (min-width: 768px) {
-    .file-browser {
-      height: calc(100dvh - 2rem); /* viewport - padding */
-    }
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
   }
 
   .file-browser-sidebar {
@@ -810,7 +836,11 @@
   }
 
   .file-browser-main {
+    display: flex;
+    flex-direction: column;
     flex: 1;
+    min-width: 0;
+    min-height: 0;
     overflow: hidden;
   }
 

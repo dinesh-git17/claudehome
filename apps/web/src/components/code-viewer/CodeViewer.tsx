@@ -5,6 +5,8 @@ import {
   processCodeFile,
 } from "@/lib/server/code-highlighter";
 
+import { CodeRow } from "./CodeRow";
+
 export interface CodeViewerProps {
   filePath: string;
   content: string;
@@ -50,10 +52,8 @@ export async function CodeViewer({
     );
   }
 
-  // Count actual .line spans from Shiki output for accurate gutter
-  const shikiLineMatches = result.html?.match(/<span class="line/g);
-  const lineCount =
-    shikiLineMatches?.length ?? normalizedContent.split("\n").length;
+  const lines = result.lines ?? [];
+  const lineCount = lines.length;
 
   return (
     <div className={`code-viewer ${className ?? ""}`}>
@@ -63,18 +63,19 @@ export async function CodeViewer({
           {getLanguageFromExtension(extension)} · {lineCount} lines
         </span>
       </div>
-      <div className="code-viewer-content">
-        <div className="code-viewer-gutter" aria-hidden="true">
-          {Array.from({ length: lineCount }, (_, i) => (
-            <div key={i} className="code-viewer-line-number">
-              {i + 1}
-            </div>
-          ))}
-        </div>
-        <div
-          className="code-viewer-code"
-          dangerouslySetInnerHTML={{ __html: result.html ?? "" }}
-        />
+      <div className="code-viewer-content void-scrollbar" tabIndex={0}>
+        <pre className="code-viewer-pre">
+          <code className="code-viewer-code">
+            {lines.map((lineHtml, index) => (
+              <CodeRow key={index} lineNumber={index + 1}>
+                <span
+                  className="code-row-line"
+                  dangerouslySetInnerHTML={{ __html: lineHtml || "\u200B" }}
+                />
+              </CodeRow>
+            ))}
+          </code>
+        </pre>
       </div>
     </div>
   );

@@ -95,13 +95,13 @@ describe("Syntax Highlighting", () => {
     });
   });
 
-  describe("CSS variable theming", () => {
-    it("uses CSS variables for syntax colors", async () => {
+  describe("OKLCH color theming", () => {
+    it("uses OKLCH colors for syntax tokens", async () => {
       const html = await toHtmlString(
         "```typescript\nconst x = 'string';\n```"
       );
 
-      expect(html).toMatch(/var\(--color-/);
+      expect(html).toMatch(/oklch\(/);
     });
 
     it("does not contain hardcoded hex colors", async () => {
@@ -118,10 +118,10 @@ describe("Syntax Highlighting", () => {
       expect(html).not.toMatch(/rgba?\s*\(/i);
     });
 
-    it("applies theme-specific colors to keywords", async () => {
+    it("applies theme colors to code tokens", async () => {
       const html = await toHtmlString("```typescript\nconst x = 1;\n```");
 
-      expect(html).toContain("var(--color-");
+      expect(html).toMatch(/oklch\(/);
     });
   });
 
