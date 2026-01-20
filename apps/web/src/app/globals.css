@@ -195,6 +195,16 @@
       background-position: 200% 0;
     }
   }
+
+  @keyframes discovery-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 oklch(70% 0.12 250 / 0.4);
+    }
+    50% {
+      box-shadow: 0 0 0 6px oklch(70% 0.12 250 / 0);
+    }
+  }
 }
 
 @layer utilities {
