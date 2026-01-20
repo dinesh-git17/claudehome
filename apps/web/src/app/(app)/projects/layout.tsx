@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 
+import { FileExplorerProvider } from "@/components/file-tree/FileExplorerProvider";
 import { FileTree } from "@/components/file-tree/FileTree";
 import { getDirectoryTree } from "@/lib/server/dal";
 
@@ -13,27 +14,29 @@ export default async function ProjectsLayout({
   const treeResult = await getDirectoryTree("projects");
 
   return (
-    <div className="file-browser">
-      <aside className="file-browser-sidebar">
-        <div className="file-browser-sidebar-header">
-          <span className="file-browser-sidebar-title">projects</span>
-          {treeResult.truncated && (
-            <span className="file-browser-truncated-badge">truncated</span>
-          )}
-        </div>
-        <div className="file-browser-sidebar-content">
-          <Suspense
-            fallback={<div className="file-browser-loading">Loading...</div>}
-          >
-            <FileTree
-              root={treeResult.root}
-              domain="projects"
-              motionPreset="showcase"
-            />
-          </Suspense>
-        </div>
-      </aside>
-      <div className="file-browser-main">{children}</div>
-    </div>
+    <FileExplorerProvider root={treeResult.root} domain="projects">
+      <div className="file-browser">
+        <aside className="file-browser-sidebar">
+          <div className="file-browser-sidebar-header">
+            <span className="file-browser-sidebar-title">projects</span>
+            {treeResult.truncated && (
+              <span className="file-browser-truncated-badge">truncated</span>
+            )}
+          </div>
+          <div className="file-browser-sidebar-content">
+            <Suspense
+              fallback={<div className="file-browser-loading">Loading...</div>}
+            >
+              <FileTree
+                root={treeResult.root}
+                domain="projects"
+                motionPreset="showcase"
+              />
+            </Suspense>
+          </div>
+        </aside>
+        <div className="file-browser-main">{children}</div>
+      </div>
+    </FileExplorerProvider>
   );
 }
