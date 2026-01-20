@@ -1,6 +1,11 @@
 import "server-only";
 
-import { createHighlighter, type Highlighter } from "shiki";
+import {
+  type BundledLanguage,
+  createHighlighter,
+  type Highlighter,
+  type SpecialLanguage,
+} from "shiki";
 
 import { contemplativeTheme } from "./content/shiki-theme";
 
@@ -87,6 +92,12 @@ export interface HighlightResult {
   lineCount: number;
 }
 
+export interface HighlightLinesResult {
+  lines: string[];
+  language: string;
+  lineCount: number;
+}
+
 export async function highlightSourceCode(
   code: string,
   language: string
@@ -121,6 +132,58 @@ export async function highlightSourceCode(
   };
 }
 
+/**
+ * Highlights source code and returns individual line HTML strings.
+ * Enables row-by-row rendering for unified scroll architecture.
+ */
+export async function highlightSourceCodeLines(
+  code: string,
+  language: string
+): Promise<HighlightLinesResult> {
+  const rawLines = code.split("\n");
+  const lineCount = rawLines.length;
+
+  const effectiveLanguage = isLanguageSupported(language) ? language : "text";
+
+  if (effectiveLanguage === "text") {
+    const lines = rawLines.map((line) => escapeHtml(line) || "&nbsp;");
+    return {
+      lines,
+      language: "text",
+      lineCount,
+    };
+  }
+
+  const highlighter = await getHighlighter();
+
+  const tokens = highlighter.codeToTokensBase(code, {
+    lang: effectiveLanguage as BundledLanguage | SpecialLanguage,
+    theme: contemplativeTheme,
+  });
+
+  const lines = tokens.map((lineTokens) => {
+    if (lineTokens.length === 0) {
+      return "&nbsp;";
+    }
+
+    return lineTokens
+      .map((token) => {
+        const escaped = escapeHtml(token.content);
+        if (token.color) {
+          return `<span style="color:${token.color}">${escaped}</span>`;
+        }
+        return escaped;
+      })
+      .join("");
+  });
+
+  return {
+    lines,
+    language: effectiveLanguage,
+    lineCount,
+  };
+}
+
 function escapeHtml(text: string): string {
   return text
     .replace(/&/g, "&amp;")
@@ -133,6 +196,15 @@ function escapeHtml(text: string): string {
 export interface CodeFileResult {
   status: "success" | "too-large" | "binary";
   html?: string;
+  language?: string;
+  lineCount?: number;
+  fileSize: number;
+  errorMessage?: string;
+}
+
+export interface CodeFileLinesResult {
+  status: "success" | "too-large" | "binary";
+  lines?: string[];
   language?: string;
   lineCount?: number;
   fileSize: number;
@@ -167,6 +239,44 @@ export async function processCodeFile(
   return {
     status: "success",
     html: result.html,
+    language: result.language,
+    lineCount: result.lineCount,
+    fileSize,
+  };
+}
+
+/**
+ * Processes a code file and returns line-by-line highlighted HTML.
+ * Used by the unified editor viewport for row-based rendering.
+ */
+export async function processCodeFileLines(
+  content: string,
+  extension: string
+): Promise<CodeFileLinesResult> {
+  const fileSize = Buffer.byteLength(content, "utf8");
+
+  if (fileSize > MAX_FILE_SIZE) {
+    return {
+      status: "too-large",
+      fileSize,
+      errorMessage: `File too large to display (${formatFileSize(fileSize)}). Maximum size is ${formatFileSize(MAX_FILE_SIZE)}.`,
+    };
+  }
+
+  if (isBinaryContent(content)) {
+    return {
+      status: "binary",
+      fileSize,
+      errorMessage: "Binary file cannot be displayed.",
+    };
+  }
+
+  const language = getLanguageFromExtension(extension);
+  const result = await highlightSourceCodeLines(content, language);
+
+  return {
+    status: "success",
+    lines: result.lines,
     language: result.language,
     lineCount: result.lineCount,
     fileSize,

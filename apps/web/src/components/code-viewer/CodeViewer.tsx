@@ -2,8 +2,10 @@ import "server-only";
 
 import {
   getLanguageFromExtension,
-  processCodeFile,
+  processCodeFileLines,
 } from "@/lib/server/code-highlighter";
+
+import { EditorRow } from "./EditorRow";
 
 export interface CodeViewerProps {
   filePath: string;
@@ -18,7 +20,7 @@ export async function CodeViewer({
   extension,
   className,
 }: CodeViewerProps) {
-  const result = await processCodeFile(content, extension);
+  const result = await processCodeFileLines(content, extension);
 
   if (result.status === "too-large") {
     return (
@@ -48,8 +50,8 @@ export async function CodeViewer({
     );
   }
 
-  const lines = content.split("\n");
-  const lineCount = lines.length;
+  const lines = result.lines ?? [];
+  const lineCount = result.lineCount ?? 0;
 
   return (
     <div className={`code-viewer ${className ?? ""}`}>
@@ -59,18 +61,12 @@ export async function CodeViewer({
           {getLanguageFromExtension(extension)} · {lineCount} lines
         </span>
       </div>
-      <div className="code-viewer-content">
-        <div className="code-viewer-gutter" aria-hidden="true">
-          {lines.map((_, i) => (
-            <div key={i} className="code-viewer-line-number">
-              {i + 1}
-            </div>
+      <div className="editor-viewport void-scrollbar">
+        <div className="editor-viewport-inner">
+          {lines.map((lineHtml, i) => (
+            <EditorRow key={i} lineNumber={i + 1} content={lineHtml} />
           ))}
         </div>
-        <div
-          className="code-viewer-code"
-          dangerouslySetInnerHTML={{ __html: result.html ?? "" }}
-        />
       </div>
     </div>
   );
