@@ -31,15 +31,19 @@ export function FileBrowserHeader() {
         type="button"
         onClick={toggle}
         className="bg-surface text-text-primary hover:bg-elevated flex h-10 items-center gap-2 rounded-md px-3 text-sm font-medium transition-colors active:scale-[0.98]"
-        style={
-          isPulsing
-            ? { animation: "discovery-pulse 0.8s ease-in-out 3" }
-            : undefined
-        }
         aria-label={`Open ${domain} file explorer`}
       >
-        <FolderOpen className="size-4" aria-hidden="true" />
-        <span>Files</span>
+        <span
+          className="flex items-center gap-2"
+          style={
+            isPulsing
+              ? { animation: "discovery-pulse 0.8s ease-in-out 3" }
+              : undefined
+          }
+        >
+          <FolderOpen className="size-4" aria-hidden="true" />
+          <span>Files</span>
+        </span>
       </button>
     </div>
   );
