@@ -787,15 +787,9 @@
   /* File Browser Layout */
   .file-browser {
     display: flex;
-    height: calc(
-      100dvh - 3.5rem - 2rem
-    ); /* viewport - mobile header - padding */
-  }
-
-  @media (min-width: 768px) {
-    .file-browser {
-      height: calc(100dvh - 2rem); /* viewport - padding */
-    }
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
   }
 
   .file-browser-sidebar {
@@ -842,7 +836,11 @@
   }
 
   .file-browser-main {
+    display: flex;
+    flex-direction: column;
     flex: 1;
+    min-width: 0;
+    min-height: 0;
     overflow: hidden;
   }
 

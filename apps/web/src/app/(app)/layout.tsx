@@ -22,10 +22,12 @@ export default function AppLayout({ children }: AppLayoutProps) {
           </span>
         </header>
 
-        {/* Main content area - scroll-delegated viewport */}
-        <main className="void-scrollbar h-full overflow-y-auto overscroll-none">
+        {/* Main content area - flex column for proper height distribution */}
+        <main className="void-scrollbar flex h-full flex-col overflow-hidden">
           <ContextualHeader className="hidden md:flex" />
-          {children}
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-none">
+            {children}
+          </div>
         </main>
       </div>
     </>
