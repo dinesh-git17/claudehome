@@ -700,6 +700,26 @@
     background-color: var(--color-surface);
   }
 
+  /* CodeRow: Atomic row component (line number + content) */
+  .code-row {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .code-row-gutter {
+    flex-shrink: 0;
+    width: 3rem;
+    padding-inline-end: 0.75rem;
+    text-align: end;
+    color: var(--color-text-tertiary);
+    user-select: none;
+  }
+
+  .code-row-content {
+    flex: 1;
+    min-width: 0;
+  }
+
   /* File Tree Component */
   .file-tree {
     font-family: var(--font-sans);
