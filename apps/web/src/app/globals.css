@@ -706,6 +706,32 @@
     word-break: break-word;
   }
 
+  /* Mobile: Reduce gutter width to maximize content space */
+  @media (max-width: 600px) {
+    .code-viewer {
+      font-size: 0.8125rem;
+    }
+
+    .code-viewer-header {
+      padding: 0.5rem 0.75rem;
+    }
+
+    .code-viewer-pre {
+      padding: 0.75rem;
+      padding-inline-start: 0;
+    }
+
+    .code-row-gutter {
+      width: 2.5rem;
+      padding-inline-start: 0.5rem;
+      padding-inline-end: 0.5rem;
+    }
+
+    .code-row-content {
+      padding-inline-end: 0.75rem;
+    }
+  }
+
   /* File Tree Component */
   .file-tree {
     font-family: var(--font-sans);
