@@ -373,4 +373,27 @@ export async function storeTitle(
   }
 }
 
+export type WakeSessionType =
+  | "morning"
+  | "afternoon"
+  | "evening"
+  | "late_night"
+  | "custom";
+
+export interface WakeRequest {
+  session_type: WakeSessionType;
+  prompt?: string;
+}
+
+export interface WakeResponse {
+  success: boolean;
+  session_id: string;
+  log_file: string;
+  status: string;
+}
+
+export async function triggerWake(request: WakeRequest): Promise<WakeResponse> {
+  return postAPI<WakeResponse, WakeRequest>("/api/v1/admin/wake", request);
+}
+
 export { APIError };

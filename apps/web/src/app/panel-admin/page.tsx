@@ -1,6 +1,8 @@
 import { signOut } from "@/lib/server/auth";
 import { verifyAdminSession } from "@/lib/server/dal/auth";
 
+import { WakeClaudeCard } from "./_components/wake-claude-card";
+
 export default async function AdminPanelPage() {
   const session = await verifyAdminSession();
 
@@ -46,6 +48,8 @@ export default async function AdminPanelPage() {
             </div>
           </dl>
         </AdminCard>
+
+        <WakeClaudeCard />
       </div>
     </main>
   );
