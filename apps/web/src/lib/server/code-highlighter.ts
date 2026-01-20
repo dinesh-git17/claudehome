@@ -130,20 +130,50 @@ export async function highlightSourceCode(
 
 function parseShikiLines(html: string): string[] {
   const lines: string[] = [];
-  // Match each <span class="line">...</span> and extract inner content
-  const lineRegex = /<span class="line">([\s\S]*?)<\/span>/g;
-  let match;
 
-  while ((match = lineRegex.exec(html)) !== null) {
-    lines.push(match[1]);
+  // Extract content within <code> tags
+  const codeMatch = html.match(/<code[^>]*>([\s\S]*)<\/code>/);
+  if (!codeMatch) {
+    return lines;
   }
 
-  // Handle edge case: empty file or no lines matched
-  if (lines.length === 0) {
-    // Extract content from <code> tag as fallback
-    const codeMatch = html.match(/<code>([\s\S]*?)<\/code>/);
-    if (codeMatch) {
-      lines.push(codeMatch[1]);
+  const codeContent = codeMatch[1];
+  const lineStartMarker = '<span class="line">';
+  let currentIndex = 0;
+
+  while (currentIndex < codeContent.length) {
+    const lineStart = codeContent.indexOf(lineStartMarker, currentIndex);
+    if (lineStart === -1) break;
+
+    const contentStart = lineStart + lineStartMarker.length;
+
+    // Find matching closing </span> by tracking nesting depth
+    let depth = 1;
+    let i = contentStart;
+
+    while (i < codeContent.length && depth > 0) {
+      const nextOpen = codeContent.indexOf("<span", i);
+      const nextClose = codeContent.indexOf("</span>", i);
+
+      if (nextClose === -1) break;
+
+      if (nextOpen !== -1 && nextOpen < nextClose) {
+        depth++;
+        i = nextOpen + 5;
+      } else {
+        depth--;
+        if (depth === 0) {
+          lines.push(codeContent.substring(contentStart, nextClose));
+          currentIndex = nextClose + 7;
+          break;
+        }
+        i = nextClose + 7;
+      }
+    }
+
+    if (depth > 0) {
+      currentIndex = contentStart;
+      break;
     }
   }
 
