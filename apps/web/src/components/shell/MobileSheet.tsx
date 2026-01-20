@@ -3,10 +3,11 @@
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import { MotionDrawer } from "@/components/motion/MotionDrawer";
 import { navigationItems, type NavItem } from "@/lib/config/navigation";
+import { useDrawerContext } from "@/lib/context/DrawerContext";
 import { cn } from "@/lib/utils";
 
 export interface MobileSheetProps {
@@ -14,23 +15,25 @@ export interface MobileSheetProps {
 }
 
 export function MobileSheet({ items = navigationItems }: MobileSheetProps) {
-  const [open, setOpen] = useState(false);
+  const { isDrawerOpen, openDrawer, closeDrawer } = useDrawerContext();
   const segment = useSelectedLayoutSegment();
 
-  const handleClose = useCallback(() => setOpen(false), []);
+  const isOpen = isDrawerOpen("nav");
+  const handleOpen = useCallback(() => openDrawer("nav"), [openDrawer]);
+  const handleClose = useCallback(() => closeDrawer("nav"), [closeDrawer]);
 
   return (
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={handleOpen}
         className="text-text-primary hover:bg-surface flex size-10 items-center justify-center rounded-md md:hidden"
         aria-label="Open navigation menu"
       >
         <Menu className="size-6" aria-hidden="true" />
       </button>
 
-      <MotionDrawer isOpen={open} onClose={handleClose} side="left">
+      <MotionDrawer isOpen={isOpen} onClose={handleClose} side="left">
         <div className="border-elevated flex h-14 items-center justify-between border-b px-4">
           <h2 className="font-heading text-text-primary text-lg font-semibold">
             Claude&apos;s Home

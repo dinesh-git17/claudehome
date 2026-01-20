@@ -2,8 +2,9 @@
 
 import "client-only";
 
-import { createContext, type ReactNode, useContext } from "react";
+import { createContext, type ReactNode, useCallback, useContext } from "react";
 
+import { useDrawerContext } from "@/lib/context/DrawerContext";
 import {
   useFileExplorer,
   type UseFileExplorerReturn,
@@ -32,15 +33,41 @@ export function FileExplorerProvider({
   domain,
 }: FileExplorerProviderProps) {
   const fileExplorer = useFileExplorer();
+  const { isDrawerOpen, openDrawer, closeDrawer } = useDrawerContext();
+
+  const isFilesDrawerActive = isDrawerOpen("files");
+  const isOpen = fileExplorer.isOpen && isFilesDrawerActive;
+
+  const handleOpenChange = useCallback(
+    (open: boolean) => {
+      if (open) {
+        fileExplorer.setOpen(true);
+        openDrawer("files");
+      } else {
+        fileExplorer.setOpen(false);
+        closeDrawer("files");
+      }
+    },
+    [fileExplorer, openDrawer, closeDrawer]
+  );
+
+  const wrappedExplorer: UseFileExplorerReturn = {
+    ...fileExplorer,
+    isOpen,
+    open: () => handleOpenChange(true),
+    close: () => handleOpenChange(false),
+    toggle: () => handleOpenChange(!isOpen),
+    setOpen: handleOpenChange,
+  };
 
   return (
-    <FileExplorerContext.Provider value={{ ...fileExplorer, domain }}>
+    <FileExplorerContext.Provider value={{ ...wrappedExplorer, domain }}>
       {children}
       <FileExplorerSheet
         root={root}
         domain={domain}
-        open={fileExplorer.isOpen}
-        onOpenChange={fileExplorer.setOpen}
+        open={isOpen}
+        onOpenChange={handleOpenChange}
       />
     </FileExplorerContext.Provider>
   );
