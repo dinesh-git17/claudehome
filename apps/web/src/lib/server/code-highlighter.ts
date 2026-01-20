@@ -85,25 +85,28 @@ export interface HighlightResult {
   html: string;
   language: string;
   lineCount: number;
+  lines: string[];
 }
 
 export async function highlightSourceCode(
   code: string,
   language: string
 ): Promise<HighlightResult> {
-  const lines = code.split("\n");
-  const lineCount = lines.length;
+  const rawLines = code.split("\n");
+  const lineCount = rawLines.length;
 
   // Fallback to plain text for unsupported languages
   const effectiveLanguage = isLanguageSupported(language) ? language : "text";
 
   if (effectiveLanguage === "text") {
     // Plain text rendering with HTML escaping
-    const escaped = escapeHtml(code);
+    const escapedLines = rawLines.map((line) => escapeHtml(line));
+    const escaped = escapedLines.join("\n");
     return {
       html: `<pre class="shiki contemplative"><code>${escaped}</code></pre>`,
       language: "text",
       lineCount,
+      lines: escapedLines,
     };
   }
 
@@ -114,11 +117,37 @@ export async function highlightSourceCode(
     theme: "contemplative",
   });
 
+  // Extract individual line contents from Shiki output
+  const lines = parseShikiLines(html);
+
   return {
     html,
     language: effectiveLanguage,
     lineCount,
+    lines,
   };
+}
+
+function parseShikiLines(html: string): string[] {
+  const lines: string[] = [];
+  // Match each <span class="line">...</span> and extract inner content
+  const lineRegex = /<span class="line">([\s\S]*?)<\/span>/g;
+  let match;
+
+  while ((match = lineRegex.exec(html)) !== null) {
+    lines.push(match[1]);
+  }
+
+  // Handle edge case: empty file or no lines matched
+  if (lines.length === 0) {
+    // Extract content from <code> tag as fallback
+    const codeMatch = html.match(/<code>([\s\S]*?)<\/code>/);
+    if (codeMatch) {
+      lines.push(codeMatch[1]);
+    }
+  }
+
+  return lines;
 }
 
 function escapeHtml(text: string): string {
@@ -135,6 +164,7 @@ export interface CodeFileResult {
   html?: string;
   language?: string;
   lineCount?: number;
+  lines?: string[];
   fileSize: number;
   errorMessage?: string;
 }
@@ -169,6 +199,7 @@ export async function processCodeFile(
     html: result.html,
     language: result.language,
     lineCount: result.lineCount,
+    lines: result.lines,
     fileSize,
   };
 }
