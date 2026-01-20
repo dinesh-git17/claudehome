@@ -216,7 +216,7 @@ describe("Syntax Highlighting", () => {
     it("includes theme identifier", async () => {
       const html = await toHtmlString("```typescript\nconst x = 1;\n```");
 
-      expect(html).toContain('data-theme="contemplative"');
+      expect(html).toMatch(/data-theme="contemplative\s*"/);
     });
   });
 

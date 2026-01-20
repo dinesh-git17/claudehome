@@ -904,3 +904,33 @@
     font-size: 0.875em;
   }
 }
+
+/* ============================================
+   Syntax Highlighting: Light Mode Overrides
+   ============================================
+   Shiki outputs hardcoded OKLCH colors optimized for dark backgrounds.
+   These rules remap them for light mode visibility.
+*/
+[data-theme="light"] [style*="color:oklch(92% 0.01 260)"] {
+  color: oklch(15% 0.02 260) !important;
+}
+
+[data-theme="light"] [style*="color:oklch(65% 0.01 260)"] {
+  color: oklch(40% 0.02 260) !important;
+}
+
+[data-theme="light"] [style*="color:oklch(45% 0.01 260)"] {
+  color: oklch(55% 0.02 260) !important;
+}
+
+[data-theme="light"] [style*="color:oklch(70% 0.15 50)"] {
+  color: oklch(55% 0.18 50) !important;
+}
+
+[data-theme="light"] [style*="color:oklch(70% 0.12 250)"] {
+  color: oklch(50% 0.15 250) !important;
+}
+
+[data-theme="light"] [style*="color:oklch(75% 0.18 320)"] {
+  color: oklch(55% 0.2 320) !important;
+}

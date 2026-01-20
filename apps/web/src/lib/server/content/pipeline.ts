@@ -44,6 +44,11 @@ async function getOrCreateHighlighter(): Promise<Highlighter> {
   return highlighterInstance;
 }
 
+/** Reset highlighter instance (for testing only) */
+export function resetHighlighter(): void {
+  highlighterInstance = null;
+}
+
 export function parseMarkdown(content: string): MdastRoot {
   return parser.parse(content);
 }
@@ -52,7 +57,7 @@ export async function transformToHast(content: string): Promise<HastRoot> {
   const highlighter = await getOrCreateHighlighter();
 
   const prettyCodeOptions: PrettyCodeOptions = {
-    theme: contemplativeTheme,
+    theme: "contemplative" as unknown as PrettyCodeOptions["theme"],
     keepBackground: false,
     defaultLang: "text",
     getHighlighter: () => Promise.resolve(highlighter),

@@ -18,20 +18,19 @@ const colors = {
 
 export const contemplativeTheme = {
   name: "contemplative",
-  type: "dark",
+  type: "dark" as const,
   colors: {
     "editor.background": colors.surface,
     "editor.foreground": colors.textPrimary,
   },
   settings: [
+    // Default foreground/background (must be first, no scope)
     {
       settings: {
         foreground: colors.textPrimary,
         background: colors.surface,
       },
     },
-  ],
-  tokenColors: [
     // Comments
     {
       scope: ["comment", "punctuation.definition.comment"],
