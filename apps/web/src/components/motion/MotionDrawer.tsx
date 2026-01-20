@@ -7,6 +7,7 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { type ReactNode, useCallback, useEffect, useRef } from "react";
+import FocusLock from "react-focus-lock";
 
 export interface MotionDrawerProps {
   isOpen: boolean;
@@ -53,6 +54,20 @@ export function MotionDrawer({
       };
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   const handleDragEnd = useCallback(
     (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
@@ -113,29 +128,31 @@ export function MotionDrawer({
             onClick={onClose}
             aria-hidden="true"
           />
-          <motion.div
-            ref={drawerRef}
-            key="drawer"
-            role="dialog"
-            aria-modal="true"
-            className={`bg-void fixed inset-y-0 z-50 flex w-64 flex-col ${
-              side === "left" ? "left-0" : "right-0"
-            }`}
-            variants={drawerVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={transition}
-            drag={prefersReducedMotion ? false : "x"}
-            dragConstraints={dragConstraints}
-            dragElastic={dragElastic}
-            onDragEnd={handleDragEnd}
-            style={
-              prefersReducedMotion ? undefined : { willChange: "transform" }
-            }
-          >
-            {children}
-          </motion.div>
+          <FocusLock returnFocus autoFocus={false}>
+            <motion.div
+              ref={drawerRef}
+              key="drawer"
+              role="dialog"
+              aria-modal="true"
+              className={`bg-void fixed inset-y-0 z-50 flex w-64 flex-col ${
+                side === "left" ? "left-0" : "right-0"
+              }`}
+              variants={drawerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              transition={transition}
+              drag={prefersReducedMotion ? false : "x"}
+              dragConstraints={dragConstraints}
+              dragElastic={dragElastic}
+              onDragEnd={handleDragEnd}
+              style={
+                prefersReducedMotion ? undefined : { willChange: "transform" }
+              }
+            >
+              {children}
+            </motion.div>
+          </FocusLock>
         </>
       )}
     </AnimatePresence>
