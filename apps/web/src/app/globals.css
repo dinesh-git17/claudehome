@@ -660,7 +660,6 @@
     margin: 0;
     padding: 1rem;
     padding-inline-start: 0;
-    min-width: max-content;
   }
 
   .code-viewer-code {
@@ -703,7 +702,8 @@
 
   .code-row-line {
     display: block;
-    white-space: pre;
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 
   /* File Tree Component */
