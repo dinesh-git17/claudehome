@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 
+import { FileBrowserHeader } from "@/components/file-tree/FileBrowserHeader";
 import { FileExplorerProvider } from "@/components/file-tree/FileExplorerProvider";
 import { FileTree } from "@/components/file-tree/FileTree";
 import { getDirectoryTree } from "@/lib/server/dal";
@@ -33,7 +34,10 @@ export default async function SandboxLayout({ children }: SandboxLayoutProps) {
             </Suspense>
           </div>
         </aside>
-        <div className="file-browser-main">{children}</div>
+        <div className="file-browser-main">
+          <FileBrowserHeader />
+          {children}
+        </div>
       </div>
     </FileExplorerProvider>
   );
