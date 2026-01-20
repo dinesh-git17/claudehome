@@ -25,13 +25,57 @@ jobs:
           DRIFT_DETECTED=false
           DRIFT_REPORT=""
 
-          # Fetch repository settings directly
-          SQUASH=$(gh api "repos/${REPO}" --jq '.allow_squash_merge')
-          MERGE=$(gh api "repos/${REPO}" --jq '.allow_merge_commit')
-          REBASE=$(gh api "repos/${REPO}" --jq '.allow_rebase_merge')
-          DELETE_BRANCH=$(gh api "repos/${REPO}" --jq '.delete_branch_on_merge')
-          WIKI=$(gh api "repos/${REPO}" --jq '.has_wiki')
-          PROJECTS=$(gh api "repos/${REPO}" --jq '.has_projects')
+          # Fetch all repository settings in a single API call
+          REPO_SETTINGS=$(gh api "repos/${REPO}" --jq '{
+            squash: .allow_squash_merge,
+            merge: .allow_merge_commit,
+            rebase: .allow_rebase_merge,
+            delete_branch: .delete_branch_on_merge,
+            wiki: .has_wiki,
+            projects: .has_projects
+          }')
+
+          # Validate API response
+          if [[ -z "$REPO_SETTINGS" || "$REPO_SETTINGS" == "null" ]]; then
+            echo "::error::Failed to fetch repository settings from API"
+            exit 1
+          fi
+
+          # Extract values
+          SQUASH=$(echo "$REPO_SETTINGS" | jq -r '.squash')
+          MERGE=$(echo "$REPO_SETTINGS" | jq -r '.merge')
+          REBASE=$(echo "$REPO_SETTINGS" | jq -r '.rebase')
+          DELETE_BRANCH=$(echo "$REPO_SETTINGS" | jq -r '.delete_branch')
+          WIKI=$(echo "$REPO_SETTINGS" | jq -r '.wiki')
+          PROJECTS=$(echo "$REPO_SETTINGS" | jq -r '.projects')
+
+          # Debug: Log retrieved values
+          echo "::group::Retrieved Settings"
+          echo "allow_squash_merge: $SQUASH"
+          echo "allow_merge_commit: $MERGE"
+          echo "allow_rebase_merge: $REBASE"
+          echo "delete_branch_on_merge: $DELETE_BRANCH"
+          echo "has_wiki: $WIKI"
+          echo "has_projects: $PROJECTS"
+          echo "::endgroup::"
+
+          # Validate all values were retrieved (not null/empty)
+          validate_value() {
+            local name="$1"
+            local value="$2"
+            if [[ -z "$value" || "$value" == "null" ]]; then
+              echo "::error::Failed to retrieve $name from API response"
+              return 1
+            fi
+            return 0
+          }
+
+          validate_value "allow_squash_merge" "$SQUASH" || exit 1
+          validate_value "allow_merge_commit" "$MERGE" || exit 1
+          validate_value "allow_rebase_merge" "$REBASE" || exit 1
+          validate_value "delete_branch_on_merge" "$DELETE_BRANCH" || exit 1
+          validate_value "has_wiki" "$WIKI" || exit 1
+          validate_value "has_projects" "$PROJECTS" || exit 1
 
           # Check squash-only merge policy
           if [[ "$SQUASH" != "true" ]]; then
@@ -67,17 +111,21 @@ jobs:
           fi
 
           # Check ruleset exists
-          RULESET_COUNT=$(gh api "repos/${REPO}/rulesets" --jq 'length')
+          RULESET_COUNT=$(gh api "repos/${REPO}/rulesets" --jq 'length' 2>/dev/null || echo "0")
+          echo "::group::Ruleset Check"
+          echo "Ruleset count: $RULESET_COUNT"
           if [[ "$RULESET_COUNT" -eq 0 ]]; then
             DRIFT_DETECTED=true
             DRIFT_REPORT+="- No rulesets configured (expected: Production Governance ruleset)\n"
           else
             RULESET_ACTIVE=$(gh api "repos/${REPO}/rulesets" --jq '.[] | select(.name == "Production Governance" and .enforcement == "active") | .name')
+            echo "Active Production Governance ruleset: ${RULESET_ACTIVE:-none}"
             if [[ -z "$RULESET_ACTIVE" ]]; then
               DRIFT_DETECTED=true
               DRIFT_REPORT+="- Production Governance ruleset not active\n"
             fi
           fi
+          echo "::endgroup::"
 
           # Output results
           echo "drift_detected=$DRIFT_DETECTED" >> "$GITHUB_OUTPUT"
