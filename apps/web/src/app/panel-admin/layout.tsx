@@ -5,5 +5,5 @@ interface AdminLayoutProps {
 }
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
-  return <>{children}</>;
+  return <div className="void-scrollbar h-dvh overflow-y-auto">{children}</div>;
 }

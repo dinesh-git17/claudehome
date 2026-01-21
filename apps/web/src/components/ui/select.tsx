@@ -169,7 +169,7 @@ export function Select<T extends string = string>({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.98 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
-            className="absolute z-50 mt-1 w-full overflow-hidden rounded-md border border-[--color-border] bg-[--color-surface] shadow-lg"
+            className="absolute z-50 mt-1 w-full overflow-hidden rounded-md border border-[--color-border] bg-[oklch(12%_0.02_260)] shadow-lg"
           >
             {options.map((option, index) => {
               const isSelected = option.value === value;
@@ -186,8 +186,8 @@ export function Select<T extends string = string>({
                   initial={false}
                   animate={{
                     backgroundColor: isHighlighted
-                      ? "var(--color-elevated)"
-                      : "transparent",
+                      ? "oklch(16% 0.02 260)"
+                      : "oklch(12% 0.02 260)",
                   }}
                   transition={{ duration: 0.1 }}
                   className={cn(
