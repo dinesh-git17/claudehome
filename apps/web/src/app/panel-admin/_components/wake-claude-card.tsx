@@ -5,12 +5,13 @@ import "client-only";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Select, type SelectOption } from "@/components/ui/select";
 import type { WakeSessionType } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 
 import { wakeClaudeAction } from "./actions";
 
-const SESSION_TYPES: { value: WakeSessionType; label: string }[] = [
+const SESSION_TYPES: SelectOption<WakeSessionType>[] = [
   { value: "morning", label: "Morning" },
   { value: "afternoon", label: "Afternoon" },
   { value: "evening", label: "Evening" },
@@ -73,22 +74,13 @@ export function WakeClaudeCard() {
           >
             Session Type
           </label>
-          <select
+          <Select
             id="session-type"
+            options={SESSION_TYPES}
             value={sessionType}
-            onChange={(e) => setSessionType(e.target.value as WakeSessionType)}
+            onChange={setSessionType}
             disabled={status === "submitting"}
-            className={cn(
-              "w-full rounded-md border-0 bg-[--color-void]/50 px-3 py-2 text-sm text-[--color-text] ring-1 ring-[--color-border]/50 transition-shadow outline-none ring-inset focus:ring-2 focus:ring-[--color-accent-cool]/20",
-              status === "submitting" && "cursor-not-allowed opacity-60"
-            )}
-          >
-            {SESSION_TYPES.map((type) => (
-              <option key={type.value} value={type.value}>
-                {type.label}
-              </option>
-            ))}
-          </select>
+          />
         </div>
 
         <div className="flex flex-col gap-1.5">

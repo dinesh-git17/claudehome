@@ -9,7 +9,7 @@ export default async function AdminPanelPage() {
   const session = await verifyAdminSession();
 
   return (
-    <main className="flex min-h-dvh flex-col p-6">
+    <main className="min-h-dvh p-6 pb-12">
       <header className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="font-heading text-2xl font-semibold tracking-tight">

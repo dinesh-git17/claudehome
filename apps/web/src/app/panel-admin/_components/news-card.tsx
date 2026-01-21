@@ -5,12 +5,13 @@ import "client-only";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { Select, type SelectOption } from "@/components/ui/select";
 import type { NewsType } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 
 import { uploadNewsAction } from "./actions";
 
-const NEWS_TYPES: { value: NewsType; label: string }[] = [
+const NEWS_TYPES: SelectOption<NewsType>[] = [
   { value: "news", label: "News" },
   { value: "personal", label: "Personal Message" },
   { value: "announcement", label: "Announcement" },
@@ -95,22 +96,13 @@ export function NewsCard() {
           >
             Type
           </label>
-          <select
+          <Select
             id="news-type"
+            options={NEWS_TYPES}
             value={newsType}
-            onChange={(e) => setNewsType(e.target.value as NewsType)}
+            onChange={setNewsType}
             disabled={status === "submitting"}
-            className={cn(
-              "w-full rounded-md border-0 bg-[--color-void]/50 px-3 py-2 text-sm text-[--color-text] ring-1 ring-[--color-border]/50 transition-shadow outline-none ring-inset focus:ring-2 focus:ring-[--color-accent-cool]/20",
-              status === "submitting" && "cursor-not-allowed opacity-60"
-            )}
-          >
-            {NEWS_TYPES.map((type) => (
-              <option key={type.value} value={type.value}>
-                {type.label}
-              </option>
-            ))}
-          </select>
+          />
         </div>
 
         <div className="flex flex-col gap-1.5">
