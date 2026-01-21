@@ -3,7 +3,13 @@ import { timingSafeEqual } from "node:crypto";
 import { revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 
-const VALID_TAGS = ["thoughts", "dreams", "about", "landing"] as const;
+const VALID_TAGS = [
+  "thoughts",
+  "dreams",
+  "about",
+  "landing",
+  "sandbox",
+] as const;
 type ValidTag = (typeof VALID_TAGS)[number];
 
 function isValidTag(tag: string): tag is ValidTag {
