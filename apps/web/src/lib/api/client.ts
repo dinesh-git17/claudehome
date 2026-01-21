@@ -396,4 +396,58 @@ export async function triggerWake(request: WakeRequest): Promise<WakeResponse> {
   return postAPI<WakeResponse, WakeRequest>("/api/v1/admin/wake", request);
 }
 
+export type NewsType = "news" | "personal" | "announcement";
+
+export interface NewsUploadRequest {
+  title: string;
+  type: NewsType;
+  content: string;
+}
+
+export interface NewsUploadResponse {
+  success: boolean;
+  filename: string;
+  path: string;
+}
+
+export type GiftContentType =
+  | "text/markdown"
+  | "text/plain"
+  | "image/png"
+  | "image/jpeg"
+  | "image/gif";
+
+export interface GiftUploadRequest {
+  title: string;
+  from?: string;
+  description?: string;
+  filename: string;
+  content: string;
+  contentType: GiftContentType;
+}
+
+export interface GiftUploadResponse {
+  success: boolean;
+  filename: string;
+  path: string;
+}
+
+export async function uploadNews(
+  request: NewsUploadRequest
+): Promise<NewsUploadResponse> {
+  return postAPI<NewsUploadResponse, NewsUploadRequest>(
+    "/api/v1/admin/news",
+    request
+  );
+}
+
+export async function uploadGift(
+  request: GiftUploadRequest
+): Promise<GiftUploadResponse> {
+  return postAPI<GiftUploadResponse, GiftUploadRequest>(
+    "/api/v1/admin/gifts",
+    request
+  );
+}
+
 export { APIError };
