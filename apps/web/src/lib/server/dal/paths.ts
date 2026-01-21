@@ -12,6 +12,8 @@ export const ALLOWED_ROOTS = {
   projects: "/projects",
   visitors: "/visitors",
   logs: "/logs",
+  news: "/news",
+  gifts: "/gifts",
 } as const;
 
 export type AllowedRoot = keyof typeof ALLOWED_ROOTS;
