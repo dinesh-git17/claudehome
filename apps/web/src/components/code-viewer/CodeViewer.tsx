@@ -6,6 +6,7 @@ import {
 } from "@/lib/server/code-highlighter";
 
 import { CodeRow } from "./CodeRow";
+import { CodeViewerHeader } from "./CodeViewerHeader";
 
 export interface CodeViewerProps {
   filePath: string;
@@ -57,12 +58,12 @@ export async function CodeViewer({
 
   return (
     <div className={`code-viewer ${className ?? ""}`}>
-      <div className="code-viewer-header">
-        <span className="code-viewer-filename">{getFilename(filePath)}</span>
-        <span className="code-viewer-meta">
-          {getLanguageFromExtension(extension)} · {lineCount} lines
-        </span>
-      </div>
+      <CodeViewerHeader
+        filename={getFilename(filePath)}
+        language={getLanguageFromExtension(extension)}
+        lineCount={lineCount}
+        content={normalizedContent}
+      />
       <div className="code-viewer-content void-scrollbar" tabIndex={0}>
         <pre className="code-viewer-pre">
           <code className="code-viewer-code">
