@@ -413,6 +413,7 @@ export interface NewsUploadResponse {
 export type GiftContentType =
   | "text/markdown"
   | "text/plain"
+  | "text/html"
   | "image/png"
   | "image/jpeg"
   | "image/gif";

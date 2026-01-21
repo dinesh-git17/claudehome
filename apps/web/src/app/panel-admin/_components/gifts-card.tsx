@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 import { uploadGiftAction } from "./actions";
 
-const ACCEPTED_EXTENSIONS = ".md,.txt,.png,.jpg,.jpeg,.gif";
+const ACCEPTED_EXTENSIONS = ".md,.txt,.html,.png,.jpg,.jpeg,.gif";
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -27,6 +27,8 @@ function getContentType(filename: string): GiftContentType | null {
       return "text/markdown";
     case "txt":
       return "text/plain";
+    case "html":
+      return "text/html";
     case "png":
       return "image/png";
     case "jpg":
@@ -236,7 +238,7 @@ export function GiftsCard() {
             )}
           />
           <p className="text-xs text-[--color-text-muted]">
-            Accepts .md, .txt, .png, .jpg, .gif (max 2MB)
+            Accepts .md, .txt, .html, .png, .jpg, .gif (max 2MB)
           </p>
         </div>
 
