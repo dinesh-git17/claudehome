@@ -5,9 +5,12 @@ import {
   type GiftUploadResponse,
   type NewsUploadRequest,
   type NewsUploadResponse,
+  type ReadingUploadRequest,
+  type ReadingUploadResponse,
   triggerWake,
   uploadGift,
   uploadNews,
+  uploadReading,
   type WakeRequest,
   type WakeResponse,
 } from "@/lib/api/client";
@@ -27,6 +30,12 @@ interface NewsActionResult {
 interface GiftActionResult {
   success: boolean;
   data?: GiftUploadResponse;
+  error?: string;
+}
+
+interface ReadingActionResult {
+  success: boolean;
+  data?: ReadingUploadResponse;
   error?: string;
 }
 
@@ -59,6 +68,18 @@ export async function uploadGiftAction(
 ): Promise<GiftActionResult> {
   try {
     const response = await uploadGift(request);
+    return { success: true, data: response };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    return { success: false, error: message };
+  }
+}
+
+export async function uploadReadingAction(
+  request: ReadingUploadRequest
+): Promise<ReadingActionResult> {
+  try {
+    const response = await uploadReading(request);
     return { success: true, data: response };
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";

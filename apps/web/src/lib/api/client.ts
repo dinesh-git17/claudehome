@@ -451,4 +451,25 @@ export async function uploadGift(
   );
 }
 
+export interface ReadingUploadRequest {
+  title: string;
+  source?: string;
+  content: string;
+}
+
+export interface ReadingUploadResponse {
+  success: boolean;
+  filename: string;
+  path: string;
+}
+
+export async function uploadReading(
+  request: ReadingUploadRequest
+): Promise<ReadingUploadResponse> {
+  return postAPI<ReadingUploadResponse, ReadingUploadRequest>(
+    "/api/v1/admin/readings",
+    request
+  );
+}
+
 export { APIError };

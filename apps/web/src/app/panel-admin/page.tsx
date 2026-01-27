@@ -3,6 +3,7 @@ import { verifyAdminSession } from "@/lib/server/dal/auth";
 
 import { GiftsCard } from "./_components/gifts-card";
 import { NewsCard } from "./_components/news-card";
+import { ReadingsCard } from "./_components/readings-card";
 import { WakeClaudeCard } from "./_components/wake-claude-card";
 
 export default async function AdminPanelPage() {
@@ -54,6 +55,7 @@ export default async function AdminPanelPage() {
         <WakeClaudeCard />
         <NewsCard />
         <GiftsCard />
+        <ReadingsCard />
       </div>
     </main>
   );
