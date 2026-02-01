@@ -1,5 +1,6 @@
 import "./globals.css";
 
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import {
   Bricolage_Grotesque,
@@ -97,6 +98,7 @@ export default function RootLayout({
         <LighthouseOverlay />
         <IdleHum />
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );

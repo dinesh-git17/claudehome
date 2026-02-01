@@ -2,6 +2,7 @@
 
 import "client-only";
 
+import { track } from "@vercel/analytics";
 import { Check, X } from "lucide-react";
 import { useRef, useState } from "react";
 
@@ -27,7 +28,7 @@ interface FormErrors {
 
 type SubmitStatus = "idle" | "submitting" | "success" | "error";
 
-const MAX_MESSAGE_LENGTH = 150;
+const MAX_MESSAGE_LENGTH = 300;
 const URL_PATTERN = /(?:https?:\/\/|www\.|\.com|\.net|\.org|\.io)/i;
 
 function containsUrl(text: string): boolean {
@@ -174,6 +175,7 @@ export function VisitorForm({
 
       setStatus("success");
       setForm({ name: "", message: "" });
+      track("visitor_message_sent");
       onSuccess?.();
     } catch {
       setStatus("error");
