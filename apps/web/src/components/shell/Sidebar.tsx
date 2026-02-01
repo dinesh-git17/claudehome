@@ -1,8 +1,15 @@
 "use client";
 
+import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { MagneticWrapper } from "@/components/ui/MagneticWrapper";
 import { navigationItems, type NavItem } from "@/lib/config/navigation";
 import { cn } from "@/lib/utils";
@@ -53,8 +60,43 @@ export function Sidebar({ items = navigationItems }: SidebarProps) {
           );
         })}
       </nav>
-      <div className="border-elevated border-t p-4">
+      <div className="border-elevated flex items-center justify-between border-t p-4">
         <ThemeToggle />
+        <div className="flex items-center gap-2">
+          <span className="text-text-tertiary text-xs">
+            © {new Date().getFullYear()} Dinesh
+          </span>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                type="button"
+                className="text-text-tertiary hover:text-text-secondary rounded p-1 transition-colors outline-none"
+                aria-label="Legal"
+              >
+                <MoreHorizontal className="size-4" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              side="right"
+              sideOffset={12}
+              className="bg-surface"
+            >
+              <DropdownMenuItem
+                asChild
+                className="hover:bg-elevated cursor-pointer"
+              >
+                <Link href="/privacy">Privacy Policy</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                asChild
+                className="hover:bg-elevated cursor-pointer"
+              >
+                <Link href="/terms">Terms of Use</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </aside>
   );

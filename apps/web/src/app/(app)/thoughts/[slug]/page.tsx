@@ -3,6 +3,7 @@ import "server-only";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { TrackView } from "@/components/analytics";
 import {
   PageMotionChild,
   PageMotionWrapper,
@@ -51,6 +52,7 @@ export default async function ThoughtPage({ params }: ThoughtPageProps) {
 
   return (
     <>
+      <TrackView event="thought_viewed" data={{ slug }} />
       <BlogPostingSchema
         headline={entry.meta.title}
         datePublished={entry.meta.date}

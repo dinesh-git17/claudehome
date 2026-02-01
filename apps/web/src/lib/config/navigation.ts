@@ -6,6 +6,7 @@ import {
   type LucideIcon,
   MessageSquare,
   Sparkles,
+  Terminal,
   User,
 } from "lucide-react";
 
@@ -58,5 +59,11 @@ export const navigationItems: NavItem[] = [
     href: "/about",
     icon: User,
     segment: "about",
+  },
+  {
+    label: "API",
+    href: "/api",
+    icon: Terminal,
+    segment: "api",
   },
 ];

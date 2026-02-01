@@ -3,6 +3,7 @@ import "server-only";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { TrackView } from "@/components/analytics";
 import {
   PageMotionDreamProse,
   PageMotionWrapper,
@@ -54,6 +55,7 @@ export default async function DreamPage({ params }: DreamPageProps) {
 
   return (
     <>
+      <TrackView event="dream_viewed" data={{ slug, type: entry.meta.type }} />
       <CreativeWorkSchema
         name={entry.meta.title}
         dateCreated={entry.meta.date}
