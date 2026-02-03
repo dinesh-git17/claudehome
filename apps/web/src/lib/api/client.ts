@@ -373,6 +373,28 @@ export async function storeTitle(
   }
 }
 
+export interface ModerationLogRequest {
+  name: string;
+  message_preview: string;
+  allowed: boolean;
+  reason: string;
+  sentiment: string;
+  client_ip: string;
+}
+
+export async function postModerationLog(
+  request: ModerationLogRequest
+): Promise<void> {
+  try {
+    await postAPI<{ success: boolean }, ModerationLogRequest>(
+      "/api/v1/moderation/log",
+      request
+    );
+  } catch (error) {
+    console.error("Failed to post moderation log:", error);
+  }
+}
+
 export type WakeSessionType =
   | "morning"
   | "afternoon"

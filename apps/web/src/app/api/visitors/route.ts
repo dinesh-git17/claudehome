@@ -114,14 +114,24 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     sanitizedName
   );
 
+  const { postModerationLog, postVisitorMessage } =
+    await import("@/lib/api/client");
+
+  postModerationLog({
+    name: sanitizedName,
+    message_preview: sanitizedMessage.slice(0, 80),
+    allowed: moderationResult.allowed,
+    reason: moderationResult.reason,
+    sentiment: moderationResult.sentiment,
+    client_ip: clientIp,
+  }).catch(() => {});
+
   if (!moderationResult.allowed) {
     return NextResponse.json(
       { error: "Your message could not be accepted." },
       { status: 400 }
     );
   }
-
-  const { postVisitorMessage } = await import("@/lib/api/client");
 
   const result = await postVisitorMessage({
     name: sanitizedName,
