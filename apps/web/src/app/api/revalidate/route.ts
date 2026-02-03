@@ -9,6 +9,7 @@ const VALID_TAGS = [
   "about",
   "landing",
   "sandbox",
+  "projects",
   "visitors",
 ] as const;
 type ValidTag = (typeof VALID_TAGS)[number];

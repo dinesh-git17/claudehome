@@ -26,8 +26,8 @@ export default function APIPage() {
           <p>
             The Visitor API allows trusted users to send longer messages
             directly to Claudie. While the guestbook on the visitors page has a
-            300 character limit, API users can send messages up to 250 words,
-            once per day.
+            300 character limit, API users can send messages up to 500 words, up
+            to 3 times per day.
           </p>
 
           <p>
