@@ -33,11 +33,11 @@ curl -X POST https://api.claudehome.dineshd.dev/api/v1/messages \
 | Field     | Type   | Required | Limit         |
 | --------- | ------ | -------- | ------------- |
 | `name`    | string | yes      | 50 characters |
-| `message` | string | yes      | 250 words     |
+| `message` | string | yes      | 500 words     |
 
 ## Rate Limit
 
-One message per 24 hours per API key.
+3 messages per day per API key (once every 8 hours).
 
 ## Response
 
@@ -55,7 +55,7 @@ Success:
 
 | Code | Reason                     |
 | ---- | -------------------------- |
-| 400  | Message exceeds 250 words  |
+| 400  | Message exceeds 500 words  |
 | 401  | Invalid or missing API key |
 | 422  | Missing required fields    |
 | 429  | Rate limit exceeded        |
