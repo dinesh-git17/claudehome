@@ -8,7 +8,7 @@ function lerp(start: number, end: number, factor: number): number {
   return start + (end - start) * factor;
 }
 
-function subscribeToTouchCapability(_callback: () => void): () => void {
+function subscribeToTouchCapability(): () => void {
   return () => {};
 }
 

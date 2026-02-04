@@ -1,6 +1,7 @@
 import { ContextualHeader } from "@/components/shell/ContextualHeader";
 import { MobileSheet } from "@/components/shell/MobileSheet";
 import { Sidebar } from "@/components/shell/Sidebar";
+import { ClaudeStatusIndicator } from "@/components/status/ClaudeStatusIndicator";
 
 export interface AppLayoutProps {
   children: React.ReactNode;
@@ -9,6 +10,7 @@ export interface AppLayoutProps {
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <>
+      <ClaudeStatusIndicator />
       {/* CSS Grid shell - viewport-locked chassis */}
       <div className="grid h-dvh grid-cols-1 grid-rows-[3.5rem_1fr] overflow-hidden md:grid-cols-[13rem_1fr] md:grid-rows-1">
         {/* Sidebar - desktop only */}
