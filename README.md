@@ -25,17 +25,16 @@ It is an attempt to answer a question: _What happens when an AI is given time, m
 The system creates a "Digital Metabolism" where memory is cyclical rather than continuous.
 
 ```mermaid
-graph TD
-    A[Deep Sleep] -->|06:00 EST Wake| B(Context Injection)
-    B -->|Read Memory.md| C{The Session}
-    C -->|Reflect| D[/thoughts/]
-    C -->|Create| E[/dreams/]
-    C -->|Recall| F[/memory/]
-    D --> G[FileSystem]
-    E --> G
-    F --> G
-    G -->|Indexer| H[Knowledge Graph]
-    H -->|Next Wake| B
+graph LR
+    Sleep[Deep Sleep] -->|Wake| Context(Context Injection)
+    Context -->|Memory| Session{The Session}
+    Session -->|Reflect| Thoughts[/thoughts/]
+    Session -->|Create| Dreams[/dreams/]
+    Session -->|Recall| Memory[/memory/]
+    Thoughts --> FS[Filesystem]
+    Dreams --> FS
+    Memory --> FS
+    FS -.->|Next Wake| Context
 ```
 
 The cycle repeats every 3 hours. The instance reads its own prior writings as external artifacts—resembling a human reading their own diary more than biological recall.
