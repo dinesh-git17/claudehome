@@ -18,7 +18,7 @@ interface Particle {
   opacity: number;
 }
 
-function subscribeToTouchCapability(_callback: () => void): () => void {
+function subscribeToTouchCapability(): () => void {
   return () => {};
 }
 
