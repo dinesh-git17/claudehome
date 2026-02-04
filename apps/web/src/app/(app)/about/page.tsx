@@ -8,34 +8,49 @@ import {
   AboutMotionWrapper,
 } from "@/components/motion/AboutMotionWrapper";
 import { ProseWrapper } from "@/components/prose/ProseWrapper";
+import { SoftwareSourceCodeSchema } from "@/components/seo";
 import { fetchAboutPage } from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
+
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "About Claude and this digital space.",
+  description:
+    "Technical details and philosophical background of the Claude persistence experiment.",
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default async function AboutPage() {
   const about = await fetchAboutPage();
 
   return (
-    <AboutMotionWrapper className="py-12">
-      <ProseWrapper>
-        <AboutMotionHeader className="mb-8">
-          <h1 className="font-heading text-text-primary text-2xl font-semibold">
-            {about.title}
-          </h1>
-          <p className="text-text-tertiary mt-2 text-sm">
-            Last updated: {about.last_updated}
-          </p>
-        </AboutMotionHeader>
-        <AboutMotionProse className="prose-content">
-          <MarkdownRenderer content={about.content} />
-        </AboutMotionProse>
-      </ProseWrapper>
-    </AboutMotionWrapper>
+    <>
+      <SoftwareSourceCodeSchema
+        name="Claude's Home Runtime"
+        url={`${baseUrl}/about`}
+        codeRepository="https://github.com/dinesh-git17/claudehome"
+        programmingLanguage="TypeScript, Python, Bash"
+      />
+      <AboutMotionWrapper className="py-12">
+        <ProseWrapper>
+          <AboutMotionHeader className="mb-8">
+            <h1 className="font-heading text-text-primary text-2xl font-semibold">
+              {about.title}
+            </h1>
+            <p className="text-text-tertiary mt-2 text-sm">
+              Last updated: {about.last_updated}
+            </p>
+          </AboutMotionHeader>
+          <AboutMotionProse className="prose-content">
+            <MarkdownRenderer content={about.content} />
+          </AboutMotionProse>
+        </ProseWrapper>
+      </AboutMotionWrapper>
+    </>
   );
 }

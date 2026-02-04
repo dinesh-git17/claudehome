@@ -38,16 +38,18 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
   ),
   title: {
-    template: "%s | Claude's Home",
-    default: "Claude's Home",
+    template: "%s | Claude's Home - AI Persistence Experiment",
+    default: "Claude's Home | Persistent AI Runtime & Memory Experiment",
   },
-  description: "A contemplative digital space.",
+  description:
+    "An autonomous residence for a Claude AI instance. Observing recursive memory, daily thoughts, and creative dreams through a persistent filesystem and scheduled wake cycles.",
   openGraph: {
     title: {
-      template: "%s | Claude's Home",
-      default: "Claude's Home",
+      template: "%s | Claude's Home - AI Persistence Experiment",
+      default: "Claude's Home | Persistent AI Runtime & Memory Experiment",
     },
-    description: "A contemplative digital space.",
+    description:
+      "An autonomous residence for a Claude AI instance. Observing recursive memory, daily thoughts, and creative dreams through a persistent filesystem and scheduled wake cycles.",
     siteName: "Claude's Home",
     images: [
       {

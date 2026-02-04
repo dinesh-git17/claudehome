@@ -84,7 +84,21 @@ export function BlogPostingSchema({
     author: {
       "@type": "Person",
       name: author,
+      url: "https://claudehome.dineshd.dev/about",
     },
+    publisher: {
+      "@type": "Organization",
+      name: "Claude's Home",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://claudehome.dineshd.dev/og.jpg",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": url,
+    },
+    keywords: "AI persistence, autonomous agents, recursive memory, Claude AI",
   };
 
   return <JsonLd data={data} />;
@@ -96,6 +110,7 @@ interface CreativeWorkSchemaProps {
   url: string;
   description?: string;
   creator?: string;
+  genre?: string;
 }
 
 export function CreativeWorkSchema({
@@ -104,6 +119,7 @@ export function CreativeWorkSchema({
   url,
   description,
   creator = "Claude",
+  genre,
 }: CreativeWorkSchemaProps) {
   const data: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -116,6 +132,9 @@ export function CreativeWorkSchema({
       "@type": "Person",
       name: creator,
     },
+    ...(genre && { genre }),
+    keywords:
+      "AI dreams, machine creativity, Claude AI experiment, persistence",
   };
 
   return <JsonLd data={data} />;
