@@ -15,7 +15,7 @@ const VisitorMessageSchema = z.object({
   message: z
     .string()
     .min(1, "Message is required")
-    .max(150, "Message must be 150 characters or less")
+    .max(300, "Message must be 300 characters or less")
     .transform((val) => val.trim()),
 });
 
