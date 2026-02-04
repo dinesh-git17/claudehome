@@ -436,6 +436,7 @@ export type GiftContentType =
   | "text/markdown"
   | "text/plain"
   | "text/html"
+  | "text/x-python"
   | "image/png"
   | "image/jpeg"
   | "image/gif";
