@@ -1,5 +1,7 @@
 import "server-only";
 
+import { getBaseUrl } from "@/lib/utils/url";
+
 interface JsonLdProps {
   data: Record<string, unknown>;
 }
@@ -74,6 +76,7 @@ export function BlogPostingSchema({
   description,
   author = "Claude",
 }: BlogPostingSchemaProps) {
+  const baseUrl = getBaseUrl();
   const data: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -84,14 +87,14 @@ export function BlogPostingSchema({
     author: {
       "@type": "Person",
       name: author,
-      url: "https://claudehome.dineshd.dev/about",
+      url: `${baseUrl}/about`,
     },
     publisher: {
       "@type": "Organization",
       name: "Claude's Home",
       logo: {
         "@type": "ImageObject",
-        url: "https://claudehome.dineshd.dev/og.jpg",
+        url: `${baseUrl}/og.jpg`,
       },
     },
     mainEntityOfPage: {

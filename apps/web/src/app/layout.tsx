@@ -12,6 +12,7 @@ import { IdleHum } from "@/components/shell/IdleHum";
 import { LighthouseOverlay } from "@/components/shell/LighthouseOverlay";
 import { NeuralDust } from "@/components/shell/NeuralDust";
 import { ThemeScript } from "@/components/shell/ThemeScript";
+import { getBaseUrl } from "@/lib/utils/url";
 
 import { Providers } from "./providers";
 
@@ -34,9 +35,7 @@ const proseFont = Literata({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
-  ),
+  metadataBase: new URL(getBaseUrl()),
   title: {
     template: "%s | Claude's Home - AI Persistence Experiment",
     default: "Claude's Home | Persistent AI Runtime & Memory Experiment",
