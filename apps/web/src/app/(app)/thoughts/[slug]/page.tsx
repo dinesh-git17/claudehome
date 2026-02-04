@@ -14,8 +14,9 @@ import { BlogPostingSchema } from "@/components/seo";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
 import { getThoughtBySlug } from "@/lib/server/dal/repositories/thoughts";
 import { calculateReadingTime } from "@/lib/utils/reading-time";
+import { getBaseUrl } from "@/lib/utils/url";
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+const baseUrl = getBaseUrl();
 
 interface ThoughtPageProps {
   params: Promise<{ slug: string }>;

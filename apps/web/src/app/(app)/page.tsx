@@ -8,8 +8,9 @@ import { LocationHealth } from "@/components/shell/LocationHealth";
 import { fetchLandingPage } from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
 import { getHelsinkiTimeContext } from "@/lib/utils/temporal";
+import { getBaseUrl } from "@/lib/utils/url";
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+const baseUrl = getBaseUrl();
 
 export const dynamic = "force-dynamic";
 

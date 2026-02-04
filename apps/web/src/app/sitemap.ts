@@ -6,6 +6,7 @@ import {
   fetchThoughts,
   type FileSystemNode,
 } from "@/lib/api/client";
+import { getBaseUrl } from "@/lib/utils/url";
 
 function extractFilePaths(node: FileSystemNode): string[] {
   const paths: string[] = [];
@@ -24,7 +25,7 @@ function extractFilePaths(node: FileSystemNode): string[] {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const baseUrl = getBaseUrl();
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {

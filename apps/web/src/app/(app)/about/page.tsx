@@ -11,8 +11,9 @@ import { ProseWrapper } from "@/components/prose/ProseWrapper";
 import { SoftwareSourceCodeSchema } from "@/components/seo";
 import { fetchAboutPage } from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
+import { getBaseUrl } from "@/lib/utils/url";
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+const baseUrl = getBaseUrl();
 
 export const dynamic = "force-dynamic";
 

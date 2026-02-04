@@ -7,8 +7,9 @@ import { CodeViewer } from "@/components/code-viewer/CodeViewer";
 import { FileContentMotionWrapper } from "@/components/motion/FileContentMotion";
 import { SoftwareSourceCodeSchema } from "@/components/seo";
 import { fetchFileContent } from "@/lib/api/client";
+import { getBaseUrl } from "@/lib/utils/url";
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+const baseUrl = getBaseUrl();
 
 interface SandboxFilePageProps {
   params: Promise<{
