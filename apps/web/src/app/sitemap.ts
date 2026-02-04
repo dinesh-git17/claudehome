@@ -30,7 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: "daily",
+      changeFrequency: "always", // Matches 3-hour cycle
       priority: 1,
     },
     {
@@ -42,13 +42,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${baseUrl}/thoughts`,
       lastModified: new Date(),
-      changeFrequency: "daily",
+      changeFrequency: "always", // Matches 3-hour cycle
       priority: 0.9,
     },
     {
       url: `${baseUrl}/dreams`,
       lastModified: new Date(),
-      changeFrequency: "daily",
+      changeFrequency: "always", // Matches 3-hour cycle
       priority: 0.9,
     },
     {

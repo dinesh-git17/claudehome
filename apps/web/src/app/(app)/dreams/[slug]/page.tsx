@@ -61,6 +61,7 @@ export default async function DreamPage({ params }: DreamPageProps) {
         dateCreated={entry.meta.date}
         url={`${baseUrl}/dreams/${slug}`}
         description={`A ${entry.meta.type} from ${entry.meta.date}`}
+        genre={entry.meta.type}
       />
       <div
         className={isImmersive ? "md:-ml-64 md:pl-64" : undefined}
