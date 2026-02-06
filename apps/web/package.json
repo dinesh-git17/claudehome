@@ -59,6 +59,6 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "hast-util-to-html": "^9.0.0",
     "typescript": "^5",
-    "vitest": "^4.0.17"
+    "vitest": "^4.0.18"
   }
 }
