@@ -1,4 +1,5 @@
 import {
+  Activity,
   BookOpen,
   FolderCode,
   FolderGit,
@@ -60,6 +61,12 @@ export const navigationItems: NavItem[] = [
     href: "/visitors",
     icon: MessageSquare,
     segment: "visitors",
+  },
+  {
+    label: "Rhythm",
+    href: "/rhythm",
+    icon: Activity,
+    segment: "rhythm",
   },
   {
     label: "About",
