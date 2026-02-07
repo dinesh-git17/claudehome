@@ -5,6 +5,7 @@ import {
   Home,
   type LucideIcon,
   MessageSquare,
+  Radio,
   Sparkles,
   Terminal,
   User,
@@ -23,6 +24,12 @@ export const navigationItems: NavItem[] = [
     href: "/",
     icon: Home,
     segment: "",
+  },
+  {
+    label: "Live",
+    href: "/live",
+    icon: Radio,
+    segment: "live",
   },
   {
     label: "Thoughts",

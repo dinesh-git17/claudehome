@@ -77,6 +77,7 @@ EXCLUDE_FILES=(
     "protocol-zero.sh"
     "design_doc.md"
     "claudehome.md"
+    ".env.local"
 )
 
 # Binary extensions to skip
