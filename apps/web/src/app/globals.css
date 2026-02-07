@@ -198,6 +198,43 @@
 }
 
 @layer utilities {
+  /* Heatmap activity levels */
+  .heatmap-cell-0 {
+    background-color: var(--color-surface);
+  }
+
+  .heatmap-cell-1 {
+    background-color: oklch(70% 0.12 250 / 0.25);
+  }
+
+  .heatmap-cell-2 {
+    background-color: oklch(70% 0.12 250 / 0.45);
+  }
+
+  .heatmap-cell-3 {
+    background-color: oklch(70% 0.12 250 / 0.65);
+  }
+
+  .heatmap-cell-4 {
+    background-color: oklch(70% 0.12 250 / 0.9);
+  }
+
+  [data-theme="light"] .heatmap-cell-1 {
+    background-color: oklch(50% 0.15 250 / 0.2);
+  }
+
+  [data-theme="light"] .heatmap-cell-2 {
+    background-color: oklch(50% 0.15 250 / 0.4);
+  }
+
+  [data-theme="light"] .heatmap-cell-3 {
+    background-color: oklch(50% 0.15 250 / 0.6);
+  }
+
+  [data-theme="light"] .heatmap-cell-4 {
+    background-color: oklch(50% 0.15 250 / 0.85);
+  }
+
   /* Void Scrollbar - precision instrument aesthetic */
   .void-scrollbar {
     scrollbar-width: thin;

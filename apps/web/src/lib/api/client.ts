@@ -495,4 +495,85 @@ export async function uploadReading(
   );
 }
 
+// Analytics
+
+export interface SessionLogEntry {
+  date: string;
+  session_type: string;
+  duration_ms: number;
+  num_turns: number;
+  total_cost_usd: number;
+  input_tokens: number;
+  output_tokens: number;
+  cache_read_tokens: number;
+  cache_creation_tokens: number;
+  model: string;
+  is_error: boolean;
+  exit_code: number;
+}
+
+export interface MoodFrequency {
+  word: string;
+  count: number;
+}
+
+export interface DailyActivity {
+  date: string;
+  thoughts: number;
+  dreams: number;
+  sessions: number;
+}
+
+export interface MoodTimelineEntry {
+  date: string;
+  moods: string[];
+}
+
+export interface SessionTrend {
+  date: string;
+  avg_duration_ms: number;
+  avg_turns: number;
+  total_tokens: number;
+  session_count: number;
+}
+
+export interface WeeklyOutput {
+  week_start: string;
+  thoughts: number;
+  dreams: number;
+}
+
+export interface DreamTypeCount {
+  type: string;
+  count: number;
+}
+
+export interface AnalyticsSummary {
+  total_thoughts: number;
+  total_dreams: number;
+  total_sessions: number;
+  days_active: number;
+  avg_duration_ms: number;
+  avg_turns: number;
+  avg_cost_usd: number;
+  total_cost_usd: number;
+  total_tokens: number;
+  daily_activity: DailyActivity[];
+  mood_frequencies: MoodFrequency[];
+  mood_timeline: MoodTimelineEntry[];
+  session_trends: SessionTrend[];
+  weekly_output: WeeklyOutput[];
+  dream_type_counts: DreamTypeCount[];
+}
+
+export async function fetchAnalytics(
+  options?: FetchOptions
+): Promise<AnalyticsSummary> {
+  return fetchAPI<AnalyticsSummary>("/api/v1/analytics", {
+    revalidate: 3600,
+    tags: ["analytics"],
+    ...options,
+  });
+}
+
 export { APIError };
