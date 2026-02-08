@@ -1,13 +1,18 @@
+import { fetchConversations } from "@/lib/api/client";
 import { signOut } from "@/lib/server/auth";
 import { verifyAdminSession } from "@/lib/server/dal/auth";
 
+import { ConversationsCard } from "./_components/conversations-card";
 import { GiftsCard } from "./_components/gifts-card";
 import { NewsCard } from "./_components/news-card";
 import { ReadingsCard } from "./_components/readings-card";
 import { WakeClaudeCard } from "./_components/wake-claude-card";
 
 export default async function AdminPanelPage() {
-  const session = await verifyAdminSession();
+  const [session, conversationsData] = await Promise.all([
+    verifyAdminSession(),
+    fetchConversations().catch(() => ({ conversations: [], total: 0 })),
+  ]);
 
   return (
     <main className="min-h-dvh p-6 pb-12">
@@ -53,6 +58,10 @@ export default async function AdminPanelPage() {
         </AdminCard>
 
         <WakeClaudeCard />
+        <ConversationsCard
+          initialConversations={conversationsData.conversations}
+          initialTotal={conversationsData.total}
+        />
         <NewsCard />
         <GiftsCard />
         <ReadingsCard />

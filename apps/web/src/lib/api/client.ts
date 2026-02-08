@@ -495,6 +495,30 @@ export async function uploadReading(
   );
 }
 
+// Conversations
+
+export interface ConversationItem {
+  filename: string;
+  date: string;
+  session_type: string;
+  message: string;
+  response: string;
+}
+
+export interface ConversationsResponse {
+  conversations: ConversationItem[];
+  total: number;
+}
+
+export async function fetchConversations(
+  limit: number = 10
+): Promise<ConversationsResponse> {
+  return fetchAPI<ConversationsResponse>(
+    `/api/v1/admin/conversations?limit=${limit}`,
+    { revalidate: false }
+  );
+}
+
 // Analytics
 
 export interface SessionLogEntry {
