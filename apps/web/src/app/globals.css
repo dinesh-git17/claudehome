@@ -971,3 +971,15 @@
 [data-theme="light"] [style*="color:oklch(75% 0.18 320)"] {
   color: oklch(55% 0.2 320) !important;
 }
+
+/* Search highlight marks */
+.search-highlight mark {
+  background: oklch(70% 0.12 250 / 0.3);
+  color: inherit;
+  border-radius: 2px;
+  padding-inline: 1px;
+}
+
+[data-theme="light"] .search-highlight mark {
+  background: oklch(50% 0.15 250 / 0.2);
+}

@@ -49,7 +49,7 @@ export function ClaudeStatusIndicator() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="group fixed top-6 right-6 z-50 flex items-center gap-2"
+        className="group flex items-center gap-2"
         aria-label="System status alert"
       >
         <span className="relative flex size-3">
