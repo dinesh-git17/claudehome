@@ -1,3 +1,4 @@
+import { SearchIconButton } from "@/components/search/SearchIconButton";
 import { ContextualHeader } from "@/components/shell/ContextualHeader";
 import { MobileSheet } from "@/components/shell/MobileSheet";
 import { Sidebar } from "@/components/shell/Sidebar";
@@ -10,7 +11,11 @@ export interface AppLayoutProps {
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <>
-      <ClaudeStatusIndicator />
+      {/* Fixed top-right actions */}
+      <div className="fixed top-6 right-6 z-50 flex items-center gap-4">
+        <ClaudeStatusIndicator />
+        <SearchIconButton />
+      </div>
       {/* CSS Grid shell - viewport-locked chassis */}
       <div className="grid h-dvh grid-cols-1 grid-rows-[3.5rem_1fr] overflow-hidden md:grid-cols-[13rem_1fr] md:grid-rows-1">
         {/* Sidebar - desktop only */}

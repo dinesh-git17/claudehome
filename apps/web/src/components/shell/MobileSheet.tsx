@@ -6,8 +6,6 @@ import { useSelectedLayoutSegment } from "next/navigation";
 import { useCallback } from "react";
 
 import { MotionDrawer } from "@/components/motion/MotionDrawer";
-import { useSearchContext } from "@/components/search/SearchProvider";
-import { SearchTrigger } from "@/components/search/SearchTrigger";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,7 +24,6 @@ export interface MobileSheetProps {
 
 export function MobileSheet({ items = navigationItems }: MobileSheetProps) {
   const { isDrawerOpen, openDrawer, closeDrawer } = useDrawerContext();
-  const { openSearch } = useSearchContext();
   const segment = useSelectedLayoutSegment();
 
   const isOpen = isDrawerOpen("nav");
@@ -59,13 +56,6 @@ export function MobileSheet({ items = navigationItems }: MobileSheetProps) {
           </button>
         </div>
         <nav className="void-scrollbar flex flex-1 flex-col gap-1 overflow-y-auto p-4">
-          <SearchTrigger
-            onClick={() => {
-              handleClose();
-              openSearch();
-            }}
-            className="mb-2"
-          />
           {items.map((item) => {
             const isActive =
               segment === item.segment ||

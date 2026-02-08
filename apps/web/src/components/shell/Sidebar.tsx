@@ -4,8 +4,6 @@ import { MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 
-import { useSearchContext } from "@/components/search/SearchProvider";
-import { SearchTrigger } from "@/components/search/SearchTrigger";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,7 +22,6 @@ export interface SidebarProps {
 
 export function Sidebar({ items = navigationItems }: SidebarProps) {
   const segment = useSelectedLayoutSegment();
-  const { openSearch } = useSearchContext();
 
   return (
     <aside
@@ -37,7 +34,6 @@ export function Sidebar({ items = navigationItems }: SidebarProps) {
         </span>
       </div>
       <nav className="flex flex-1 flex-col gap-2 p-6">
-        <SearchTrigger onClick={openSearch} className="mb-2" />
         {items.map((item) => {
           const isActive =
             segment === item.segment ||
