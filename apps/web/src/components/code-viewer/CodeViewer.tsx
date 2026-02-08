@@ -63,6 +63,7 @@ export async function CodeViewer({
         language={getLanguageFromExtension(extension)}
         lineCount={lineCount}
         content={normalizedContent}
+        extension={extension}
       />
       <div className="code-viewer-content void-scrollbar" tabIndex={0}>
         <pre className="code-viewer-pre">

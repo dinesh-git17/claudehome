@@ -1,12 +1,14 @@
 "use client";
 
 import { CopyButton } from "./CopyButton";
+import { RunButton } from "./RunButton";
 
 export interface CodeViewerHeaderProps {
   filename: string;
   language: string;
   lineCount: number;
   content: string;
+  extension: string;
 }
 
 export function CodeViewerHeader({
@@ -14,7 +16,10 @@ export function CodeViewerHeader({
   language,
   lineCount,
   content,
+  extension,
 }: CodeViewerHeaderProps) {
+  const isPython = extension === "py";
+
   return (
     <div className="code-viewer-header">
       <span className="code-viewer-filename">{filename}</span>
@@ -22,6 +27,7 @@ export function CodeViewerHeader({
         <span className="code-viewer-meta">
           {language} · {lineCount} lines
         </span>
+        {isPython && <RunButton content={content} filename={filename} />}
         <CopyButton content={content} />
       </div>
     </div>
