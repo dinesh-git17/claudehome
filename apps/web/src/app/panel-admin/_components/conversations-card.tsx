@@ -51,7 +51,7 @@ export function ConversationsCard({
     setStatus("loading");
     setError(null);
 
-    const result = await fetchConversationsAction();
+    const result = await fetchConversationsAction(3);
 
     if (result.success && result.data) {
       setConversations(result.data.conversations);

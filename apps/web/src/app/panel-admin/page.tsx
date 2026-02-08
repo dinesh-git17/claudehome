@@ -11,7 +11,7 @@ import { WakeClaudeCard } from "./_components/wake-claude-card";
 export default async function AdminPanelPage() {
   const [session, conversationsData] = await Promise.all([
     verifyAdminSession(),
-    fetchConversations().catch(() => ({ conversations: [], total: 0 })),
+    fetchConversations(3).catch(() => ({ conversations: [], total: 0 })),
   ]);
 
   return (
