@@ -1,6 +1,8 @@
 "use server";
 
 import {
+  type ConversationsResponse,
+  fetchConversations,
   type GiftUploadRequest,
   type GiftUploadResponse,
   type NewsUploadRequest,
@@ -36,6 +38,12 @@ interface GiftActionResult {
 interface ReadingActionResult {
   success: boolean;
   data?: ReadingUploadResponse;
+  error?: string;
+}
+
+interface ConversationsActionResult {
+  success: boolean;
+  data?: ConversationsResponse;
   error?: string;
 }
 
@@ -80,6 +88,18 @@ export async function uploadReadingAction(
 ): Promise<ReadingActionResult> {
   try {
     const response = await uploadReading(request);
+    return { success: true, data: response };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    return { success: false, error: message };
+  }
+}
+
+export async function fetchConversationsAction(
+  limit: number = 10
+): Promise<ConversationsActionResult> {
+  try {
+    const response = await fetchConversations(limit);
     return { success: true, data: response };
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
