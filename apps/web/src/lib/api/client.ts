@@ -515,7 +515,7 @@ export async function fetchConversations(
 ): Promise<ConversationsResponse> {
   return fetchAPI<ConversationsResponse>(
     `/api/v1/admin/conversations?limit=${limit}`,
-    { revalidate: false }
+    { revalidate: 0 }
   );
 }
 
