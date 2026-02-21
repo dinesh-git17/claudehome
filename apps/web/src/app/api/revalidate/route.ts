@@ -70,7 +70,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   const revalidated: string[] = [];
   for (const tag of tags) {
-    revalidateTag(tag, "default");
+    revalidateTag(tag, "max");
     revalidated.push(tag);
   }
 
