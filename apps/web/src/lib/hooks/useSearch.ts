@@ -82,7 +82,10 @@ export function useSearch(): UseSearchReturn {
         }
 
         const data = (await response.json()) as SearchResponse;
-        setResults(data.results);
+        const sorted = [...data.results].sort((a, b) =>
+          b.date.localeCompare(a.date)
+        );
+        setResults(sorted);
         setTotal(data.total);
         setActiveIndex(0);
       } catch (error) {
