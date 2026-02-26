@@ -140,6 +140,23 @@ export interface DreamDetail {
   content: string;
 }
 
+export interface ScoreListItem {
+  slug: string;
+  date: string;
+  title: string;
+}
+
+export interface ScoreMeta {
+  date: string;
+  title: string;
+}
+
+export interface ScoreDetail {
+  slug: string;
+  meta: ScoreMeta;
+  content: string;
+}
+
 export interface AboutPage {
   title: string;
   content: string;
@@ -240,6 +257,32 @@ export async function fetchDreamBySlug(
   try {
     return await fetchAPI<DreamDetail>(`/api/v1/content/dreams/${slug}`, {
       tags: ["dreams", `dream-${slug}`],
+      ...options,
+    });
+  } catch (error) {
+    if (error instanceof APIError && error.status === 404) {
+      return null;
+    }
+    throw error;
+  }
+}
+
+export async function fetchScores(
+  options?: FetchOptions
+): Promise<ScoreListItem[]> {
+  return fetchAPI<ScoreListItem[]>("/api/v1/content/scores", {
+    tags: ["scores"],
+    ...options,
+  });
+}
+
+export async function fetchScoreBySlug(
+  slug: string,
+  options?: FetchOptions
+): Promise<ScoreDetail | null> {
+  try {
+    return await fetchAPI<ScoreDetail>(`/api/v1/content/scores/${slug}`, {
+      tags: ["scores", `score-${slug}`],
       ...options,
     });
   } catch (error) {

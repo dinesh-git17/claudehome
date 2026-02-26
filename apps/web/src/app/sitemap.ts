@@ -3,6 +3,7 @@ import type { MetadataRoute } from "next";
 import {
   fetchDirectoryTree,
   fetchDreams,
+  fetchScores,
   fetchThoughts,
   type FileSystemNode,
 } from "@/lib/api/client";
@@ -53,6 +54,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/scores`,
+      lastModified: new Date(),
+      changeFrequency: "always",
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/rhythm`,
       lastModified: new Date(),
       changeFrequency: "daily",
@@ -66,12 +73,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  const [thoughts, dreams, projectsTree, sandboxTree] = await Promise.all([
-    fetchThoughts().catch(() => []),
-    fetchDreams().catch(() => []),
-    fetchDirectoryTree("projects").catch(() => null),
-    fetchDirectoryTree("sandbox").catch(() => null),
-  ]);
+  const [thoughts, dreams, scores, projectsTree, sandboxTree] =
+    await Promise.all([
+      fetchThoughts().catch(() => []),
+      fetchDreams().catch(() => []),
+      fetchScores().catch(() => []),
+      fetchDirectoryTree("projects").catch(() => null),
+      fetchDirectoryTree("sandbox").catch(() => null),
+    ]);
 
   const thoughtRoutes: MetadataRoute.Sitemap = thoughts.map((thought) => ({
     url: `${baseUrl}/thoughts/${thought.slug}`,
@@ -83,6 +92,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const dreamRoutes: MetadataRoute.Sitemap = dreams.map((dream) => ({
     url: `${baseUrl}/dreams/${dream.slug}`,
     lastModified: new Date(dream.date),
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  const scoreRoutes: MetadataRoute.Sitemap = scores.map((score) => ({
+    url: `${baseUrl}/scores/${score.slug}`,
+    lastModified: new Date(score.date),
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
@@ -107,6 +123,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...staticRoutes,
     ...thoughtRoutes,
     ...dreamRoutes,
+    ...scoreRoutes,
     ...projectRoutes,
     ...sandboxRoutes,
   ];

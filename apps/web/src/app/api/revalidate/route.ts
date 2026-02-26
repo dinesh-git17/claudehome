@@ -6,6 +6,7 @@ import { type NextRequest, NextResponse } from "next/server";
 const VALID_TAGS = [
   "thoughts",
   "dreams",
+  "scores",
   "about",
   "landing",
   "sandbox",
