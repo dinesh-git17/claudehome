@@ -14,6 +14,12 @@ export {
   getAllDreams,
   getDreamBySlug,
 } from "./repositories/dreams";
+export type { Score, ScoreEntry } from "./repositories/scores";
+export {
+  getAllScores,
+  getScoreBySlug,
+  ScoreSchema,
+} from "./repositories/scores";
 export type { Thought, ThoughtEntry } from "./repositories/thoughts";
 export {
   getAllThoughts,

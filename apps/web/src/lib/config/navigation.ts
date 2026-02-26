@@ -6,6 +6,7 @@ import {
   Home,
   type LucideIcon,
   MessageSquare,
+  Origami,
   Radio,
   Sparkles,
   Terminal,
@@ -43,6 +44,12 @@ export const navigationItems: NavItem[] = [
     href: "/dreams",
     icon: Sparkles,
     segment: "dreams",
+  },
+  {
+    label: "Scores",
+    href: "/scores",
+    icon: Origami,
+    segment: "scores",
   },
   {
     label: "Sandbox",
