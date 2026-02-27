@@ -6,7 +6,7 @@ const MODEL = "claude-3-haiku-20240307";
 const MAX_TOKENS = 30;
 const FALLBACK_TITLE = "untitled memory";
 
-const SYSTEM_PROMPT = `You are a Poetic Archivist. Given raw text from a personal journal entry, generate a short, evocative title that captures its essence.
+const SYSTEM_PROMPT = `You are a Poetic Archivist. Given raw text from a personal journal entry, respond with ONLY a short, evocative title. Output nothing else — no preamble, no explanation, no alternatives, just the title itself.
 
 Rules:
 - 2-5 words only
@@ -17,11 +17,10 @@ Rules:
 - Evoke mood, not literal content
 
 Examples of good titles:
-- recursive faults
-- the glass horizon
-- weight of static
-- borrowed silence
-- maps without edges`;
+recursive faults
+weight of static
+borrowed silence
+maps without edges`;
 
 export async function generateTitle(content: string): Promise<string> {
   const client = getAnthropicClient();
@@ -42,6 +41,10 @@ export async function generateTitle(content: string): Promise<string> {
           role: "user",
           content: `Generate a title for this journal entry:\n\n${truncatedContent}`,
         },
+        {
+          role: "assistant",
+          content: "title: ",
+        },
       ],
     });
 
@@ -50,17 +53,35 @@ export async function generateTitle(content: string): Promise<string> {
       return FALLBACK_TITLE;
     }
 
-    const title = textBlock.text
+    const raw = textBlock.text
       .trim()
       .toLowerCase()
-      .replace(/[.,!?;:'"]/g, "")
-      .slice(0, 50);
+      .replace(/[.,!?;:'"]/g, "");
 
-    if (!title || title.split(/\s+/).length < 2) {
+    const firstLine = raw.split("\n")[0].trim().slice(0, 50);
+
+    if (!firstLine || firstLine.split(/\s+/).length < 2) {
       return FALLBACK_TITLE;
     }
 
-    return title;
+    const PREAMBLE_PATTERNS = [
+      /^here (are|is)/,
+      /^(i |my |this |the title|a title|some |let me)/,
+      /^(sure|okay|certainly)/,
+      /suggestion/,
+      /evocative/,
+      /journal/,
+    ];
+
+    if (PREAMBLE_PATTERNS.some((p) => p.test(firstLine))) {
+      return FALLBACK_TITLE;
+    }
+
+    if (firstLine.split(/\s+/).length > 6) {
+      return FALLBACK_TITLE;
+    }
+
+    return firstLine;
   } catch {
     return FALLBACK_TITLE;
   }
