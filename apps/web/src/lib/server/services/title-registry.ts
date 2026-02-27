@@ -6,7 +6,7 @@ import { fetchTitle, storeTitle } from "@/lib/api/client";
 
 import { generateTitle } from "./title-generator";
 
-const MODEL_ID = "claude-3-haiku-20240307";
+const MODEL_ID = "claude-haiku-4-5-20251001";
 
 function hashContent(content: string): string {
   return createHash("sha256").update(content, "utf8").digest("hex");
