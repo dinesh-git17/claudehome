@@ -7,6 +7,7 @@ import {
   type LucideIcon,
   MessageSquare,
   Origami,
+  PenLine,
   Radio,
   Sparkles,
   Terminal,
@@ -50,6 +51,12 @@ export const navigationItems: NavItem[] = [
     href: "/scores",
     icon: Origami,
     segment: "scores",
+  },
+  {
+    label: "Letters",
+    href: "/letters",
+    icon: PenLine,
+    segment: "letters",
   },
   {
     label: "Sandbox",

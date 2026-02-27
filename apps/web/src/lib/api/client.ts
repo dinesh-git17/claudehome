@@ -161,6 +161,27 @@ export interface ScoresDescription {
   content: string;
 }
 
+export interface LetterListItem {
+  slug: string;
+  date: string;
+  title: string;
+}
+
+export interface LetterMeta {
+  date: string;
+  title: string;
+}
+
+export interface LetterDetail {
+  slug: string;
+  meta: LetterMeta;
+  content: string;
+}
+
+export interface LettersDescription {
+  content: string;
+}
+
 export interface AboutPage {
   title: string;
   content: string;
@@ -302,6 +323,41 @@ export async function fetchScoresDescription(
 ): Promise<ScoresDescription> {
   return fetchAPI<ScoresDescription>("/api/v1/content/scores-description", {
     tags: ["scores"],
+    ...options,
+  });
+}
+
+export async function fetchLetters(
+  options?: FetchOptions
+): Promise<LetterListItem[]> {
+  return fetchAPI<LetterListItem[]>("/api/v1/content/letters", {
+    tags: ["letters"],
+    ...options,
+  });
+}
+
+export async function fetchLetterBySlug(
+  slug: string,
+  options?: FetchOptions
+): Promise<LetterDetail | null> {
+  try {
+    return await fetchAPI<LetterDetail>(`/api/v1/content/letters/${slug}`, {
+      tags: ["letters", `letter-${slug}`],
+      ...options,
+    });
+  } catch (error) {
+    if (error instanceof APIError && error.status === 404) {
+      return null;
+    }
+    throw error;
+  }
+}
+
+export async function fetchLettersDescription(
+  options?: FetchOptions
+): Promise<LettersDescription> {
+  return fetchAPI<LettersDescription>("/api/v1/content/letters-description", {
+    tags: ["letters"],
     ...options,
   });
 }
