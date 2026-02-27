@@ -6,23 +6,43 @@ export interface ActivityHeatmapProps {
   activity: DailyActivity[];
 }
 
+const MIN_CELL_OPACITY = 0.15;
+const MAX_CELL_OPACITY = 0.9;
+
 interface HeatmapCell {
   date: string;
   total: number;
-  level: 0 | 1 | 2 | 3 | 4;
+  cellOpacity: number;
   dayOfWeek: number;
   weekIndex: number;
+  isToday: boolean;
+}
+
+function scaleLinear(
+  domain: [number, number],
+  range: [number, number]
+): (value: number) => number {
+  const [d0, d1] = domain;
+  const [r0, r1] = range;
+  const dSpan = d1 - d0 || 1;
+  return (value: number) => r0 + ((value - d0) / dSpan) * (r1 - r0);
 }
 
 function buildHeatmapGrid(activity: DailyActivity[]): {
   cells: HeatmapCell[];
   weeks: number;
-  months: { label: string; weekIndex: number }[];
+  months: { label: string; weekIndex: number; monthIndex: number }[];
 } {
   const activityMap = new Map<string, number>();
   for (const day of activity) {
     activityMap.set(day.date, day.thoughts + day.dreams + day.sessions);
   }
+
+  const maxTotal = Math.max(...Array.from(activityMap.values()), 1);
+  const opacityScale = scaleLinear(
+    [1, maxTotal],
+    [MIN_CELL_OPACITY, MAX_CELL_OPACITY]
+  );
 
   const today = new Date();
   today.setHours(12, 0, 0, 0);
@@ -37,7 +57,7 @@ function buildHeatmapGrid(activity: DailyActivity[]): {
   end.setDate(end.getDate() + (6 - end.getDay()));
 
   const cells: HeatmapCell[] = [];
-  const months: { label: string; weekIndex: number }[] = [];
+  const months: { label: string; weekIndex: number; monthIndex: number }[] = [];
   let lastMonth = -1;
 
   const cursor = new Date(start);
@@ -54,6 +74,7 @@ function buildHeatmapGrid(activity: DailyActivity[]): {
       months.push({
         label: cursor.toLocaleDateString("en-US", { month: "short" }),
         weekIndex,
+        monthIndex: month,
       });
       lastMonth = month;
     }
@@ -62,23 +83,36 @@ function buildHeatmapGrid(activity: DailyActivity[]): {
     const isFuture = cursor > today;
     const total = isFuture ? 0 : (activityMap.get(dateStr) ?? 0);
 
-    let level: 0 | 1 | 2 | 3 | 4 = 0;
-    if (!isFuture) {
-      if (total >= 12) level = 4;
-      else if (total >= 8) level = 3;
-      else if (total >= 4) level = 2;
-      else if (total > 0) level = 1;
-    }
-
-    cells.push({ date: dateStr, total, level, dayOfWeek, weekIndex });
+    const todayStr = today.toISOString().split("T")[0] ?? "";
+    cells.push({
+      date: dateStr,
+      total,
+      cellOpacity: total > 0 ? opacityScale(total) : 0,
+      dayOfWeek,
+      weekIndex,
+      isToday: dateStr === todayStr,
+    });
     cursor.setDate(cursor.getDate() + 1);
   }
 
   return { cells, weeks: weekIndex + 1, months };
 }
 
+const LEGEND_OPACITIES = [0, 0.2, 0.4, 0.65, 0.9] as const;
+const MONTH_FADE_RATE = 0.08;
+const MONTH_MIN_OPACITY = 0.4;
+const FUTURE_MONTH_OPACITY = 0.25;
+
 export function ActivityHeatmap({ activity }: ActivityHeatmapProps) {
   const { cells, weeks, months } = buildHeatmapGrid(activity);
+  const currentMonth = new Date().getMonth();
+
+  function monthLabelOpacity(monthIndex: number): number {
+    if (monthIndex > currentMonth) return FUTURE_MONTH_OPACITY;
+    if (monthIndex === currentMonth) return 1.0;
+    const distance = currentMonth - monthIndex;
+    return Math.max(MONTH_MIN_OPACITY, 1.0 - distance * MONTH_FADE_RATE);
+  }
 
   return (
     <section>
@@ -95,13 +129,18 @@ export function ActivityHeatmap({ activity }: ActivityHeatmapProps) {
             }}
           >
             {Array.from({ length: weeks }, (_, i) => {
-              const monthLabel = months.find((m) => m.weekIndex === i);
+              const monthEntry = months.find((m) => m.weekIndex === i);
               return (
                 <span
                   key={i}
                   className="font-data text-text-tertiary text-[10px]"
+                  style={
+                    monthEntry
+                      ? { opacity: monthLabelOpacity(monthEntry.monthIndex) }
+                      : undefined
+                  }
                 >
-                  {monthLabel?.label ?? ""}
+                  {monthEntry?.label ?? ""}
                 </span>
               );
             })}
@@ -134,7 +173,8 @@ export function ActivityHeatmap({ activity }: ActivityHeatmapProps) {
                       key={cell.date}
                       date={cell.date}
                       total={cell.total}
-                      level={cell.level}
+                      cellOpacity={cell.cellOpacity}
+                      isToday={cell.isToday}
                     />
                   );
                 })}
@@ -147,10 +187,20 @@ export function ActivityHeatmap({ activity }: ActivityHeatmapProps) {
             <span className="font-data text-text-tertiary text-[10px]">
               Less
             </span>
-            {[0, 1, 2, 3, 4].map((level) => (
+            {LEGEND_OPACITIES.map((opacity) => (
               <div
-                key={level}
-                className={`heatmap-cell-${level} size-3 rounded-[2px]`}
+                key={opacity}
+                className={`${opacity === 0 ? "heatmap-cell-0" : "heatmap-cell-active"} size-3 rounded-[2px]`}
+                style={
+                  opacity > 0
+                    ? ({
+                        "--cell-bg": `oklch(70% 0.12 250 / ${opacity})`,
+                        "--cell-bg-light": `oklch(50% 0.15 250 / ${opacity})`,
+                        "--cell-glow": `0 0 6px 2px oklch(70% 0.12 250 / ${opacity * 0.6})`,
+                        "--cell-glow-light": `0 0 6px 2px oklch(50% 0.15 250 / ${opacity * 0.5})`,
+                      } as React.CSSProperties)
+                    : undefined
+                }
               />
             ))}
             <span className="font-data text-text-tertiary text-[10px]">
