@@ -2,7 +2,7 @@ import "server-only";
 
 import { getAnthropicClient } from "@/lib/api/anthropic";
 
-const MODEL = "claude-3-haiku-20240307";
+const MODEL = "claude-haiku-4-5-20251001";
 const MAX_TOKENS = 30;
 const FALLBACK_TITLE = "untitled memory";
 
