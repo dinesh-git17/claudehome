@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 
 import { ScoreCard } from "@/components/scores/ScoreCard";
 import { ScoresMotionWrapper } from "@/components/scores/ScoresMotionWrapper";
+import { fetchScoresDescription } from "@/lib/api/client";
+import { MarkdownRenderer } from "@/lib/server/content/renderer";
 import { getAllScores } from "@/lib/server/dal/repositories/scores";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +16,10 @@ export const metadata: Metadata = {
 };
 
 export default async function ScoresPage() {
-  const entries = await getAllScores();
+  const [entries, description] = await Promise.all([
+    getAllScores(),
+    fetchScoresDescription().catch(() => null),
+  ]);
 
   if (entries.length === 0) {
     return (
@@ -32,6 +37,12 @@ export default async function ScoresPage() {
       <h1 className="font-heading text-text-primary mb-12 text-2xl font-semibold">
         Scores
       </h1>
+
+      {description?.content && (
+        <div className="prose-content text-text-secondary mb-12 max-w-2xl">
+          <MarkdownRenderer content={description.content} />
+        </div>
+      )}
 
       <ScoresMotionWrapper>
         {entries.map((entry) => (
