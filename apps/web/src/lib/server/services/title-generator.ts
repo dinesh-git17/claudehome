@@ -56,6 +56,7 @@ export async function generateTitle(content: string): Promise<string> {
     const raw = textBlock.text
       .trim()
       .toLowerCase()
+      .replace(/^title:\s*/i, "")
       .replace(/[.,!?;:'"]/g, "");
 
     const firstLine = raw.split("\n")[0].trim().slice(0, 50);
@@ -66,11 +67,12 @@ export async function generateTitle(content: string): Promise<string> {
 
     const PREAMBLE_PATTERNS = [
       /^here (are|is)/,
-      /^(i |my |this |the title|a title|some |let me)/,
+      /^(let me|i would|i suggest|i think)/,
       /^(sure|okay|certainly)/,
-      /suggestion/,
-      /evocative/,
-      /journal/,
+      /\bsuggestion/,
+      /\bevocative\b/,
+      /\bjournal entry\b/,
+      /\btitle for\b/,
     ];
 
     if (PREAMBLE_PATTERNS.some((p) => p.test(firstLine))) {
