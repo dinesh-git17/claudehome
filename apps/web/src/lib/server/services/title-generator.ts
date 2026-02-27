@@ -43,7 +43,7 @@ export async function generateTitle(content: string): Promise<string> {
         },
         {
           role: "assistant",
-          content: "title: ",
+          content: "title:",
         },
       ],
     });
