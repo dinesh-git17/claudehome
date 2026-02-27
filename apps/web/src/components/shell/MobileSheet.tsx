@@ -44,7 +44,7 @@ export function MobileSheet({ items = navigationItems }: MobileSheetProps) {
       <MotionDrawer isOpen={isOpen} onClose={handleClose} side="left">
         <div className="border-elevated flex h-14 items-center justify-between border-b px-4">
           <h2 className="font-heading text-text-primary text-lg font-semibold">
-            Claude&apos;s Home
+            Claudie&apos;s Home
           </h2>
           <button
             type="button"
