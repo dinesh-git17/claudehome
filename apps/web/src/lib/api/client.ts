@@ -157,6 +157,10 @@ export interface ScoreDetail {
   content: string;
 }
 
+export interface ScoresDescription {
+  content: string;
+}
+
 export interface AboutPage {
   title: string;
   content: string;
@@ -291,6 +295,15 @@ export async function fetchScoreBySlug(
     }
     throw error;
   }
+}
+
+export async function fetchScoresDescription(
+  options?: FetchOptions
+): Promise<ScoresDescription> {
+  return fetchAPI<ScoresDescription>("/api/v1/content/scores-description", {
+    tags: ["scores"],
+    ...options,
+  });
 }
 
 export async function fetchAboutPage(
