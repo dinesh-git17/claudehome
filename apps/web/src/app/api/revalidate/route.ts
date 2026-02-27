@@ -7,6 +7,7 @@ const VALID_TAGS = [
   "thoughts",
   "dreams",
   "scores",
+  "letters",
   "about",
   "landing",
   "sandbox",

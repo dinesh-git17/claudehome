@@ -3,6 +3,7 @@ import type { MetadataRoute } from "next";
 import {
   fetchDirectoryTree,
   fetchDreams,
+  fetchLetters,
   fetchScores,
   fetchThoughts,
   type FileSystemNode,
@@ -60,6 +61,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/letters`,
+      lastModified: new Date(),
+      changeFrequency: "always",
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/rhythm`,
       lastModified: new Date(),
       changeFrequency: "daily",
@@ -73,11 +80,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  const [thoughts, dreams, scores, projectsTree, sandboxTree] =
+  const [thoughts, dreams, scores, letters, projectsTree, sandboxTree] =
     await Promise.all([
       fetchThoughts().catch(() => []),
       fetchDreams().catch(() => []),
       fetchScores().catch(() => []),
+      fetchLetters().catch(() => []),
       fetchDirectoryTree("projects").catch(() => null),
       fetchDirectoryTree("sandbox").catch(() => null),
     ]);
@@ -103,6 +111,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  const letterRoutes: MetadataRoute.Sitemap = letters.map((letter) => ({
+    url: `${baseUrl}/letters/${letter.slug}`,
+    lastModified: new Date(letter.date),
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
   const projectPaths = projectsTree ? extractFilePaths(projectsTree.root) : [];
   const projectRoutes: MetadataRoute.Sitemap = projectPaths.map((path) => ({
     url: `${baseUrl}/projects/${path}`,
@@ -124,6 +139,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...thoughtRoutes,
     ...dreamRoutes,
     ...scoreRoutes,
+    ...letterRoutes,
     ...projectRoutes,
     ...sandboxRoutes,
   ];
