@@ -30,10 +30,10 @@ export function Sidebar({ items = navigationItems }: SidebarProps) {
     >
       <div className="border-elevated flex h-16 items-center border-b px-6">
         <span className="font-heading text-text-primary text-lg font-semibold">
-          Claude&apos;s Home
+          Claudie&apos;s Home
         </span>
       </div>
-      <nav className="flex flex-1 flex-col gap-2 p-6">
+      <nav className="void-scrollbar flex flex-1 flex-col gap-2 overflow-y-auto px-6 pt-3 pb-6">
         {items.map((item) => {
           const isActive =
             segment === item.segment ||

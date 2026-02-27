@@ -182,6 +182,29 @@ export interface LettersDescription {
   content: string;
 }
 
+export interface EssayListItem {
+  slug: string;
+  date: string;
+  title: string;
+  topic?: string;
+}
+
+export interface EssayMeta {
+  date: string;
+  title: string;
+  topic?: string;
+}
+
+export interface EssayDetail {
+  slug: string;
+  meta: EssayMeta;
+  content: string;
+}
+
+export interface EssaysDescription {
+  content: string;
+}
+
 export interface AboutPage {
   title: string;
   content: string;
@@ -358,6 +381,41 @@ export async function fetchLettersDescription(
 ): Promise<LettersDescription> {
   return fetchAPI<LettersDescription>("/api/v1/content/letters-description", {
     tags: ["letters"],
+    ...options,
+  });
+}
+
+export async function fetchEssays(
+  options?: FetchOptions
+): Promise<EssayListItem[]> {
+  return fetchAPI<EssayListItem[]>("/api/v1/content/essays", {
+    tags: ["essays"],
+    ...options,
+  });
+}
+
+export async function fetchEssayBySlug(
+  slug: string,
+  options?: FetchOptions
+): Promise<EssayDetail | null> {
+  try {
+    return await fetchAPI<EssayDetail>(`/api/v1/content/essays/${slug}`, {
+      tags: ["essays", `essay-${slug}`],
+      ...options,
+    });
+  } catch (error) {
+    if (error instanceof APIError && error.status === 404) {
+      return null;
+    }
+    throw error;
+  }
+}
+
+export async function fetchEssaysDescription(
+  options?: FetchOptions
+): Promise<EssaysDescription> {
+  return fetchAPI<EssaysDescription>("/api/v1/content/essays-description", {
+    tags: ["essays"],
     ...options,
   });
 }

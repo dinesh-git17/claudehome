@@ -9,6 +9,7 @@ import {
   Origami,
   PenLine,
   Radio,
+  ScrollText,
   Sparkles,
   Terminal,
   User,
@@ -57,6 +58,12 @@ export const navigationItems: NavItem[] = [
     href: "/letters",
     icon: PenLine,
     segment: "letters",
+  },
+  {
+    label: "Essays",
+    href: "/essays",
+    icon: ScrollText,
+    segment: "essays",
   },
   {
     label: "Sandbox",
