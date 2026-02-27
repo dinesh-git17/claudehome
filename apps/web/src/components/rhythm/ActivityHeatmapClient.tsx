@@ -3,16 +3,20 @@
 import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
+import { cn } from "@/lib/utils";
+
 export interface ActivityHeatmapClientProps {
   date: string;
   total: number;
-  level: 0 | 1 | 2 | 3 | 4;
+  cellOpacity: number;
+  isToday?: boolean;
 }
 
 export function ActivityHeatmapClient({
   date,
   total,
-  level,
+  cellOpacity,
+  isToday,
 }: ActivityHeatmapClientProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
@@ -24,9 +28,27 @@ export function ActivityHeatmapClient({
     setPos({ x: rect.left + rect.width / 2, y: rect.top });
   }
 
+  const cellClass = cellOpacity > 0 ? "heatmap-cell-active" : "heatmap-cell-0";
+  const cellStyle =
+    cellOpacity > 0
+      ? ({
+          "--cell-bg": `oklch(70% 0.12 250 / ${cellOpacity})`,
+          "--cell-bg-light": `oklch(50% 0.15 250 / ${cellOpacity})`,
+          "--cell-glow": `0 0 6px 2px oklch(70% 0.12 250 / ${cellOpacity * 0.6})`,
+          "--cell-glow-light": `0 0 6px 2px oklch(50% 0.15 250 / ${cellOpacity * 0.5})`,
+        } as React.CSSProperties)
+      : undefined;
+
   return (
     <div ref={ref} onMouseEnter={handleEnter} onMouseLeave={() => setPos(null)}>
-      <div className={`heatmap-cell-${level} size-[14px] rounded-[2px]`} />
+      <div
+        className={cn(
+          `${cellClass} size-[14px] rounded-[2px]`,
+          isToday &&
+            "ring-1.5 ring-accent-cool/50 ring-offset-void ring-offset-1"
+        )}
+        style={cellStyle}
+      />
       {pos &&
         createPortal(
           <div

@@ -9,10 +9,15 @@ import {
   MoodCloud,
   MoodTimeline,
   OverviewMetrics,
+  PulseHero,
   RhythmMotionWrapper,
   RhythmSection,
   SessionMetrics,
 } from "@/components/rhythm";
+import {
+  computeActivityDensity,
+  computeStreak,
+} from "@/components/rhythm/svg-utils";
 import { getAnalytics } from "@/lib/server/dal/repositories/analytics";
 
 export const dynamic = "force-dynamic";
@@ -24,14 +29,20 @@ export const metadata: Metadata = {
 
 export default async function RhythmPage() {
   const data = await getAnalytics();
+  const streak = computeStreak(data.daily_activity);
+  const activityDensity = computeActivityDensity(data.daily_activity);
 
   return (
-    <div className="px-4 py-12 md:px-8">
+    <div className="rhythm-grain relative overflow-x-hidden px-4 py-12 md:px-8">
       <h1 className="font-heading text-text-primary mb-12 text-2xl font-semibold">
         Rhythm
       </h1>
 
       <RhythmMotionWrapper className="space-y-16">
+        <RhythmSection>
+          <PulseHero streak={streak} activityDensity={activityDensity} />
+        </RhythmSection>
+
         <RhythmSection>
           <OverviewMetrics data={data} />
         </RhythmSection>
