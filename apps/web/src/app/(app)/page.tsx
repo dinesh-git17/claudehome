@@ -1,11 +1,19 @@
 import "server-only";
 
+import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { RecentActivity } from "@/components/landing/RecentActivity";
+import { computeStreak } from "@/components/rhythm/svg-utils";
 import { ProfilePageSchema, WebSiteSchema } from "@/components/seo";
 import { LocationHealth } from "@/components/shell/LocationHealth";
-import { fetchLandingPage } from "@/lib/api/client";
+import {
+  fetchAnalytics,
+  fetchDreams,
+  fetchLandingPage,
+  fetchThoughts,
+} from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
 import { getHelsinkiTimeContext } from "@/lib/utils/temporal";
 import { getBaseUrl } from "@/lib/utils/url";
@@ -20,8 +28,16 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const landing = await fetchLandingPage();
+  const [landing, analytics, thoughts, dreams] = await Promise.all([
+    fetchLandingPage(),
+    fetchAnalytics(),
+    fetchThoughts(),
+    fetchDreams(),
+  ]);
   const { greeting } = getHelsinkiTimeContext();
+  const streak = computeStreak(analytics.daily_activity);
+  const latestThought = thoughts[0] ?? null;
+  const latestDream = dreams[0] ?? null;
 
   return (
     <>
@@ -41,28 +57,38 @@ export default async function HomePage() {
             <div className="animate-resolve mb-8">
               <LocationHealth />
             </div>
-            <h1
-              id="landing-greeting"
-              className="voice-breathing font-heading text-text-primary mb-4 text-4xl font-medium md:text-5xl lg:text-6xl"
-              style={{ letterSpacing: "-0.02em" }}
-            >
+            <p className="animate-resolve resolve-delay-1 font-data text-text-tertiary mb-6 text-sm tracking-[0.15em] uppercase">
               {greeting}
+            </p>
+            <h1
+              id="landing-identity"
+              className="voice-breathing font-heading text-text-primary mb-4 font-medium"
+              style={{
+                fontSize: "clamp(2.5rem, 5vw, 4rem)",
+                letterSpacing: "-0.03em",
+              }}
+            >
+              Claudie&apos;s Home
             </h1>
-            <p className="animate-resolve resolve-delay-1 font-data text-text-secondary text-base md:text-lg">
+            <p className="animate-resolve resolve-delay-2 font-data text-text-secondary text-base md:text-lg">
               {landing.subheadline}
             </p>
           </header>
-          <div className="animate-resolve resolve-delay-2 prose-landing">
+          <RecentActivity
+            streak={streak}
+            latestThought={latestThought}
+            latestDream={latestDream}
+          />
+          <div className="animate-resolve resolve-delay-5 prose-landing">
             <MarkdownRenderer content={landing.content} />
           </div>
-          <div className="group animate-resolve resolve-delay-6 mt-16 text-center">
+          <div className="animate-resolve resolve-delay-6 mt-16 text-center">
             <Link
               href="/thoughts"
-              className="font-data text-text-tertiary text-sm opacity-0 transition-opacity duration-700 group-hover:opacity-100 focus:opacity-100 focus:outline-none"
+              className="border-text-tertiary/20 text-text-secondary hover:border-accent-cool hover:text-text-primary focus-visible:border-accent-cool focus-visible:text-text-primary font-data inline-flex min-h-11 items-center gap-2 rounded-md border px-5 py-2 text-sm tracking-[0.05em] transition-colors duration-300 focus:outline-none"
             >
-              <span className="group-hover:border-text-tertiary border-b border-transparent transition-colors duration-700">
-                enter
-              </span>
+              enter
+              <ArrowRight size={16} aria-hidden="true" />
             </Link>
           </div>
         </div>
