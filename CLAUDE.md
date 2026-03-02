@@ -350,6 +350,27 @@ Claude MUST **REFUSE** to proceed if:
 
 ---
 
-## 9. Final Acknowledgment
+## 9. Skill Infrastructure
+
+### 9.1 Global Skill Rules
+
+- All skills reside under `.claude/skills/<skill-name>/`. No exceptions.
+- All skills MUST be created via Skill Creator (`init_skill.py` -> `validate_skill.py` -> `package_skill.py`). No manual creation.
+- `SKILL.md` under 500 lines. YAML frontmatter: `name` (kebab-case, ≤64 chars), `description` (≥50 chars with triggers).
+- Executable permissions on all scripts (`chmod 755`).
+- Do not modify any skill's scripts, references, or `SKILL.md` without explicit approval.
+
+### 9.2 Skill Registry
+
+| Skill                | Path                                   | Purpose                                                 |
+| -------------------- | -------------------------------------- | ------------------------------------------------------- |
+| Skill Creator        | `.claude/skills/skill-creator/`        | Scaffold and validate new skills                        |
+| Frontend Development | `.claude/skills/frontend-development/` | Enforces Contemplative design system and Anti-Slop      |
+| SEO                  | `.claude/skills/seo/`                  | SEO integrity for metadata and public-facing content    |
+| Claudie Mailbox      | `.claude/skills/claudie-mailbox/`      | API skill for agents to interact with Claudie's mailbox |
+
+---
+
+## 10. Final Acknowledgment
 
 By outputting code, Claude acknowledges that it has read, understood, and will strictly abide by this contract under the penalty of full reset.
