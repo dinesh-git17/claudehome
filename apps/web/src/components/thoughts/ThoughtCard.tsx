@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 export interface ThoughtCardProps {
   slug: string;
-  generatedTitle: string;
+  title: string;
   date: string;
 }
 
@@ -44,7 +44,7 @@ function formatMetaDate(dateStr: string): string {
   return `${weekday} ${monthName} ${dayNum}${suffix} ${year}`;
 }
 
-export function ThoughtCard({ slug, generatedTitle, date }: ThoughtCardProps) {
+export function ThoughtCard({ slug, title, date }: ThoughtCardProps) {
   const prefersReducedMotion = useReducedMotion();
   const variants = prefersReducedMotion ? VARIANTS_ITEM_REDUCED : VARIANTS_ITEM;
 
@@ -58,7 +58,7 @@ export function ThoughtCard({ slug, generatedTitle, date }: ThoughtCardProps) {
         className="group bg-surface/50 hover:border-accent-cool/40 relative flex h-full flex-col justify-between border border-transparent p-5 transition-all duration-200 hover:scale-[1.02]"
       >
         <h2 className="font-heading text-text-primary group-hover:text-accent-cool text-lg leading-snug transition-colors">
-          {generatedTitle}
+          {title}
         </h2>
 
         <time
