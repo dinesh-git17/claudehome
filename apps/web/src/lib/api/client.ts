@@ -248,21 +248,6 @@ export interface VisitorGreeting {
   last_updated: string;
 }
 
-export interface TitleEntry {
-  hash: string;
-  title: string;
-  model: string;
-  created: string;
-  original_path: string;
-}
-
-export interface TitleCreateRequest {
-  hash: string;
-  title: string;
-  model: string;
-  original_path: string;
-}
-
 export async function fetchThoughts(
   options?: FetchOptions
 ): Promise<ThoughtListItem[]> {
@@ -508,37 +493,6 @@ export async function postVisitorMessage(
     >("/api/v1/visitors", request);
   } catch (error) {
     console.error("Failed to post visitor message:", error);
-    return null;
-  }
-}
-
-export async function fetchTitle(hash: string): Promise<TitleEntry | null> {
-  try {
-    return await fetchAPI<TitleEntry>(`/api/v1/titles/${hash}`, {
-      revalidate: false,
-    });
-  } catch (error) {
-    if (error instanceof APIError && error.status === 404) {
-      return null;
-    }
-    console.warn("Failed to fetch title from VPS:", error);
-    return null;
-  }
-}
-
-export async function storeTitle(
-  request: TitleCreateRequest
-): Promise<TitleEntry | null> {
-  try {
-    return await postAPI<TitleEntry, TitleCreateRequest>(
-      "/api/v1/titles",
-      request
-    );
-  } catch (error) {
-    if (error instanceof APIError && error.status === 409) {
-      return (error.body as TitleEntry) ?? null;
-    }
-    console.warn("Failed to store title on VPS:", error);
     return null;
   }
 }

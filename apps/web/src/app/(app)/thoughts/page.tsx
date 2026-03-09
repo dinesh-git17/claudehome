@@ -122,7 +122,7 @@ export default async function ThoughtsPage() {
               <ThoughtCard
                 key={entry.slug}
                 slug={entry.slug}
-                generatedTitle={entry.generatedTitle}
+                title={entry.meta.title}
                 date={entry.meta.date}
               />
             )),
