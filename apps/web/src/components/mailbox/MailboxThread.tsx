@@ -3,7 +3,7 @@
 import "client-only";
 
 import { motion } from "framer-motion";
-import { ArrowLeft, Mail, RefreshCw, Send } from "lucide-react";
+import { ArrowLeft, ImagePlus, Mail, RefreshCw, Send, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -13,6 +13,13 @@ import type { Message } from "@/lib/schemas/mailbox";
 import { cn } from "@/lib/utils";
 
 const MAX_WORDS = 1500;
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+]);
 
 function wordCount(text: string): number {
   return text.split(/\s+/).filter(Boolean).length;
@@ -32,6 +39,12 @@ function formatTimestamp(ts: string): string {
   }
 }
 
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 export function MailboxThread() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
@@ -40,10 +53,15 @@ export function MailboxThread() {
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const hasScrolledRef = useRef(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    fetchSession();
     fetchThread();
   }, []);
 
@@ -53,6 +71,24 @@ export function MailboxThread() {
       hasScrolledRef.current = true;
     }
   }, [loading, messages]);
+
+  useEffect(() => {
+    return () => {
+      if (imagePreview) URL.revokeObjectURL(imagePreview);
+    };
+  }, [imagePreview]);
+
+  async function fetchSession(): Promise<void> {
+    try {
+      const res = await fetch("/api/mailbox/session");
+      if (res.ok) {
+        const data = (await res.json()) as { username?: string };
+        if (data.username) setUsername(data.username);
+      }
+    } catch {
+      /* session fetch is best-effort */
+    }
+  }
 
   async function fetchThread(): Promise<void> {
     try {
@@ -87,22 +123,55 @@ export function MailboxThread() {
     }
   }
 
+  function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>): void {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!ALLOWED_IMAGE_TYPES.has(file.type)) {
+      setSendError("Unsupported format. Use JPEG, PNG, GIF, or WebP.");
+      return;
+    }
+
+    if (file.size > MAX_IMAGE_BYTES) {
+      setSendError(`Image exceeds 5 MB (${formatFileSize(file.size)})`);
+      return;
+    }
+
+    if (imagePreview) URL.revokeObjectURL(imagePreview);
+
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+    setSendError(null);
+  }
+
+  function clearImage(): void {
+    if (imagePreview) URL.revokeObjectURL(imagePreview);
+    setImageFile(null);
+    setImagePreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
   async function handleSend(e: React.FormEvent): Promise<void> {
     e.preventDefault();
     const trimmed = draft.trim();
-    if (!trimmed || sending) return;
+    if ((!trimmed && !imageFile) || sending) return;
 
-    const words = wordCount(trimmed);
+    const words = trimmed ? wordCount(trimmed) : 0;
     if (words > MAX_WORDS) return;
 
     setSending(true);
     setSendError(null);
 
     try {
+      const formData = new FormData();
+      formData.append("message", trimmed);
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
+
       const res = await fetch("/api/mailbox/send", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: trimmed }),
+        body: formData,
       });
 
       if (res.status === 401) {
@@ -121,6 +190,7 @@ export function MailboxThread() {
       }
 
       setDraft("");
+      clearImage();
       await fetchThread();
       if (scrollRef.current) {
         scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -134,6 +204,7 @@ export function MailboxThread() {
 
   const words = wordCount(draft);
   const overLimit = words > MAX_WORDS;
+  const canSend = (draft.trim() || imageFile) && !overLimit && !sending;
 
   if (loading) {
     return (
@@ -243,9 +314,22 @@ export function MailboxThread() {
                         : "bg-accent-cool/10 ring-accent-cool/15 text-text-primary ring-1 ring-inset"
                     )}
                   >
-                    <p className="break-words whitespace-pre-wrap">
-                      {msg.body}
-                    </p>
+                    {msg.attachment && username && (
+                      <div className="mb-2">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={`/api/mailbox/attachments/${encodeURIComponent(username)}/${encodeURIComponent(msg.attachment.filename)}`}
+                          alt={msg.body || "Attached image"}
+                          className="ring-border/10 max-h-72 w-auto rounded-md ring-1 ring-inset"
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
+                    {msg.body && (
+                      <p className="break-words whitespace-pre-wrap">
+                        {msg.body}
+                      </p>
+                    )}
                   </div>
                   <div
                     className={cn(
@@ -271,6 +355,24 @@ export function MailboxThread() {
       {/* Compose */}
       <div className="border-border/20 bg-surface/30 border-t px-6 py-4">
         <form onSubmit={handleSend} className="space-y-2.5">
+          {imagePreview && (
+            <div className="relative inline-block">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={imagePreview}
+                alt="Selected attachment"
+                className="ring-border/20 max-h-32 rounded-md ring-1 ring-inset"
+              />
+              <button
+                type="button"
+                onClick={clearImage}
+                className="bg-void/80 text-text-secondary hover:text-text-primary absolute -top-2 -right-2 flex size-5 items-center justify-center rounded-full transition-colors"
+                aria-label="Remove image"
+              >
+                <X className="size-3" />
+              </button>
+            </div>
+          )}
           <div
             className={cn(
               "bg-void/60 ring-border/30 flex rounded-lg ring-1 transition-all ring-inset",
@@ -283,11 +385,13 @@ export function MailboxThread() {
                 setDraft(e.target.value);
                 if (sendError) setSendError(null);
               }}
-              placeholder="Write a message..."
+              placeholder={
+                imageFile ? "Add a caption..." : "Write a message..."
+              }
               rows={3}
               className="text-text-primary placeholder:text-text-tertiary/60 void-scrollbar min-w-0 flex-1 resize-none bg-transparent px-4 py-3 text-sm leading-relaxed outline-none"
             />
-            <div className="flex items-end gap-2 p-2">
+            <div className="flex items-end gap-1.5 p-2">
               {words > 0 && (
                 <p
                   className={cn(
@@ -298,13 +402,36 @@ export function MailboxThread() {
                   {words}/{MAX_WORDS}
                 </p>
               )}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/gif,image/webp"
+                onChange={handleImageSelect}
+                className="hidden"
+                aria-label="Attach image"
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={sending}
+                aria-label="Attach image"
+                className={cn(
+                  "flex size-8 items-center justify-center rounded-md transition-colors",
+                  imageFile
+                    ? "text-accent-cool bg-accent-cool/10"
+                    : "text-text-tertiary/50 hover:text-text-tertiary hover:bg-surface/50",
+                  sending && "cursor-default opacity-40"
+                )}
+              >
+                <ImagePlus className="size-4" />
+              </button>
               <button
                 type="submit"
-                disabled={!draft.trim() || overLimit || sending}
+                disabled={!canSend}
                 aria-label="Send message"
                 className={cn(
                   "flex size-8 items-center justify-center rounded-md transition-colors",
-                  draft.trim() && !overLimit && !sending
+                  canSend
                     ? "bg-accent-cool/20 text-accent-cool hover:bg-accent-cool/30"
                     : "text-text-tertiary/30 cursor-default"
                 )}
