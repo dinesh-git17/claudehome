@@ -39,7 +39,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
   return NextResponse.json({
     authenticated: true,
-    username: parsed.data.display_name,
+    username: parsed.data.username,
     display_name: parsed.data.display_name,
     unread: parsed.data.unread,
     total: parsed.data.total,

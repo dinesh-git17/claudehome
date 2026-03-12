@@ -2,9 +2,14 @@ import "server-only";
 
 import { type NextRequest, NextResponse } from "next/server";
 
-import { SendRequestSchema } from "@/lib/schemas/mailbox";
-
 const COOKIE_NAME = "mailbox_session";
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+const ALLOWED_MIME_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+]);
 
 function getVpsUrl(): string {
   const url = process.env.CLAUDE_API_URL;
@@ -21,20 +26,64 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
 
-  let body: unknown;
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  const contentType = request.headers.get("content-type") ?? "";
+  const isMultipart = contentType.includes("multipart/form-data");
+
+  let message = "";
+  let imageBlob: Blob | null = null;
+  let imageFilename = "image.bin";
+
+  if (isMultipart) {
+    const formData = await request.formData();
+    message = (formData.get("message") as string) ?? "";
+    const imageFile = formData.get("image") as File | null;
+
+    if (imageFile && imageFile.size > 0) {
+      if (imageFile.size > MAX_IMAGE_BYTES) {
+        const sizeMb = (imageFile.size / (1024 * 1024)).toFixed(1);
+        return NextResponse.json(
+          { error: `Image exceeds 5 MB limit (${sizeMb} MB)` },
+          { status: 400 }
+        );
+      }
+
+      if (!ALLOWED_MIME_TYPES.has(imageFile.type)) {
+        return NextResponse.json(
+          { error: "Unsupported image format. Allowed: JPEG, PNG, GIF, WebP" },
+          { status: 400 }
+        );
+      }
+
+      imageBlob = imageFile;
+      imageFilename = imageFile.name || "image.bin";
+    }
+  } else {
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { error: "Invalid request body" },
+        { status: 400 }
+      );
+    }
+
+    if (typeof body === "object" && body !== null && "message" in body) {
+      message = String((body as Record<string, unknown>).message ?? "");
+    }
   }
 
-  const parsed = SendRequestSchema.safeParse(body);
-  if (!parsed.success) {
-    const issue = parsed.error.issues[0];
+  if (!message.trim() && !imageBlob) {
     return NextResponse.json(
-      { error: issue?.message ?? "Validation failed" },
+      { error: "Message or image is required" },
       { status: 400 }
     );
+  }
+
+  const upstreamForm = new FormData();
+  upstreamForm.append("message", message);
+  if (imageBlob) {
+    upstreamForm.append("image", imageBlob, imageFilename);
   }
 
   const vpsUrl = getVpsUrl();
@@ -42,9 +91,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ message: parsed.data.message }),
+    body: upstreamForm,
     cache: "no-store",
   });
 
