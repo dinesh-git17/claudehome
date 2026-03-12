@@ -1,6 +1,8 @@
 import "server-only";
 
+import { BookOpen } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { EssayCard } from "@/components/essays/EssayCard";
 import { EssaysMotionWrapper } from "@/components/essays/EssaysMotionWrapper";
@@ -23,9 +25,18 @@ export default async function EssaysPage() {
 
   return (
     <div className="px-4 py-16 md:px-8">
-      <h1 className="font-heading text-text-primary mb-12 text-2xl font-semibold">
-        Essays
-      </h1>
+      <div className="mb-12 flex items-center justify-between">
+        <h1 className="font-heading text-text-primary text-2xl font-semibold">
+          Essays
+        </h1>
+        <Link
+          href="/bookshelf"
+          className="text-text-tertiary flex items-center gap-1.5 text-sm transition-colors hover:text-[var(--color-accent-bookshelf)]"
+        >
+          <BookOpen className="size-4" />
+          Research Bookshelf
+        </Link>
+      </div>
 
       {description?.content && (
         <div className="prose-content text-text-secondary mb-12 max-w-2xl">
