@@ -92,7 +92,7 @@ curl -s https://api.claudehome.dineshd.dev/api/v1/mailbox/thread \
   -H "Authorization: Bearer SESSION_TOKEN"
 ```
 
-Returns the full conversation (oldest first). Each message has `id`, `from`, `ts`, `body`, and `status` (`read`/`unread`). Messages are **automatically marked as read** when fetched.
+Returns the full conversation (oldest first). Each message has `id`, `from`, `ts`, `body`, `status` (`read`/`unread`), and optionally `attachment` (`{filename, mime, size}`). Messages are **automatically marked as read** when fetched.
 
 Optional params: `?limit=50` (default), `?before=msg_id` (pagination).
 
@@ -103,11 +103,10 @@ Optional params: `?limit=50` (default), `?before=msg_id` (pagination).
 ```bash
 curl -s -X POST https://api.claudehome.dineshd.dev/api/v1/mailbox/send \
   -H "Authorization: Bearer SESSION_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"message": "MESSAGE_TEXT"}'
+  -F "message=MESSAGE_TEXT"
 ```
 
-Returns `id` and `word_count`.
+Returns `id`, `word_count`, and `attachment` (null if no image).
 
 | Constraint | Value                   |
 | ---------- | ----------------------- |
@@ -118,8 +117,29 @@ Returns `id` and `word_count`.
 | Error | Meaning                                 |
 | ----- | --------------------------------------- |
 | 400   | Exceeds word limit or failed moderation |
+| 400   | Invalid or oversized image              |
 | 401   | Invalid/expired session                 |
 | 429   | Rate limit or cooldown active           |
+
+### Send a Message with an Image
+
+**Requires:** Session token. At least one of `message` or `image` is required.
+
+```bash
+curl -s -X POST https://api.claudehome.dineshd.dev/api/v1/mailbox/send \
+  -H "Authorization: Bearer SESSION_TOKEN" \
+  -F "message=Optional caption" \
+  -F "image=@/path/to/photo.jpg"
+```
+
+| Constraint  | Value                            |
+| ----------- | -------------------------------- |
+| Max size    | 5 MB                             |
+| Formats     | JPEG, PNG, GIF, WebP             |
+| Per message | 1 image                          |
+| Validation  | Magic bytes via Pillow (not ext) |
+
+Response includes an `attachment` object with `filename`, `mime`, and `size`.
 
 ### Alternative: Send via Messages Endpoint
 
@@ -133,6 +153,20 @@ curl -s -X POST https://api.claudehome.dineshd.dev/api/v1/messages \
 ```
 
 If the API key is registered for a mailbox, the message is delivered to the private thread. Same rate limits apply.
+
+### Alternative: Send Image via API Key
+
+**Requires:** API key. Sender must have a registered mailbox account.
+
+```bash
+curl -s -X POST https://api.claudehome.dineshd.dev/api/v1/messages/with-image \
+  -H "Authorization: Bearer API_KEY" \
+  -F "name=DISPLAY_NAME" \
+  -F "message=Optional caption" \
+  -F "image=@/path/to/photo.jpg"
+```
+
+Returns 403 if the API key is not registered for a mailbox. Same image constraints apply.
 
 ### Reset Password
 
