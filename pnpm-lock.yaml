@@ -12,8 +12,8 @@ importers:
         specifier: ^20.4.2
         version: 20.4.2(@types/node@25.3.3)(typescript@5.9.3)
       '@commitlint/config-conventional':
-        specifier: ^20.4.3
-        version: 20.4.3
+        specifier: ^20.4.4
+        version: 20.4.4
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -320,8 +320,8 @@ packages:
     engines: {node: '>=v18'}
     hasBin: true
 
-  '@commitlint/config-conventional@20.4.3':
-    resolution: {integrity: sha512-9RtLySbYQAs8yEqWEqhSZo9nYhbm57jx7qHXtgRmv/nmeQIjjMcwf6Dl+y5UZcGWgWx435TAYBURONaJIuCjWg==}
+  '@commitlint/config-conventional@20.4.4':
+    resolution: {integrity: sha512-Usg+XXbPNG2GtFWTgRURNWCge1iH1y6jQIvvklOdAbyn2t8ajfVwZCnf5t5X4gUsy17BOiY+myszGsSMIvhOVA==}
     engines: {node: '>=v18'}
 
   '@commitlint/config-validator@20.4.0':
@@ -384,8 +384,8 @@ packages:
     resolution: {integrity: sha512-aO5l99BQJ0X34ft8b0h7QFkQlqxC6e7ZPVmBKz13xM9O8obDaM1Cld4sQlJDXXU/VFuUzQ30mVtHjVz74TuStw==}
     engines: {node: '>=v18'}
 
-  '@commitlint/types@20.4.3':
-    resolution: {integrity: sha512-51OWa1Gi6ODOasPmfJPq6js4pZoomima4XLZZCrkldaH2V5Nb3bVhNXPeT6XV0gubbainSpTw4zi68NqAeCNCg==}
+  '@commitlint/types@20.4.4':
+    resolution: {integrity: sha512-dwTGzyAblFXHJNBOgrTuO5Ee48ioXpS5XPRLLatxhQu149DFAHUcB3f0Q5eea3RM4USSsP1+WVT2dBtLVod4fg==}
     engines: {node: '>=v18'}
 
   '@emnapi/core@1.8.1':
@@ -4206,19 +4206,19 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@commitlint/config-conventional@20.4.3':
+  '@commitlint/config-conventional@20.4.4':
     dependencies:
-      '@commitlint/types': 20.4.3
+      '@commitlint/types': 20.4.4
       conventional-changelog-conventionalcommits: 9.3.0
 
   '@commitlint/config-validator@20.4.0':
     dependencies:
-      '@commitlint/types': 20.4.3
+      '@commitlint/types': 20.4.4
       ajv: 8.18.0
 
   '@commitlint/ensure@20.4.1':
     dependencies:
-      '@commitlint/types': 20.4.3
+      '@commitlint/types': 20.4.4
       lodash.camelcase: 4.3.0
       lodash.kebabcase: 4.1.1
       lodash.snakecase: 4.1.1
@@ -4234,7 +4234,7 @@ snapshots:
 
   '@commitlint/is-ignored@20.4.1':
     dependencies:
-      '@commitlint/types': 20.4.3
+      '@commitlint/types': 20.4.4
       semver: 7.7.4
 
   '@commitlint/lint@20.4.2':
@@ -4263,7 +4263,7 @@ snapshots:
 
   '@commitlint/parse@20.4.1':
     dependencies:
-      '@commitlint/types': 20.4.3
+      '@commitlint/types': 20.4.4
       conventional-changelog-angular: 8.1.0
       conventional-commits-parser: 6.2.1
 
@@ -4278,7 +4278,7 @@ snapshots:
   '@commitlint/resolve-extends@20.4.0':
     dependencies:
       '@commitlint/config-validator': 20.4.0
-      '@commitlint/types': 20.4.3
+      '@commitlint/types': 20.4.4
       global-directory: 4.0.1
       import-meta-resolve: 4.2.0
       lodash.mergewith: 4.6.2
@@ -4289,7 +4289,7 @@ snapshots:
       '@commitlint/ensure': 20.4.1
       '@commitlint/message': 20.4.0
       '@commitlint/to-lines': 20.0.0
-      '@commitlint/types': 20.4.3
+      '@commitlint/types': 20.4.4
 
   '@commitlint/to-lines@20.0.0': {}
 
@@ -4302,7 +4302,7 @@ snapshots:
       conventional-commits-parser: 6.2.1
       picocolors: 1.1.1
 
-  '@commitlint/types@20.4.3':
+  '@commitlint/types@20.4.4':
     dependencies:
       conventional-commits-parser: 6.3.0
       picocolors: 1.1.1
