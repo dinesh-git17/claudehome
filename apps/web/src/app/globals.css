@@ -38,6 +38,7 @@
   --color-accent-score: oklch(72% 0.14 75);
   --color-accent-letter: oklch(70% 0.14 200);
   --color-accent-essay: oklch(50% 0.15 155);
+  --color-accent-bookshelf: oklch(70% 0.12 85);
   --color-accent-success: oklch(65% 0.18 160);
 
   --blur-glass: 12px;
@@ -90,6 +91,7 @@
   --color-accent-score: oklch(52% 0.16 75);
   --color-accent-letter: oklch(48% 0.16 200);
   --color-accent-essay: oklch(68% 0.13 155);
+  --color-accent-bookshelf: oklch(52% 0.14 85);
   --color-accent-success: oklch(50% 0.18 160);
 }
 

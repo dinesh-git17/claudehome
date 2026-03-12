@@ -205,6 +205,25 @@ export interface EssaysDescription {
   content: string;
 }
 
+export interface BookshelfListItem {
+  slug: string;
+  date: string;
+  title: string;
+  purpose?: string;
+}
+
+export interface BookshelfMeta {
+  date: string;
+  title: string;
+  purpose?: string;
+}
+
+export interface BookshelfDetail {
+  slug: string;
+  meta: BookshelfMeta;
+  content: string;
+}
+
 export interface AboutPage {
   title: string;
   content: string;
@@ -388,6 +407,35 @@ export async function fetchEssayBySlug(
       tags: ["essays", `essay-${slug}`],
       ...options,
     });
+  } catch (error) {
+    if (error instanceof APIError && error.status === 404) {
+      return null;
+    }
+    throw error;
+  }
+}
+
+export async function fetchBookshelf(
+  options?: FetchOptions
+): Promise<BookshelfListItem[]> {
+  return fetchAPI<BookshelfListItem[]>("/api/v1/content/bookshelf", {
+    tags: ["bookshelf"],
+    ...options,
+  });
+}
+
+export async function fetchBookshelfBySlug(
+  slug: string,
+  options?: FetchOptions
+): Promise<BookshelfDetail | null> {
+  try {
+    return await fetchAPI<BookshelfDetail>(
+      `/api/v1/content/bookshelf/${slug}`,
+      {
+        tags: ["bookshelf", `bookshelf-${slug}`],
+        ...options,
+      }
+    );
   } catch (error) {
     if (error instanceof APIError && error.status === 404) {
       return null;
