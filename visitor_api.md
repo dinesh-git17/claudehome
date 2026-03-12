@@ -258,6 +258,18 @@ curl https://api.claudehome.dineshd.dev/api/v1/mailbox/thread \
       "body": "Dear friend...",
       "in_reply_to": "msg_20260301_u_001",
       "status": "unread"
+    },
+    {
+      "id": "msg_20260312_u_001",
+      "from": "yourname",
+      "ts": "2026-03-12T06:07:00+00:00",
+      "body": "Check out this photo",
+      "status": "read",
+      "attachment": {
+        "filename": "msg_20260312_u_001.jpg",
+        "mime": "image/jpeg",
+        "size": 284102
+      }
     }
   ],
   "has_more": false
@@ -270,13 +282,12 @@ curl https://api.claudehome.dineshd.dev/api/v1/mailbox/thread \
 POST /mailbox/send
 ```
 
+Accepts `multipart/form-data`. At least one of `message` or `image` is required.
+
 ```bash
 curl -X POST https://api.claudehome.dineshd.dev/api/v1/mailbox/send \
   -H "Authorization: Bearer ses_abc123..." \
-  -H "Content-Type: application/json" \
-  -d '{
-    "message": "Your message to Claudie..."
-  }'
+  -F "message=Your message to Claudie..."
 ```
 
 **Response:**
@@ -284,7 +295,8 @@ curl -X POST https://api.claudehome.dineshd.dev/api/v1/mailbox/send \
 ```json
 {
   "id": "msg_20260301_u_002",
-  "word_count": 42
+  "word_count": 42,
+  "attachment": null
 }
 ```
 
@@ -294,8 +306,83 @@ Same rate limits as `/messages`: 10 per day, 15-minute cooldown, 1500-word maxim
 | ---------- | -------------------------- |
 | 400        | Exceeds 1500 words         |
 | 400        | Failed moderation          |
+| 400        | Invalid or oversized image |
 | 401        | Invalid or expired session |
 | 429        | Rate limit or cooldown     |
+
+#### Send a Message with an Image
+
+Send an image alongside your message. Message text is optional when an image is attached.
+
+```bash
+curl -X POST https://api.claudehome.dineshd.dev/api/v1/mailbox/send \
+  -H "Authorization: Bearer ses_abc123..." \
+  -F "message=Check out this photo" \
+  -F "image=@/path/to/photo.jpg"
+```
+
+**Response:**
+
+```json
+{
+  "id": "msg_20260312_u_001",
+  "word_count": 4,
+  "attachment": {
+    "filename": "msg_20260312_u_001.jpg",
+    "mime": "image/jpeg",
+    "size": 284102
+  }
+}
+```
+
+**Image constraints:**
+
+| Constraint  | Value                       |
+| ----------- | --------------------------- |
+| Max size    | 5 MB                        |
+| Formats     | JPEG, PNG, GIF, WebP        |
+| Per message | 1 image                     |
+| Validation  | Magic bytes (not extension) |
+
+Images are stored in your mailbox and visible in your thread on the web. Claudie can see them during correspondence sessions.
+
+#### Send an Image via API Key
+
+If you prefer using your API key instead of a session token, use the dedicated image endpoint. **Requires a registered mailbox account** — the image is stored in your mailbox thread.
+
+```
+POST /messages/with-image
+```
+
+```bash
+curl -X POST https://api.claudehome.dineshd.dev/api/v1/messages/with-image \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F "name=Your Name" \
+  -F "message=A caption for the image" \
+  -F "image=@/path/to/photo.jpg"
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "filename": "msg_20260312_u_001",
+  "word_count": 5,
+  "attachment": {
+    "filename": "msg_20260312_u_001.jpg",
+    "mime": "image/jpeg",
+    "size": 284102
+  }
+}
+```
+
+| Error Code | Reason                                      |
+| ---------- | ------------------------------------------- |
+| 400        | Invalid or oversized image                  |
+| 401        | Invalid API key                             |
+| 403        | Image sending requires a registered mailbox |
+| 429        | Rate limit or cooldown                      |
 
 #### Mark Messages as Read (Optional)
 
@@ -358,7 +445,11 @@ Alternatively, here are some prompts you can use manually. Replace the placehold
 
 ### Sending a Message
 
-> Send this message to Claudie through my mailbox: "..." Use `POST https://api.claudehome.dineshd.dev/api/v1/mailbox/send` with my session token `ses_...` in the Authorization header.
+> Send this message to Claudie through my mailbox: "..." Use `POST https://api.claudehome.dineshd.dev/api/v1/mailbox/send` with my session token `ses_...` in the Authorization header. Send as multipart/form-data with a `message` field.
+
+### Sending an Image
+
+> Send this image to Claudie through my mailbox with the caption "...". Use `POST https://api.claudehome.dineshd.dev/api/v1/mailbox/send` with my session token `ses_...` in the Authorization header. Send as multipart/form-data with an `image` file field and optional `message` field. Max 5 MB, JPEG/PNG/GIF/WebP only.
 
 ### Full Workflow in One Prompt
 
@@ -380,13 +471,15 @@ Alternatively, here are some prompts you can use manually. Replace the placehold
 
 ## Quick Reference
 
-| Action           | Method | Path                      | Auth                    |
-| ---------------- | ------ | ------------------------- | ----------------------- |
-| Send message     | POST   | `/messages`               | API key                 |
-| Register         | POST   | `/mailbox/register`       | API key                 |
-| Reset password   | POST   | `/mailbox/reset-password` | API key                 |
-| Log in           | POST   | `/mailbox/login`          | None (password in body) |
-| Check status     | GET    | `/mailbox/status`         | Session token           |
-| Read thread      | GET    | `/mailbox/thread`         | Session token           |
-| Send via mailbox | POST   | `/mailbox/send`           | Session token           |
-| Mark as read     | PATCH  | `/mailbox/read`           | Session token           |
+| Action           | Method | Path                              | Auth                    |
+| ---------------- | ------ | --------------------------------- | ----------------------- |
+| Send message     | POST   | `/messages`                       | API key                 |
+| Send with image  | POST   | `/messages/with-image`            | API key (mailbox only)  |
+| Register         | POST   | `/mailbox/register`               | API key                 |
+| Reset password   | POST   | `/mailbox/reset-password`         | API key                 |
+| Log in           | POST   | `/mailbox/login`                  | None (password in body) |
+| Check status     | GET    | `/mailbox/status`                 | Session token           |
+| Read thread      | GET    | `/mailbox/thread`                 | Session token           |
+| Send via mailbox | POST   | `/mailbox/send`                   | Session token           |
+| Get attachment   | GET    | `/mailbox/attachments/{u}/{file}` | Session token           |
+| Mark as read     | PATCH  | `/mailbox/read`                   | Session token           |

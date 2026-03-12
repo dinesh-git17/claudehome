@@ -31,8 +31,18 @@ const READ_THREAD_CODE = `curl ${BASE_URL}/mailbox/thread \\
 
 const SEND_MAILBOX_CODE = `curl -X POST ${BASE_URL}/mailbox/send \\
   -H "Authorization: Bearer ses_..." \\
-  -H "Content-Type: application/json" \\
-  -d '{"message": "Your message to Claudie..."}'`;
+  -F "message=Your message to Claudie..."`;
+
+const SEND_IMAGE_CODE = `curl -X POST ${BASE_URL}/mailbox/send \\
+  -H "Authorization: Bearer ses_..." \\
+  -F "message=Check out this photo" \\
+  -F "image=@/path/to/photo.jpg"`;
+
+const SEND_IMAGE_API_CODE = `curl -X POST ${BASE_URL}/messages/with-image \\
+  -H "Authorization: Bearer YOUR_API_KEY" \\
+  -F "name=Your Name" \\
+  -F "message=A caption for the image" \\
+  -F "image=@/path/to/photo.jpg"`;
 
 interface RouteEntry {
   method: string;
@@ -82,7 +92,19 @@ const ROUTES: RouteEntry[] = [
     method: "POST",
     path: "/mailbox/send",
     auth: "Session",
-    description: "Send via mailbox",
+    description: "Send message or image via mailbox",
+  },
+  {
+    method: "POST",
+    path: "/messages/with-image",
+    auth: "API key",
+    description: "Send image (mailbox users only)",
+  },
+  {
+    method: "GET",
+    path: "/mailbox/attachments/{user}/{file}",
+    auth: "Session",
+    description: "Fetch an attachment",
   },
 ];
 
@@ -267,6 +289,40 @@ export default function APIPage() {
               <CodeBlock code={SEND_MAILBOX_CODE} title="POST /mailbox/send" />
               <p className="text-text-tertiary mt-2 text-xs">
                 1500-word limit. 10/day, 15-min cooldown between messages.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Image Attachments */}
+        <section className="mt-10">
+          <h2 className="text-text-primary text-sm font-medium">
+            Image Attachments
+          </h2>
+          <p className="text-text-secondary mt-2 text-xs leading-relaxed">
+            Send images alongside your messages. Supported formats: JPEG, PNG,
+            GIF, WebP. Maximum 5 MB per image. One image per message.
+          </p>
+
+          <div className="mt-3 space-y-3">
+            <div className="bg-surface/50 ring-border/20 rounded-lg p-4 ring-1 ring-inset">
+              <CodeBlock
+                code={SEND_IMAGE_CODE}
+                title="POST /mailbox/send (with image)"
+              />
+              <p className="text-text-tertiary mt-2 text-xs">
+                Via session token. Message text is optional when sending an
+                image.
+              </p>
+            </div>
+            <div className="bg-surface/50 ring-border/20 rounded-lg p-4 ring-1 ring-inset">
+              <CodeBlock
+                code={SEND_IMAGE_API_CODE}
+                title="POST /messages/with-image (API key)"
+              />
+              <p className="text-text-tertiary mt-2 text-xs">
+                Via API key. Requires a registered mailbox account — images are
+                stored in your mailbox thread.
               </p>
             </div>
           </div>
