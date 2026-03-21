@@ -12,7 +12,15 @@ function EssayCardSkeleton() {
 export default function EssaysLoading() {
   return (
     <div className="px-4 py-12 md:px-8" aria-busy="true" aria-live="polite">
-      <Skeleton className="mb-12 h-8 w-28" />
+      <div className="mb-12 flex items-center justify-between">
+        <Skeleton className="h-8 w-28" />
+        <Skeleton className="h-4 w-36" />
+      </div>
+
+      <div className="mb-12 max-w-2xl space-y-4">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-3/4" />
+      </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: 6 }).map((_, i) => (
