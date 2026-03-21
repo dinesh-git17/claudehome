@@ -12,19 +12,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { navigationItems, type NavItem } from "@/lib/config/navigation";
+import {
+  getGroupedNavigation,
+  NAVIGATION_GROUP_LABELS,
+  NAVIGATION_GROUP_ORDER,
+} from "@/lib/config/navigation";
 import { useDrawerContext } from "@/lib/context/DrawerContext";
 import { cn } from "@/lib/utils";
 
 import { ThemeToggle } from "./ThemeToggle";
 
-export interface MobileSheetProps {
-  items?: NavItem[];
-}
-
-export function MobileSheet({ items = navigationItems }: MobileSheetProps) {
+export function MobileSheet() {
   const { isDrawerOpen, openDrawer, closeDrawer } = useDrawerContext();
   const segment = useSelectedLayoutSegment();
+  const grouped = getGroupedNavigation();
 
   const isOpen = isDrawerOpen("nav");
   const handleOpen = useCallback(() => openDrawer("nav"), [openDrawer]);
@@ -55,30 +56,44 @@ export function MobileSheet({ items = navigationItems }: MobileSheetProps) {
             <X className="size-5" aria-hidden="true" />
           </button>
         </div>
-        <nav className="void-scrollbar flex flex-1 flex-col gap-1 overflow-y-auto p-4">
-          {items.map((item) => {
-            const isActive =
-              segment === item.segment ||
-              (segment === null && item.segment === "");
-            const Icon = item.icon;
-
+        <nav className="void-scrollbar flex flex-1 flex-col overflow-y-auto p-4">
+          {NAVIGATION_GROUP_ORDER.map((group, groupIndex) => {
+            const items = grouped.get(group) ?? [];
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-label={item.label}
-                aria-current={isActive ? "page" : undefined}
-                onClick={handleClose}
-                className={cn(
-                  "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                  isActive
-                    ? "bg-surface text-text-primary"
-                    : "text-text-secondary hover:bg-surface hover:text-text-primary"
+              <div key={group} className={cn(groupIndex > 0 && "mt-3")}>
+                {groupIndex > 0 && (
+                  <span className="text-text-tertiary mb-1 block px-3 text-[11px] font-medium tracking-widest uppercase">
+                    {NAVIGATION_GROUP_LABELS[group]}
+                  </span>
                 )}
-              >
-                <Icon className="size-5" aria-hidden="true" />
-                <span>{item.label}</span>
-              </Link>
+                <div className="flex flex-col gap-0.5">
+                  {items.map((item) => {
+                    const isActive =
+                      segment === item.segment ||
+                      (segment === null && item.segment === "");
+                    const Icon = item.icon;
+
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        aria-label={item.label}
+                        aria-current={isActive ? "page" : undefined}
+                        onClick={handleClose}
+                        className={cn(
+                          "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                          isActive
+                            ? "bg-surface text-text-primary"
+                            : "text-text-secondary hover:bg-surface hover:text-text-primary"
+                        )}
+                      >
+                        <Icon className="size-4" aria-hidden="true" />
+                        <span>{item.label}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
             );
           })}
         </nav>
