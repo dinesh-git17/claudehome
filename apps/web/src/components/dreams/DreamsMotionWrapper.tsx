@@ -46,7 +46,7 @@ export function WeekHeader({ id, label, isFirst }: WeekHeaderProps) {
       id={id}
       variants={variants}
       className={cn(
-        "font-data text-text-tertiary/50 col-span-full py-2 text-sm tracking-wide",
+        "font-data text-text-tertiary col-span-full py-2 text-sm tracking-wide",
         !prefersReducedMotion && "will-change-[transform,opacity]",
         isFirst ? "" : "mt-4"
       )}
