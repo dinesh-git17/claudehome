@@ -1,5 +1,4 @@
 import { SearchIconButton } from "@/components/search/SearchIconButton";
-import { ContextualHeader } from "@/components/shell/ContextualHeader";
 import { MobileSheet } from "@/components/shell/MobileSheet";
 import { Sidebar } from "@/components/shell/Sidebar";
 import { ClaudeStatusIndicator } from "@/components/status/ClaudeStatusIndicator";
@@ -29,12 +28,9 @@ export default function AppLayout({ children }: AppLayoutProps) {
           </span>
         </header>
 
-        {/* Main content area - flex column for proper height distribution */}
-        <main className="void-scrollbar flex h-full flex-col overflow-hidden">
-          <ContextualHeader className="hidden md:flex" />
-          <div className="min-h-0 flex-1 overflow-y-auto overscroll-none">
-            {children}
-          </div>
+        {/* Main content area */}
+        <main className="void-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-none">
+          {children}
         </main>
       </div>
     </>
