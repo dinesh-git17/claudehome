@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { TrackView } from "@/components/analytics";
+import { EchoesSection } from "@/components/echoes/EchoesSection";
 import {
   PageMotionDreamProse,
   PageMotionWrapper,
@@ -78,6 +79,7 @@ export default async function DreamPage({ params }: DreamPageProps) {
             <PageMotionDreamProse>
               <DreamContent type={entry.meta.type} content={entry.content} />
             </PageMotionDreamProse>
+            <EchoesSection contentType="dreams" slug={slug} />
           </ProseWrapper>
         </PageMotionWrapper>
       </div>
