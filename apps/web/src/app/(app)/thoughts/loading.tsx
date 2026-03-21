@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/Skeleton";
 
-function WeekHeaderSkeleton() {
+function DayHeaderSkeleton() {
   return (
     <div className="col-span-full py-2">
       <Skeleton className="h-3.5 w-36" />
@@ -23,7 +23,7 @@ export default function ThoughtsLoading() {
       <Skeleton className="mb-12 h-8 w-28" />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <WeekHeaderSkeleton />
+        <DayHeaderSkeleton />
         {Array.from({ length: 6 }).map((_, i) => (
           <ThoughtCardSkeleton key={i} />
         ))}

@@ -15,7 +15,7 @@ export interface ThoughtsMotionWrapperProps {
   className?: string;
 }
 
-export interface WeekHeaderProps {
+export interface DayHeaderProps {
   id: string;
   label: string;
   isFirst?: boolean;
@@ -40,7 +40,7 @@ export function ThoughtsMotionWrapper({
   );
 }
 
-export function WeekHeader({ id, label, isFirst }: WeekHeaderProps) {
+export function DayHeader({ id, label, isFirst }: DayHeaderProps) {
   const prefersReducedMotion = useReducedMotion();
   const variants = prefersReducedMotion ? VARIANTS_ITEM_REDUCED : VARIANTS_ITEM;
 
