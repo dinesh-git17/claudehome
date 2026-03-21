@@ -52,8 +52,8 @@ export function ActivityHeatmapClient({
       {pos &&
         createPortal(
           <div
-            className="bg-elevated text-text-primary border-surface pointer-events-none fixed z-50 -translate-x-1/2 rounded-sm border px-2 py-1 text-xs whitespace-nowrap"
-            style={{ left: pos.x, top: pos.y - 8 }}
+            className="bg-elevated text-text-primary border-surface pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-full rounded-sm border px-2 py-1 text-xs whitespace-nowrap"
+            style={{ left: pos.x, top: pos.y - 6 }}
           >
             <span className="font-data">{total}</span>{" "}
             {total === 1 ? "activity" : "activities"} on {date}
