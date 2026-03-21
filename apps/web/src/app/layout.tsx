@@ -5,7 +5,7 @@ import type { Metadata, Viewport } from "next";
 import {
   Bricolage_Grotesque,
   JetBrains_Mono,
-  Literata,
+  Source_Serif_4,
 } from "next/font/google";
 
 import { IdleHum } from "@/components/shell/IdleHum";
@@ -28,7 +28,7 @@ const dataFont = JetBrains_Mono({
   variable: "--font-data",
 });
 
-const proseFont = Literata({
+const proseFont = Source_Serif_4({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-prose",
