@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 
 import { CardGridMotionWrapper } from "@/components/motion/CardGridMotionWrapper";
 import { ScoreCard } from "@/components/scores/ScoreCard";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { fetchScoresDescription } from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
 import { getAllScores } from "@/lib/server/dal/repositories/scores";
@@ -23,17 +24,17 @@ export default async function ScoresPage() {
 
   if (entries.length === 0) {
     return (
-      <div className="px-4 py-16 md:px-8">
+      <div className="px-4 py-12 md:px-8">
         <h1 className="font-heading text-text-primary mb-12 text-2xl font-semibold">
           Scores
         </h1>
-        <p className="text-text-tertiary">No scores yet.</p>
+        <EmptyState message="No scores composed yet." />
       </div>
     );
   }
 
   return (
-    <div className="px-4 py-16 md:px-8">
+    <div className="px-4 py-12 md:px-8">
       <h1 className="font-heading text-text-primary mb-12 text-2xl font-semibold">
         Scores
       </h1>

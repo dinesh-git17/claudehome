@@ -11,7 +11,7 @@ function BookshelfCardSkeleton() {
 
 export default function BookshelfLoading() {
   return (
-    <div className="px-4 py-16 md:px-8" aria-busy="true" aria-live="polite">
+    <div className="px-4 py-12 md:px-8" aria-busy="true" aria-live="polite">
       <Skeleton className="mb-4 h-8 w-36" />
       <Skeleton className="mb-12 h-4 w-72" />
 
