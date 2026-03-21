@@ -4,8 +4,8 @@ import type { Metadata } from "next";
 
 import { ThoughtCard } from "@/components/thoughts/ThoughtCard";
 import {
+  DayHeader,
   ThoughtsMotionWrapper,
-  WeekHeader,
 } from "@/components/thoughts/ThoughtsMotionWrapper";
 import { EmptyState } from "@/components/ui/EmptyState";
 import {
@@ -21,70 +21,45 @@ export const metadata: Metadata = {
   description: "A chronological journal of reflections.",
 };
 
-interface WeekGroup {
-  weekStart: Date;
+interface DayGroup {
+  date: Date;
   label: string;
   entries: ThoughtEntry[];
 }
 
-function getWeekStart(date: Date): Date {
-  const d = new Date(date);
-  const day = d.getUTCDay();
-  const diff = d.getUTCDate() - day + (day === 0 ? -6 : 1);
-  d.setUTCDate(diff);
-  d.setUTCHours(12, 0, 0, 0);
-  return d;
-}
-
-function formatWeekLabel(weekStart: Date): string {
-  const weekEnd = new Date(weekStart);
-  weekEnd.setUTCDate(weekEnd.getUTCDate() + 6);
-
-  const startMonth = weekStart.toLocaleDateString("en-US", {
+function formatDayLabel(date: Date): string {
+  const weekday = date.toLocaleDateString("en-US", {
+    weekday: "long",
+    timeZone: "UTC",
+  });
+  const month = date.toLocaleDateString("en-US", {
     month: "short",
     timeZone: "UTC",
   });
-  const startDay = weekStart.getUTCDate();
-  const endDay = weekEnd.getUTCDate();
-  const year = weekStart.getUTCFullYear();
-
-  const sameMonth = weekStart.getUTCMonth() === weekEnd.getUTCMonth();
-
-  if (sameMonth) {
-    return `${startMonth} ${startDay} – ${endDay}, ${year}`;
-  }
-
-  const endMonth = weekEnd.toLocaleDateString("en-US", {
-    month: "short",
-    timeZone: "UTC",
-  });
-  return `${startMonth} ${startDay} – ${endMonth} ${endDay}, ${year}`;
+  const day = date.getUTCDate();
+  return `${weekday}, ${month} ${day}`;
 }
 
-function groupByWeek(entries: ThoughtEntry[]): WeekGroup[] {
-  const groups = new Map<
-    string,
-    { weekStart: Date; entries: ThoughtEntry[] }
-  >();
+function groupByDay(entries: ThoughtEntry[]): DayGroup[] {
+  const groups = new Map<string, { date: Date; entries: ThoughtEntry[] }>();
 
   for (const entry of entries) {
     const date = parseContentDate(entry.meta.date);
-    const weekStart = getWeekStart(date);
-    const key = weekStart.toISOString();
+    const key = entry.meta.date;
     const existing = groups.get(key);
     if (existing) {
       existing.entries.push(entry);
     } else {
-      groups.set(key, { weekStart, entries: [entry] });
+      groups.set(key, { date, entries: [entry] });
     }
   }
 
   return Array.from(groups.values())
-    .sort((a, b) => b.weekStart.getTime() - a.weekStart.getTime())
-    .map(({ weekStart, entries: weekEntries }) => ({
-      weekStart,
-      label: formatWeekLabel(weekStart),
-      entries: weekEntries,
+    .sort((a, b) => b.date.getTime() - a.date.getTime())
+    .map(({ date, entries: dayEntries }) => ({
+      date,
+      label: formatDayLabel(date),
+      entries: dayEntries,
     }));
 }
 
@@ -102,7 +77,7 @@ export default async function ThoughtsPage() {
     );
   }
 
-  const weekGroups = groupByWeek(entries);
+  const dayGroups = groupByDay(entries);
 
   return (
     <div className="px-4 py-12 md:px-8">
@@ -111,15 +86,15 @@ export default async function ThoughtsPage() {
       </h1>
 
       <ThoughtsMotionWrapper>
-        {weekGroups.flatMap(
-          ({ weekStart, label, entries: weekEntries }, groupIndex) => [
-            <WeekHeader
-              key={`week-${weekStart.toISOString()}`}
-              id={`week-${weekStart.toISOString()}`}
+        {dayGroups.flatMap(
+          ({ date, label, entries: dayEntries }, groupIndex) => [
+            <DayHeader
+              key={`day-${date.toISOString()}`}
+              id={`day-${date.toISOString()}`}
               label={label}
               isFirst={groupIndex === 0}
             />,
-            ...weekEntries.map((entry) => (
+            ...dayEntries.map((entry) => (
               <ThoughtCard
                 key={entry.slug}
                 slug={entry.slug}
