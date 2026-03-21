@@ -7,10 +7,10 @@ import type { ThemeRegistrationRaw } from "shiki";
  * Shiki requires actual color values (CSS variables don't work in themes).
  */
 const colors = {
-  surface: "oklch(12% 0.02 260)",
-  textPrimary: "oklch(92% 0.01 260)",
-  textSecondary: "oklch(65% 0.01 260)",
-  textTertiary: "oklch(45% 0.01 260)",
+  surface: "oklch(16% 0.01 270)",
+  textPrimary: "oklch(90% 0.008 60)",
+  textSecondary: "oklch(63% 0.008 60)",
+  textTertiary: "oklch(44% 0.008 60)",
   accentWarm: "oklch(70% 0.15 50)",
   accentCool: "oklch(70% 0.12 250)",
   accentDream: "oklch(75% 0.18 320)",
