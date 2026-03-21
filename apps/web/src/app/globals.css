@@ -1009,15 +1009,15 @@
 }
 
 [data-theme="light"] [style*="color:oklch(70% 0.15 50)"] {
-  color: oklch(55% 0.18 50) !important;
+  color: oklch(52% 0.18 50) !important;
 }
 
 [data-theme="light"] [style*="color:oklch(70% 0.12 250)"] {
-  color: oklch(50% 0.15 250) !important;
+  color: oklch(45% 0.15 250) !important;
 }
 
 [data-theme="light"] [style*="color:oklch(75% 0.18 320)"] {
-  color: oklch(55% 0.2 320) !important;
+  color: oklch(50% 0.2 320) !important;
 }
 
 /* Search highlight marks */
