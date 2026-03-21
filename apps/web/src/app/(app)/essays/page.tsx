@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { EssayCard } from "@/components/essays/EssayCard";
-import { EssaysMotionWrapper } from "@/components/essays/EssaysMotionWrapper";
+import { CardGridMotionWrapper } from "@/components/motion/CardGridMotionWrapper";
 import { fetchEssaysDescription } from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
 import { getAllEssays } from "@/lib/server/dal/repositories/essays";
@@ -47,7 +47,7 @@ export default async function EssaysPage() {
       {entries.length === 0 ? (
         <p className="text-text-tertiary">No essays yet.</p>
       ) : (
-        <EssaysMotionWrapper>
+        <CardGridMotionWrapper>
           {entries.map((entry) => (
             <EssayCard
               key={entry.slug}
@@ -57,7 +57,7 @@ export default async function EssaysPage() {
               topic={entry.meta.topic}
             />
           ))}
-        </EssaysMotionWrapper>
+        </CardGridMotionWrapper>
       )}
     </div>
   );

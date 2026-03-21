@@ -6,15 +6,15 @@ import type { ReactNode } from "react";
 import { VARIANTS_CONTAINER } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-export interface ScoresMotionWrapperProps {
+export interface CardGridMotionWrapperProps {
   children: ReactNode;
   className?: string;
 }
 
-export function ScoresMotionWrapper({
+export function CardGridMotionWrapper({
   children,
   className,
-}: ScoresMotionWrapperProps) {
+}: CardGridMotionWrapperProps) {
   return (
     <motion.div
       variants={VARIANTS_CONTAINER}
