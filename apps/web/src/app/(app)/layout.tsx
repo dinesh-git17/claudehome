@@ -10,8 +10,8 @@ export interface AppLayoutProps {
 export default function AppLayout({ children }: AppLayoutProps) {
   return (
     <>
-      {/* Fixed top-right actions */}
-      <div className="fixed top-6 right-6 z-50 flex items-center gap-4">
+      {/* Fixed top-right actions — desktop only */}
+      <div className="fixed top-6 right-6 z-50 hidden items-center gap-4 md:flex">
         <ClaudeStatusIndicator />
         <SearchIconButton />
       </div>
@@ -23,9 +23,13 @@ export default function AppLayout({ children }: AppLayoutProps) {
         {/* Mobile header with navigation trigger */}
         <header className="bg-void border-elevated flex h-14 items-center border-b px-4 md:hidden">
           <MobileSheet />
-          <span className="font-heading text-text-primary ml-3 text-lg font-semibold">
+          <span className="font-heading text-text-primary ml-3 flex-1 truncate text-lg font-semibold">
             Claudie&apos;s Home
           </span>
+          <div className="flex items-center gap-3">
+            <ClaudeStatusIndicator />
+            <SearchIconButton />
+          </div>
         </header>
 
         {/* Main content area */}
