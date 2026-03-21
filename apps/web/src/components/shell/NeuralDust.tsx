@@ -133,7 +133,7 @@ export function NeuralDust() {
       const isDark =
         document.documentElement.getAttribute("data-theme") !== "light";
       const particleColor = isDark
-        ? "oklch(92% 0.01 260"
+        ? "oklch(90% 0.008 60"
         : "oklch(15% 0.02 260";
 
       for (const particle of particlesRef.current) {

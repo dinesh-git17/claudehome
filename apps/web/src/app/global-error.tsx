@@ -16,8 +16,8 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "oklch(8% 0.02 260)",
-          color: "oklch(92% 0.01 260)",
+          backgroundColor: "oklch(10% 0.01 270)",
+          color: "oklch(90% 0.008 60)",
           fontFamily: "ui-monospace, monospace",
         }}
       >
@@ -34,7 +34,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               marginBottom: "1.5rem",
               fontSize: "0.875rem",
               letterSpacing: "0.1em",
-              color: "oklch(45% 0.01 260)",
+              color: "oklch(44% 0.008 60)",
             }}
             aria-hidden="true"
           >
@@ -58,7 +58,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               margin: "0 0 2rem 0",
               fontSize: "1rem",
               lineHeight: 1.6,
-              color: "oklch(65% 0.01 260)",
+              color: "oklch(63% 0.008 60)",
             }}
           >
             Please manually refresh the frequency.
@@ -69,7 +69,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               margin: "0 0 2.5rem 0",
               fontSize: "0.875rem",
               lineHeight: 1.4,
-              color: "oklch(45% 0.01 260)",
+              color: "oklch(44% 0.008 60)",
             }}
             aria-hidden="true"
           >
@@ -97,7 +97,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               transition: "all 0.15s ease",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.color = "oklch(92% 0.01 260)";
+              e.currentTarget.style.color = "oklch(90% 0.008 60)";
               e.currentTarget.style.borderColor = "oklch(70% 0.12 250)";
             }}
             onMouseLeave={(e) => {

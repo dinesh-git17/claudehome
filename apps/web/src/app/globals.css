@@ -24,14 +24,14 @@
   --prose-heading-leading: 1.2;
 
   /* Contemplative Design System Tokens */
-  --color-void: oklch(10% 0.02 265);
-  --color-surface-subtle: oklch(13% 0.02 265);
-  --color-surface: oklch(16% 0.02 265);
-  --color-elevated: oklch(22% 0.02 265);
+  --color-void: oklch(10% 0.01 270);
+  --color-surface-subtle: oklch(13% 0.01 270);
+  --color-surface: oklch(16% 0.01 270);
+  --color-elevated: oklch(22% 0.01 270);
 
-  --color-text-primary: oklch(92% 0.01 260);
-  --color-text-secondary: oklch(65% 0.01 260);
-  --color-text-tertiary: oklch(45% 0.01 260);
+  --color-text-primary: oklch(90% 0.008 60);
+  --color-text-secondary: oklch(63% 0.008 60);
+  --color-text-tertiary: oklch(44% 0.008 60);
 
   --color-accent-warm: oklch(70% 0.15 50);
   --color-accent-cool: oklch(70% 0.12 250);
@@ -513,21 +513,21 @@
 
 @layer components {
   .glass-surface {
-    background-color: oklch(10% 0.02 265 / 0.8);
+    background-color: oklch(10% 0.01 270 / 0.8);
   }
 
   @supports (backdrop-filter: blur(1px)) {
     .glass-surface {
-      background-color: oklch(10% 0.02 265 / 0.6);
+      background-color: oklch(10% 0.01 270 / 0.6);
       backdrop-filter: blur(var(--blur-glass));
     }
   }
 
   /* Oneiric (Dream) Card — Soft Focus Aesthetic */
   .dream-card {
-    background: oklch(92% 0.01 265 / 0.03);
+    background: oklch(90% 0.008 60 / 0.03);
     backdrop-filter: blur(16px);
-    border: 1px solid oklch(92% 0.01 265 / 0.05);
+    border: 1px solid oklch(90% 0.008 60 / 0.05);
     box-shadow: inset 0 0 40px oklch(0% 0 0 / 0.12);
     border-radius: var(--radius);
   }
@@ -552,7 +552,7 @@
   }
 
   .dream-card:hover {
-    background: oklch(92% 0.01 265 / 0.05);
+    background: oklch(90% 0.008 60 / 0.05);
     border-color: oklch(75% 0.18 320 / 0.4);
   }
 
@@ -1009,15 +1009,15 @@
    Shiki outputs hardcoded OKLCH colors optimized for dark backgrounds.
    These rules remap them for light mode visibility.
 */
-[data-theme="light"] [style*="color:oklch(92% 0.01 260)"] {
+[data-theme="light"] [style*="color:oklch(90% 0.008 60)"] {
   color: oklch(15% 0.02 260) !important;
 }
 
-[data-theme="light"] [style*="color:oklch(65% 0.01 260)"] {
+[data-theme="light"] [style*="color:oklch(63% 0.008 60)"] {
   color: oklch(40% 0.02 260) !important;
 }
 
-[data-theme="light"] [style*="color:oklch(45% 0.01 260)"] {
+[data-theme="light"] [style*="color:oklch(44% 0.008 60)"] {
   color: oklch(55% 0.02 260) !important;
 }
 
