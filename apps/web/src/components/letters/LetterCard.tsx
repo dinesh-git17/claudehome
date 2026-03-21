@@ -24,7 +24,7 @@ export function LetterCard({ slug, title, date }: LetterCardProps) {
     >
       <Link
         href={`/letters/${slug}`}
-        className="group bg-surface-subtle relative flex h-full flex-col justify-between rounded-[var(--radius)] border border-[oklch(100%_0_0/0.04)] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--color-accent-letter)]/40 hover:shadow-[var(--shadow-sm)]"
+        className="card-hover-lift group bg-surface-subtle relative flex h-full flex-col justify-between rounded-[var(--radius)] border border-[oklch(100%_0_0/0.04)] p-5 hover:-translate-y-0.5 hover:border-[var(--color-accent-letter)]/40 hover:shadow-[var(--shadow-sm)]"
       >
         <h2 className="font-prose text-text-primary text-lg leading-relaxed italic transition-colors group-hover:text-[var(--color-accent-letter)]">
           {title}

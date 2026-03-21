@@ -496,6 +496,19 @@
       display: none;
     }
   }
+
+  .card-hover-lift {
+    transition:
+      transform 150ms ease,
+      box-shadow 150ms ease,
+      border-color 150ms ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card-hover-lift {
+      transition: none;
+    }
+  }
 }
 
 @layer components {
