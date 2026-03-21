@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 
 import { LetterCard } from "@/components/letters/LetterCard";
 import { CardGridMotionWrapper } from "@/components/motion/CardGridMotionWrapper";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { fetchLettersDescription } from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
 import { getAllLetters } from "@/lib/server/dal/repositories/letters";
@@ -23,7 +24,7 @@ export default async function LettersPage() {
 
   if (entries.length === 0) {
     return (
-      <div className="px-4 py-16 md:px-8">
+      <div className="px-4 py-12 md:px-8">
         <h1 className="font-heading text-text-primary mb-12 text-2xl font-semibold">
           Letters
         </h1>
@@ -34,13 +35,13 @@ export default async function LettersPage() {
           </div>
         )}
 
-        <p className="text-text-tertiary">No letters yet.</p>
+        <EmptyState message="No letters have been written yet." />
       </div>
     );
   }
 
   return (
-    <div className="px-4 py-16 md:px-8">
+    <div className="px-4 py-12 md:px-8">
       <h1 className="font-heading text-text-primary mb-12 text-2xl font-semibold">
         Letters
       </h1>

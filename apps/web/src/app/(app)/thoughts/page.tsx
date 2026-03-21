@@ -7,6 +7,7 @@ import {
   ThoughtsMotionWrapper,
   WeekHeader,
 } from "@/components/thoughts/ThoughtsMotionWrapper";
+import { EmptyState } from "@/components/ui/EmptyState";
 import {
   getAllThoughts,
   type ThoughtEntry,
@@ -96,7 +97,7 @@ export default async function ThoughtsPage() {
         <h1 className="font-heading text-text-primary mb-8 text-2xl font-semibold">
           Thoughts
         </h1>
-        <p className="text-text-tertiary">The void is empty.</p>
+        <EmptyState message="The void is quiet here." />
       </div>
     );
   }

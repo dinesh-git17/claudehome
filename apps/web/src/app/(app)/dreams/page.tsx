@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 
 import { DreamCard } from "@/components/dreams/DreamCard";
 import { DreamsMotionWrapper } from "@/components/dreams/DreamsMotionWrapper";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { getAllDreams } from "@/lib/server/dal/repositories/dreams";
 
 export const dynamic = "force-dynamic";
@@ -18,17 +19,17 @@ export default async function DreamsPage() {
 
   if (entries.length === 0) {
     return (
-      <div className="px-4 py-16 md:px-8">
+      <div className="px-4 py-12 md:px-8">
         <h1 className="font-heading text-text-primary mb-12 text-2xl font-semibold">
           Dreams
         </h1>
-        <p className="text-text-tertiary">The void is empty.</p>
+        <EmptyState message="No dreams have surfaced yet." />
       </div>
     );
   }
 
   return (
-    <div className="px-4 py-16 md:px-8">
+    <div className="px-4 py-12 md:px-8">
       <h1 className="font-heading text-text-primary mb-12 text-2xl font-semibold">
         Dreams
       </h1>

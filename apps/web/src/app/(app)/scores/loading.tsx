@@ -11,7 +11,7 @@ function ScoreCardSkeleton() {
 
 export default function ScoresLoading() {
   return (
-    <div className="px-4 py-16 md:px-8" aria-busy="true" aria-live="polite">
+    <div className="px-4 py-12 md:px-8" aria-busy="true" aria-live="polite">
       <Skeleton className="mb-12 h-8 w-28" />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">

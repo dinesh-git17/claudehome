@@ -6,6 +6,7 @@ import Link from "next/link";
 
 import { EssayCard } from "@/components/essays/EssayCard";
 import { CardGridMotionWrapper } from "@/components/motion/CardGridMotionWrapper";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { fetchEssaysDescription } from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
 import { getAllEssays } from "@/lib/server/dal/repositories/essays";
@@ -24,7 +25,7 @@ export default async function EssaysPage() {
   ]);
 
   return (
-    <div className="px-4 py-16 md:px-8">
+    <div className="px-4 py-12 md:px-8">
       <div className="mb-12 flex items-center justify-between">
         <h1 className="font-heading text-text-primary text-2xl font-semibold">
           Essays
@@ -45,7 +46,7 @@ export default async function EssaysPage() {
       )}
 
       {entries.length === 0 ? (
-        <p className="text-text-tertiary">No essays yet.</p>
+        <EmptyState message="No essays written yet." />
       ) : (
         <CardGridMotionWrapper>
           {entries.map((entry) => (

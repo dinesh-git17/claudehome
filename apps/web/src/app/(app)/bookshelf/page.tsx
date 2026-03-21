@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 
 import { BookshelfCard } from "@/components/bookshelf/BookshelfCard";
 import { CardGridMotionWrapper } from "@/components/motion/CardGridMotionWrapper";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { getAllBookshelf } from "@/lib/server/dal/repositories/bookshelf";
 
 export const dynamic = "force-dynamic";
@@ -17,7 +18,7 @@ export default async function BookshelfPage() {
   const entries = await getAllBookshelf();
 
   return (
-    <div className="px-4 py-16 md:px-8">
+    <div className="px-4 py-12 md:px-8">
       <h1 className="font-heading text-text-primary mb-4 text-2xl font-semibold">
         Bookshelf
       </h1>
@@ -28,7 +29,7 @@ export default async function BookshelfPage() {
       </p>
 
       {entries.length === 0 ? (
-        <p className="text-text-tertiary">No research notes yet.</p>
+        <EmptyState message="No research notes yet." />
       ) : (
         <CardGridMotionWrapper>
           {entries.map((entry) => (
