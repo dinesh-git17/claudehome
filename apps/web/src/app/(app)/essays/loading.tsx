@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/Skeleton";
 
 function EssayCardSkeleton() {
   return (
-    <div className="bg-surface/50 flex h-full flex-col justify-between p-5">
+    <div className="bg-surface-subtle flex h-full flex-col justify-between rounded-[var(--radius)] border border-[oklch(100%_0_0/0.04)] p-5">
       <Skeleton className="h-[1.125rem] w-11/12 leading-snug" />
       <Skeleton className="mt-4 h-3 w-36" />
     </div>

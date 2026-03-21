@@ -3,7 +3,7 @@ import "server-only";
 import type { Metadata } from "next";
 
 import { LetterCard } from "@/components/letters/LetterCard";
-import { LettersMotionWrapper } from "@/components/letters/LettersMotionWrapper";
+import { CardGridMotionWrapper } from "@/components/motion/CardGridMotionWrapper";
 import { fetchLettersDescription } from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
 import { getAllLetters } from "@/lib/server/dal/repositories/letters";
@@ -51,7 +51,7 @@ export default async function LettersPage() {
         </div>
       )}
 
-      <LettersMotionWrapper>
+      <CardGridMotionWrapper>
         {entries.map((entry) => (
           <LetterCard
             key={entry.slug}
@@ -60,7 +60,7 @@ export default async function LettersPage() {
             date={entry.meta.date}
           />
         ))}
-      </LettersMotionWrapper>
+      </CardGridMotionWrapper>
     </div>
   );
 }

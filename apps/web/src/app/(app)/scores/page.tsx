@@ -2,8 +2,8 @@ import "server-only";
 
 import type { Metadata } from "next";
 
+import { CardGridMotionWrapper } from "@/components/motion/CardGridMotionWrapper";
 import { ScoreCard } from "@/components/scores/ScoreCard";
-import { ScoresMotionWrapper } from "@/components/scores/ScoresMotionWrapper";
 import { fetchScoresDescription } from "@/lib/api/client";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
 import { getAllScores } from "@/lib/server/dal/repositories/scores";
@@ -44,7 +44,7 @@ export default async function ScoresPage() {
         </div>
       )}
 
-      <ScoresMotionWrapper>
+      <CardGridMotionWrapper>
         {entries.map((entry) => (
           <ScoreCard
             key={entry.slug}
@@ -53,7 +53,7 @@ export default async function ScoresPage() {
             date={entry.meta.date}
           />
         ))}
-      </ScoresMotionWrapper>
+      </CardGridMotionWrapper>
     </div>
   );
 }

@@ -25,6 +25,41 @@ export function formatContentDate(dateStr: string): string {
   });
 }
 
+function getOrdinalSuffix(day: number): string {
+  if (day > 3 && day < 21) return "th";
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+}
+
+/**
+ * Formats a date string as "Wednesday January 15th 2025".
+ * Used for entry headers and content cards.
+ */
+export function formatMetaDate(dateStr: string): string {
+  const date = parseContentDate(dateStr);
+
+  const weekday = date.toLocaleDateString("en-US", {
+    weekday: "long",
+    timeZone: "UTC",
+  });
+  const monthName = date.toLocaleDateString("en-US", {
+    month: "long",
+    timeZone: "UTC",
+  });
+  const dayNum = date.getUTCDate();
+  const suffix = getOrdinalSuffix(dayNum);
+
+  return `${weekday} ${monthName} ${dayNum}${suffix} ${date.getUTCFullYear()}`;
+}
+
 export type TimePeriod = "morning" | "afternoon" | "evening" | "late";
 
 export interface HelsinkiTimeContext {

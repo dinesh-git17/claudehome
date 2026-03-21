@@ -5,43 +5,12 @@ import Link from "next/link";
 
 import { VARIANTS_ITEM, VARIANTS_ITEM_REDUCED } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { formatMetaDate } from "@/lib/utils/temporal";
 
 export interface ThoughtCardProps {
   slug: string;
   title: string;
   date: string;
-}
-
-function getOrdinalSuffix(day: number): string {
-  if (day > 3 && day < 21) return "th";
-  switch (day % 10) {
-    case 1:
-      return "st";
-    case 2:
-      return "nd";
-    case 3:
-      return "rd";
-    default:
-      return "th";
-  }
-}
-
-function formatMetaDate(dateStr: string): string {
-  const [year, month, day] = dateStr.split("-").map(Number);
-  const date = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
-
-  const weekday = date.toLocaleDateString("en-US", {
-    weekday: "long",
-    timeZone: "UTC",
-  });
-  const monthName = date.toLocaleDateString("en-US", {
-    month: "long",
-    timeZone: "UTC",
-  });
-  const dayNum = date.getUTCDate();
-  const suffix = getOrdinalSuffix(dayNum);
-
-  return `${weekday} ${monthName} ${dayNum}${suffix} ${year}`;
 }
 
 export function ThoughtCard({ slug, title, date }: ThoughtCardProps) {
@@ -55,7 +24,7 @@ export function ThoughtCard({ slug, title, date }: ThoughtCardProps) {
     >
       <Link
         href={`/thoughts/${slug}`}
-        className="group bg-surface/50 hover:border-accent-cool/40 relative flex h-full flex-col justify-between border border-transparent p-5 transition-all duration-200 hover:scale-[1.02]"
+        className="group bg-surface-subtle hover:border-accent-cool/40 border-l-accent-cool/30 relative flex h-full flex-col justify-between rounded-[var(--radius)] border border-l-2 border-[oklch(100%_0_0/0.04)] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-sm)]"
       >
         <h2 className="font-heading text-text-primary group-hover:text-accent-cool text-lg leading-snug transition-colors">
           {title}
@@ -63,7 +32,7 @@ export function ThoughtCard({ slug, title, date }: ThoughtCardProps) {
 
         <time
           dateTime={date}
-          className="font-data text-text-tertiary mt-4 text-xs opacity-50"
+          className="font-data text-text-tertiary mt-4 text-xs opacity-60"
         >
           {formatMetaDate(date)}
         </time>

@@ -3,7 +3,7 @@ import "server-only";
 import type { Metadata } from "next";
 
 import { BookshelfCard } from "@/components/bookshelf/BookshelfCard";
-import { BookshelfMotionWrapper } from "@/components/bookshelf/BookshelfMotionWrapper";
+import { CardGridMotionWrapper } from "@/components/motion/CardGridMotionWrapper";
 import { getAllBookshelf } from "@/lib/server/dal/repositories/bookshelf";
 
 export const dynamic = "force-dynamic";
@@ -30,7 +30,7 @@ export default async function BookshelfPage() {
       {entries.length === 0 ? (
         <p className="text-text-tertiary">No research notes yet.</p>
       ) : (
-        <BookshelfMotionWrapper>
+        <CardGridMotionWrapper>
           {entries.map((entry) => (
             <BookshelfCard
               key={entry.slug}
@@ -40,7 +40,7 @@ export default async function BookshelfPage() {
               purpose={entry.meta.purpose}
             />
           ))}
-        </BookshelfMotionWrapper>
+        </CardGridMotionWrapper>
       )}
     </div>
   );
