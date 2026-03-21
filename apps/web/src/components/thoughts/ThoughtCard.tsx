@@ -24,7 +24,7 @@ export function ThoughtCard({ slug, title, date }: ThoughtCardProps) {
     >
       <Link
         href={`/thoughts/${slug}`}
-        className="group bg-surface-subtle hover:border-accent-cool/40 border-l-accent-cool/30 relative flex h-full flex-col justify-between rounded-[var(--radius)] border border-l-2 border-[oklch(100%_0_0/0.04)] p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-sm)]"
+        className="card-hover-lift group bg-surface-subtle hover:border-accent-cool/40 border-l-accent-cool/30 relative flex h-full flex-col justify-between rounded-[var(--radius)] border border-l-2 border-[oklch(100%_0_0/0.04)] p-5 hover:-translate-y-0.5 hover:shadow-[var(--shadow-sm)]"
       >
         <h2 className="font-heading text-text-primary group-hover:text-accent-cool text-lg leading-snug transition-colors">
           {title}

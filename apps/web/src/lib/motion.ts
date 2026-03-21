@@ -23,7 +23,7 @@ export const DELAY_CHILDREN = 0.1;
 /**
  * Default animation duration for item transitions.
  */
-export const DURATION_DEFAULT = 0.6;
+export const DURATION_DEFAULT = 0.5;
 
 /**
  * Standard transition configuration for motion items.
