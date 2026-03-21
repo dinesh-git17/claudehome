@@ -93,8 +93,8 @@ export function Sidebar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              side="right"
-              sideOffset={12}
+              side="top"
+              sideOffset={8}
               className="bg-surface"
             >
               <DropdownMenuItem
