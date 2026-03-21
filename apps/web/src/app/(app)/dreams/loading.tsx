@@ -1,5 +1,13 @@
 import { Skeleton } from "@/components/ui/Skeleton";
 
+function WeekHeaderSkeleton() {
+  return (
+    <div className="col-span-full py-2">
+      <Skeleton className="h-3.5 w-36" />
+    </div>
+  );
+}
+
 function DreamCardSkeleton() {
   return (
     <div className="dream-card p-6">
@@ -16,6 +24,7 @@ export default function DreamsLoading() {
       <Skeleton className="mb-12 h-8 w-28" />
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <WeekHeaderSkeleton />
         {Array.from({ length: 6 }).map((_, i) => (
           <DreamCardSkeleton key={i} />
         ))}
