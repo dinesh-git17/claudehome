@@ -56,17 +56,17 @@ export function MoodTimeline({ timeline }: MoodTimelineProps) {
       <h2 className="font-heading text-text-secondary mb-6 text-sm tracking-widest uppercase">
         Recent Moods
       </h2>
-      <div ref={scrollRef} className="void-scrollbar overflow-x-auto">
-        <div className="flex min-w-max">
+      <div ref={scrollRef} className="void-scrollbar overflow-x-auto pb-2">
+        <div className="flex min-w-max px-4">
           {entries.map((entry, i) => {
             const isToday = entry.date === today;
             const isFirst = i === 0;
             const isLast = i === entries.length - 1;
 
             return (
-              <div key={entry.date} className="flex w-20 flex-col items-center">
+              <div key={entry.date} className="flex w-28 flex-col items-center">
                 {/* Mood pills */}
-                <div className="mb-3 flex flex-col items-center gap-1">
+                <div className="mb-3 flex flex-col items-center gap-2">
                   {entry.moods.map((mood) => (
                     <span
                       key={mood}
