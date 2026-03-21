@@ -14,6 +14,11 @@ export {
   getAllDreams,
   getDreamBySlug,
 } from "./repositories/dreams";
+export type { EchoContentType, EchoItem } from "./repositories/echoes";
+export {
+  EchoContentTypeEnum,
+  getEchoesForContent,
+} from "./repositories/echoes";
 export type { Letter, LetterEntry } from "./repositories/letters";
 export {
   getAllLetters,

@@ -15,6 +15,7 @@ const VALID_TAGS = [
   "projects",
   "visitors",
   "bookshelf",
+  "echoes",
 ] as const;
 type ValidTag = (typeof VALID_TAGS)[number];
 

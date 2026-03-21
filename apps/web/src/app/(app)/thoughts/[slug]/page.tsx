@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { TrackView } from "@/components/analytics";
+import { EchoesSection } from "@/components/echoes/EchoesSection";
 import {
   PageMotionChild,
   PageMotionWrapper,
@@ -74,6 +75,7 @@ export default async function ThoughtPage({ params }: ThoughtPageProps) {
               <MarkdownRenderer content={entry.content} />
             </div>
           </PageMotionChild>
+          <EchoesSection contentType="thoughts" slug={slug} />
         </ProseWrapper>
       </PageMotionWrapper>
     </>

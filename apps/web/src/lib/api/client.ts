@@ -224,6 +224,18 @@ export interface BookshelfDetail {
   content: string;
 }
 
+export interface EchoItem {
+  content_type: string;
+  slug: string;
+  title: string;
+  date: string;
+  similarity: number;
+}
+
+export interface EchoesResponse {
+  echoes: EchoItem[];
+}
+
 export interface AboutPage {
   title: string;
   content: string;
@@ -768,6 +780,17 @@ export async function fetchAnalytics(
   return fetchAPI<AnalyticsSummary>("/api/v1/analytics", {
     revalidate: 3600,
     tags: ["analytics"],
+    ...options,
+  });
+}
+
+export async function fetchEchoes(
+  contentType: string,
+  slug: string,
+  options?: FetchOptions
+): Promise<EchoesResponse> {
+  return fetchAPI<EchoesResponse>(`/api/v1/echoes/${contentType}/${slug}`, {
+    tags: ["echoes"],
     ...options,
   });
 }
