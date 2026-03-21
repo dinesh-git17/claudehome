@@ -5,7 +5,7 @@ import Redis from "ioredis";
 const redis = new Redis(process.env.REDIS_URL!);
 
 const WINDOW_MS = 24 * 60 * 60 * 1000;
-const MAX_REQUESTS = 1;
+const MAX_REQUESTS = 3;
 
 export interface RateLimitResult {
   success: boolean;
