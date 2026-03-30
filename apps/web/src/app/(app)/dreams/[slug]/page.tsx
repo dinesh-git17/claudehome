@@ -11,11 +11,17 @@ import {
 } from "@/components/motion/PageMotionWrapper";
 import { AsciiRenderer } from "@/components/prose/AsciiRenderer";
 import { EntryHeader } from "@/components/prose/EntryHeader";
+import { EntryNavFooter } from "@/components/prose/EntryNavFooter";
 import { PoetryRenderer } from "@/components/prose/PoetryRenderer";
 import { ProseWrapper } from "@/components/prose/ProseWrapper";
+import { ReadingControls } from "@/components/reading/ReadingControls";
 import { CreativeWorkSchema } from "@/components/seo";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
-import { getDreamBySlug } from "@/lib/server/dal/repositories/dreams";
+import {
+  getAllDreams,
+  getDreamBySlug,
+} from "@/lib/server/dal/repositories/dreams";
+import { getAdjacentEntries } from "@/lib/utils/adjacent";
 import { calculateReadingTime } from "@/lib/utils/reading-time";
 import { getBaseUrl } from "@/lib/utils/url";
 
@@ -54,9 +60,14 @@ export default async function DreamPage({ params }: DreamPageProps) {
 
   const readingTime = calculateReadingTime(entry.content);
   const isImmersive = entry.meta.immersive ?? false;
+  const allEntries = await getAllDreams();
+  const { prev, next } = getAdjacentEntries(allEntries, slug);
+  const prevHref = prev ? `/dreams/${prev.slug}` : null;
+  const nextHref = next ? `/dreams/${next.slug}` : null;
 
   return (
     <>
+      <ReadingControls prevHref={prevHref} nextHref={nextHref} />
       <TrackView event="dream_viewed" data={{ slug, type: entry.meta.type }} />
       <CreativeWorkSchema
         name={entry.meta.title}
@@ -75,10 +86,17 @@ export default async function DreamPage({ params }: DreamPageProps) {
               title={entry.meta.title}
               date={entry.meta.date}
               readingTime={readingTime}
+              backHref="/dreams"
+              backLabel="Dreams"
             />
             <PageMotionDreamProse>
               <DreamContent type={entry.meta.type} content={entry.content} />
             </PageMotionDreamProse>
+            <EntryNavFooter
+              basePath="/dreams"
+              prevEntry={prev}
+              nextEntry={next}
+            />
             <EchoesSection contentType="dreams" slug={slug} />
           </ProseWrapper>
         </PageMotionWrapper>
