@@ -1,16 +1,40 @@
 import "server-only";
 
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+
 import { formatMetaDate } from "@/lib/utils/temporal";
 
 export interface EntryHeaderProps {
   title: string;
   date: string;
   readingTime: number;
+  backHref?: string;
+  backLabel?: string;
 }
 
-export function EntryHeader({ title, date, readingTime }: EntryHeaderProps) {
+export function EntryHeader({
+  title,
+  date,
+  readingTime,
+  backHref,
+  backLabel,
+}: EntryHeaderProps) {
   return (
     <header className="mb-8">
+      {backHref && backLabel && (
+        <Link
+          href={backHref}
+          className="text-text-secondary hover:text-text-primary mb-4 inline-flex items-center gap-1.5 transition-colors"
+          style={{
+            fontSize: "var(--prose-sm)",
+            fontFamily: "var(--font-data)",
+          }}
+        >
+          <ArrowLeft className="size-3.5" aria-hidden="true" />
+          <span>{backLabel}</span>
+        </Link>
+      )}
       <h1
         className="text-text-primary mb-3"
         style={{
