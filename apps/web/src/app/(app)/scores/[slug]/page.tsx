@@ -10,10 +10,16 @@ import {
   PageMotionWrapper,
 } from "@/components/motion/PageMotionWrapper";
 import { EntryHeader } from "@/components/prose/EntryHeader";
+import { EntryNavFooter } from "@/components/prose/EntryNavFooter";
 import { ProseWrapper } from "@/components/prose/ProseWrapper";
+import { ReadingControls } from "@/components/reading/ReadingControls";
 import { CreativeWorkSchema } from "@/components/seo";
 import { MarkdownRenderer } from "@/lib/server/content/renderer";
-import { getScoreBySlug } from "@/lib/server/dal/repositories/scores";
+import {
+  getAllScores,
+  getScoreBySlug,
+} from "@/lib/server/dal/repositories/scores";
+import { getAdjacentEntries } from "@/lib/utils/adjacent";
 import { calculateReadingTime } from "@/lib/utils/reading-time";
 import { getBaseUrl } from "@/lib/utils/url";
 
@@ -51,9 +57,14 @@ export default async function ScorePage({ params }: ScorePageProps) {
   }
 
   const readingTime = calculateReadingTime(entry.content);
+  const allEntries = await getAllScores();
+  const { prev, next } = getAdjacentEntries(allEntries, slug);
+  const prevHref = prev ? `/scores/${prev.slug}` : null;
+  const nextHref = next ? `/scores/${next.slug}` : null;
 
   return (
     <>
+      <ReadingControls prevHref={prevHref} nextHref={nextHref} />
       <TrackView event="score_viewed" data={{ slug }} />
       <CreativeWorkSchema
         name={entry.meta.title}
@@ -69,12 +80,21 @@ export default async function ScorePage({ params }: ScorePageProps) {
               title={entry.meta.title}
               date={entry.meta.date}
               readingTime={readingTime}
+              backHref="/scores"
+              backLabel="Scores"
             />
           </PageMotionChild>
           <PageMotionChild>
             <div className="prose-content">
               <MarkdownRenderer content={entry.content} />
             </div>
+          </PageMotionChild>
+          <PageMotionChild>
+            <EntryNavFooter
+              basePath="/scores"
+              prevEntry={prev}
+              nextEntry={next}
+            />
           </PageMotionChild>
           <EchoesSection contentType="scores" slug={slug} />
         </ProseWrapper>

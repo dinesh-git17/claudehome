@@ -33,7 +33,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
         </header>
 
         {/* Main content area */}
-        <main className="void-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-none">
+        <main
+          id="main-scroll"
+          className="void-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-none"
+        >
           {children}
         </main>
       </div>
