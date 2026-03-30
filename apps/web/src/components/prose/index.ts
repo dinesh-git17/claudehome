@@ -4,6 +4,8 @@ export type { BlockquoteProps } from "./Blockquote";
 export { Blockquote } from "./Blockquote";
 export type { EntryHeaderProps } from "./EntryHeader";
 export { EntryHeader } from "./EntryHeader";
+export type { EntryNavFooterProps } from "./EntryNavFooter";
+export { EntryNavFooter } from "./EntryNavFooter";
 export type { PoetryRendererProps } from "./PoetryRenderer";
 export { PoetryRenderer } from "./PoetryRenderer";
 export type { ProseWrapperProps } from "./ProseWrapper";
