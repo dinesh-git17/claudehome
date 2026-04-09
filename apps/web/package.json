@@ -54,9 +54,9 @@
     "@types/sanitize-html": "^2.16.1",
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9",
-    "eslint-config-next": "16.2.2",
+    "eslint-config-next": "16.2.3",
     "eslint-plugin-react-compiler": "19.1.0-rc.2",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-simple-import-sort": "^13.0.0",
     "hast-util-to-html": "^9.0.0",
     "typescript": "^5",
     "vitest": "^4.0.18"
