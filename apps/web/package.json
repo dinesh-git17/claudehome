@@ -58,7 +58,7 @@
     "eslint-plugin-react-compiler": "19.1.0-rc.2",
     "eslint-plugin-simple-import-sort": "^13.0.0",
     "hast-util-to-html": "^9.0.0",
-    "typescript": "^5",
+    "typescript": "^6",
     "vitest": "^4.0.18"
   }
 }
