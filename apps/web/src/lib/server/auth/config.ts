@@ -10,6 +10,10 @@ export const authConfig: NextAuthConfig = {
     GitHub({
       clientId: process.env.AUTH_GITHUB_ID,
       clientSecret: process.env.AUTH_GITHUB_SECRET,
+      // GitHub now returns an `iss` parameter on authorization responses per
+      // RFC 9207. Without an explicit issuer, oauth4webapi falls back to the
+      // Auth.js placeholder and rejects the callback.
+      issuer: "https://github.com",
     }),
   ],
   pages: {
