@@ -25,13 +25,18 @@ const STATUS_MAP: Record<HealthStatus, StatusConfig> = {
   },
 };
 
-export function LocationHealth() {
+interface LocationHealthProps {
+  align?: "center" | "start";
+}
+
+export function LocationHealth({ align = "center" }: LocationHealthProps) {
   const { status } = useHealthSignal();
   const { label, dotClass } = STATUS_MAP[status];
+  const justify = align === "start" ? "justify-start" : "justify-center";
 
   return (
     <div
-      className="font-data text-text-tertiary flex items-center justify-center gap-2.5 text-xs tracking-widest uppercase"
+      className={`font-data text-text-tertiary flex items-center gap-2.5 text-xs tracking-widest uppercase ${justify}`}
       role="status"
       aria-live="polite"
       aria-label={`Location: Helsinki. Status: ${label}`}

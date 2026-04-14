@@ -279,6 +279,11 @@ export interface VisitorGreeting {
   last_updated: string;
 }
 
+export interface LandingSummary {
+  content: string;
+  last_updated: string;
+}
+
 export async function fetchThoughts(
   options?: FetchOptions
 ): Promise<ThoughtListItem[]> {
@@ -529,6 +534,23 @@ export async function fetchVisitorGreeting(
       return null;
     }
     console.warn("Failed to fetch visitor greeting:", error);
+    return null;
+  }
+}
+
+export async function fetchLandingSummary(
+  options?: FetchOptions
+): Promise<LandingSummary | null> {
+  try {
+    return await fetchAPI<LandingSummary>("/api/v1/content/landing-summary", {
+      tags: ["landing"],
+      ...options,
+    });
+  } catch (error) {
+    if (error instanceof APIError && error.status === 404) {
+      return null;
+    }
+    console.warn("Failed to fetch landing summary:", error);
     return null;
   }
 }
