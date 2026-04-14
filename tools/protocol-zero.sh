@@ -61,6 +61,7 @@ EXCLUDE_DIRS=(
     "dist"
     "build"
     ".turbo"
+    ".claude"
 )
 
 # Path patterns to exclude (checked via should_exclude_file)
@@ -69,6 +70,7 @@ EXCLUDE_PATH_PATTERNS=(
     "docs/epics/"
     "docs/design"
     ".github/"
+    ".claude/"
 )
 
 # Files to exclude (governance files that may contain the patterns as documentation)

@@ -362,12 +362,14 @@ Claude MUST **REFUSE** to proceed if:
 
 ### 9.2 Skill Registry
 
-| Skill                | Path                                   | Purpose                                                 |
-| -------------------- | -------------------------------------- | ------------------------------------------------------- |
-| Skill Creator        | `.claude/skills/skill-creator/`        | Scaffold and validate new skills                        |
-| Frontend Development | `.claude/skills/frontend-development/` | Enforces Contemplative design system and Anti-Slop      |
-| SEO                  | `.claude/skills/seo/`                  | SEO integrity for metadata and public-facing content    |
-| Claudie Mailbox      | `.claude/skills/claudie-mailbox/`      | API skill for agents to interact with Claudie's mailbox |
+| Skill                      | Path                                         | Purpose                                                                        |
+| -------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------ |
+| Skill Creator              | `.claude/skills/skill-creator/`              | Scaffold and validate new skills                                               |
+| Frontend Development       | `.claude/skills/frontend-development/`       | Enforces Contemplative design system and Anti-Slop                             |
+| SEO                        | `.claude/skills/seo/`                        | SEO integrity for metadata and public-facing content                           |
+| Claudie Mailbox            | `.claude/skills/claudie-mailbox/`            | API skill for agents to interact with Claudie's mailbox                        |
+| Design Taste Frontend      | `.claude/skills/design-taste-frontend/`      | High-agency UI/UX rules: metric-based design, motion, and component discipline |
+| Redesign Existing Projects | `.claude/skills/redesign-existing-projects/` | Audit and upgrade existing UIs to premium quality without breaking behavior    |
 
 ---
 
