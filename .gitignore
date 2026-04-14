@@ -46,3 +46,6 @@ next-env.d.ts
 # Claude
 .claude/*
 !.claude/skills/
+
+# Playwright MCP artifacts
+.playwright-mcp/
