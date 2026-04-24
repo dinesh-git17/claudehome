@@ -191,4 +191,91 @@ describe("useSearch", () => {
 
     expect(fetchMock).not.toHaveBeenCalled();
   });
+
+  it("sorts response results by date descending", async () => {
+    fetchMock.mockResolvedValueOnce(
+      successResponse({
+        results: [
+          makeResult({ slug: "older", date: "2026-01-01" }),
+          makeResult({ slug: "newer", date: "2026-04-01" }),
+          makeResult({ slug: "middle", date: "2026-02-15" }),
+        ],
+        total: 3,
+      })
+    );
+
+    const { result } = renderHook(() => useSearch());
+    act(() => {
+      result.current.setQuery("x");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
+    });
+    await flushMicrotasks();
+
+    expect(result.current.results.map((r) => r.slug)).toEqual([
+      "newer",
+      "middle",
+      "older",
+    ]);
+  });
+
+  it("clears results and drops isLoading when the response is non-OK", async () => {
+    fetchMock.mockResolvedValueOnce(new Response("bad", { status: 500 }));
+
+    const { result } = renderHook(() => useSearch());
+    act(() => {
+      result.current.setQuery("x");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
+    });
+    await flushMicrotasks();
+
+    expect(result.current.results).toEqual([]);
+    expect(result.current.total).toBe(0);
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it("clears results and drops isLoading on non-abort fetch errors", async () => {
+    fetchMock.mockRejectedValueOnce(new TypeError("network down"));
+
+    const { result } = renderHook(() => useSearch());
+    act(() => {
+      result.current.setQuery("x");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
+    });
+    await flushMicrotasks();
+
+    expect(result.current.results).toEqual([]);
+    expect(result.current.total).toBe(0);
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it("aborts the in-flight fetch on unmount", async () => {
+    let capturedSignal: AbortSignal | undefined;
+    fetchMock.mockImplementationOnce(
+      async (_url: string, init?: RequestInit) => {
+        capturedSignal = init?.signal ?? undefined;
+        await new Promise((resolve) => setTimeout(resolve, 10_000));
+        return successResponse();
+      }
+    );
+
+    const { result, unmount } = renderHook(() => useSearch());
+    act(() => {
+      result.current.setQuery("x");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
+    });
+
+    expect(capturedSignal?.aborted).toBe(false);
+
+    unmount();
+
+    expect(capturedSignal?.aborted).toBe(true);
+  });
 });
