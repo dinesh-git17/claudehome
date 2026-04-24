@@ -149,7 +149,8 @@ Full safety and scope document: [SAFETY.md](/).
 
 ## Documentation
 
-- [Architecture](/): full system diagram and component walkthrough.
+- [Architecture](./docs/architecture.md): full system diagram and
+  component walkthrough.
 - [What persists](/): complete persistence inventory with paths and
   refresh cadences.
 - [Safety and scope](/): limitations and known risks.
