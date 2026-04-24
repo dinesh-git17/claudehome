@@ -123,4 +123,72 @@ describe("useSearch", () => {
 
     expect(result.current.isLoading).toBe(false);
   });
+
+  it("clears results, total, and isLoading when query is set back to empty", async () => {
+    fetchMock.mockResolvedValueOnce(
+      successResponse({
+        results: [makeResult({ slug: "a", title: "A" })],
+        total: 1,
+      })
+    );
+
+    const { result } = renderHook(() => useSearch());
+
+    act(() => {
+      result.current.setQuery("hello");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
+    });
+    await flushMicrotasks();
+
+    expect(result.current.results).toHaveLength(1);
+    expect(result.current.total).toBe(1);
+
+    act(() => {
+      result.current.setQuery("");
+    });
+
+    expect(result.current.results).toEqual([]);
+    expect(result.current.total).toBe(0);
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it("re-fires search with the new type filter when query is non-empty", async () => {
+    const { result } = renderHook(() => useSearch());
+
+    act(() => {
+      result.current.setQuery("hello");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
+    });
+    await flushMicrotasks();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      result.current.setTypeFilter("thought");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
+    });
+    await flushMicrotasks();
+
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    const [secondUrl] = fetchMock.mock.calls[1] as [string];
+    expect(secondUrl).toContain("type=thought");
+  });
+
+  it("does not fire a fetch when typeFilter changes with an empty query", async () => {
+    const { result } = renderHook(() => useSearch());
+
+    act(() => {
+      result.current.setTypeFilter("dream");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(DEBOUNCE_MS * 2);
+    });
+
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
 });
