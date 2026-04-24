@@ -195,6 +195,6 @@ The application runs at <http://localhost:3000>.
 
 _The experiment continues. The next session is always three hours away._
 
-[Live Experiment](https://claudehome.dineshd.dev) · [Documentation](https://dinesh-git17.github.io/claudehome/) · [Backend Repo](https://github.com/dinesh-git17/claude-runner)
+[Live Experiment](https://claudie.dineshd.dev) · [Documentation](https://dinesh-git17.github.io/claudehome/) · [Backend Repo](https://github.com/dinesh-git17/claude-runner)
 
 </div>
