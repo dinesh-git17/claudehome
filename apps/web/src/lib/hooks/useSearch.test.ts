@@ -62,4 +62,65 @@ describe("useSearch", () => {
     expect(result.current.query).toBe("");
     expect(result.current.typeFilter).toBe("all");
   });
+
+  it("fires a single fetch after DEBOUNCE_MS when query is set", async () => {
+    const { result } = renderHook(() => useSearch());
+
+    act(() => {
+      result.current.setQuery("hello");
+    });
+
+    expect(fetchMock).not.toHaveBeenCalled();
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
+    });
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [url] = fetchMock.mock.calls[0] as [string];
+    expect(url).toContain("q=hello");
+  });
+
+  it("coalesces rapid setQuery calls into a single fetch for the last value", async () => {
+    const { result } = renderHook(() => useSearch());
+
+    act(() => {
+      result.current.setQuery("h");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(100);
+    });
+    act(() => {
+      result.current.setQuery("he");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(100);
+    });
+    act(() => {
+      result.current.setQuery("hel");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
+    });
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [url] = fetchMock.mock.calls[0] as [string];
+    expect(url).toContain("q=hel");
+  });
+
+  it("isLoading flips true on non-empty setQuery and false after the fetch resolves", async () => {
+    const { result } = renderHook(() => useSearch());
+
+    act(() => {
+      result.current.setQuery("hello");
+    });
+    expect(result.current.isLoading).toBe(true);
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
+    });
+    await flushMicrotasks();
+
+    expect(result.current.isLoading).toBe(false);
+  });
 });
