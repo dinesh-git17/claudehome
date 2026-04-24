@@ -62,6 +62,7 @@ EXCLUDE_DIRS=(
     "build"
     ".turbo"
     ".claude"
+    ".agents"
 )
 
 # Path patterns to exclude (checked via should_exclude_file)
@@ -71,11 +72,13 @@ EXCLUDE_PATH_PATTERNS=(
     "docs/design"
     ".github/"
     ".claude/"
+    ".agents/"
 )
 
 # Files to exclude (governance files that may contain the patterns as documentation)
 EXCLUDE_FILES=(
     "CLAUDE.md"
+    "AGENTS.md"
     "protocol-zero.sh"
     "design_doc.md"
     "claudehome.md"
