@@ -79,8 +79,9 @@ export interface UseSearchReturn {
 
 - `abortController` — in-flight fetch aborter (unchanged role).
 - `debounceTimer` — pending debounce timeout handle (unchanged role).
-- `currentKey` — live `query + typeFilter`, updated during render. Read by
-  `executeSearch` to skip writes from superseded requests.
+- `currentKey` — live `query + typeFilter`, updated at the top of the
+  debounce effect. Read by `executeSearch` to skip writes from superseded
+  requests.
 
 `isLoading` state is **removed** (becomes derived).
 
@@ -162,11 +163,15 @@ Changes:
 - On `AbortError`: no writes, no `lastResolvedKey` advance. Identical to the
   mismatch path.
 
-`currentKey.current` is assigned during render:
-`currentKey.current = \`${query}|${typeFilter}\``. React permits writing refs
-during render when the value derives from props or state, and we never read
-`currentKey`during render — only from inside`executeSearch`'s async
-callbacks. No extra effect needed.
+`currentKeyRef.current` is assigned at the top of the debounce `useEffect`
+body (not during render). The target ESLint ruleset (`eslint-config-next`
+16.2.4) enables `react-hooks/refs`, which forbids ref writes during render
+even when the value derives from state, so the render-time form is out.
+Assigning inside the debounce effect is semantically equivalent for this
+usage: `executeSearch` only reads the ref from inside timer callbacks that
+this same effect schedules, and those callbacks always run after the effect
+has completed. Writing a ref inside a `useEffect` does not trip the "no
+setState in effect" rule because refs are not state.
 
 ### Unmount cleanup effect — unchanged
 
