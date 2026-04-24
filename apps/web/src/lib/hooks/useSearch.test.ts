@@ -305,4 +305,53 @@ describe("useSearch", () => {
 
     expect(capturedSignal?.aborted).toBe(true);
   });
+
+  it("ignores a stale response whose query has been superseded", async () => {
+    let resolveFirst: ((value: Response) => void) | undefined;
+    const firstPromise = new Promise<Response>((resolve) => {
+      resolveFirst = resolve;
+    });
+
+    fetchMock.mockReturnValueOnce(firstPromise).mockResolvedValueOnce(
+      successResponse({
+        results: [makeResult({ slug: "ab-result", title: "AB" })],
+        total: 1,
+      })
+    );
+
+    const { result } = renderHook(() => useSearch());
+
+    act(() => {
+      result.current.setQuery("a");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
+    });
+    // fetch "a" is in flight but not yet resolved.
+
+    act(() => {
+      result.current.setQuery("ab");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
+    });
+    // fetch "ab" fired.
+
+    // Now resolve the stale "a" fetch with stale data.
+    await act(async () => {
+      resolveFirst?.(
+        successResponse({
+          results: [makeResult({ slug: "a-result", title: "A" })],
+          total: 1,
+        })
+      );
+      await Promise.resolve();
+    });
+    await flushMicrotasks();
+
+    // Stale "a" data must not have landed.
+    expect(result.current.results.map((r) => r.slug)).not.toContain("a-result");
+    // "ab" data should be present.
+    expect(result.current.results.map((r) => r.slug)).toEqual(["ab-result"]);
+  });
 });

@@ -49,6 +49,9 @@ export function useSearch(): UseSearchReturn {
 
   const abortControllerRef = useRef<AbortController | null>(null);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const currentKeyRef = useRef<string>("");
+
+  currentKeyRef.current = `${query}|${typeFilter}`;
 
   const executeSearch = useCallback(
     async (searchQuery: string, searchType: SearchTypeFilter) => {
@@ -75,13 +78,21 @@ export function useSearch(): UseSearchReturn {
           signal: controller.signal,
         });
 
+        const requestKey = `${searchQuery}|${searchType}`;
+        const isCurrent = currentKeyRef.current === requestKey;
+
         if (!response.ok) {
-          setResults([]);
-          setTotal(0);
+          if (isCurrent) {
+            setResults([]);
+            setTotal(0);
+          }
           return;
         }
 
         const data = (await response.json()) as SearchResponse;
+        if (!isCurrent) {
+          return;
+        }
         const sorted = [...data.results].sort((a, b) =>
           b.date.localeCompare(a.date)
         );
@@ -92,8 +103,10 @@ export function useSearch(): UseSearchReturn {
         if (error instanceof DOMException && error.name === "AbortError") {
           return;
         }
-        setResults([]);
-        setTotal(0);
+        if (currentKeyRef.current === `${searchQuery}|${searchType}`) {
+          setResults([]);
+          setTotal(0);
+        }
       } finally {
         if (!controller.signal.aborted) {
           setIsLoading(false);
