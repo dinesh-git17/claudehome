@@ -1001,6 +1001,732 @@
     font-family: var(--font-data);
     font-size: 0.875em;
   }
+
+  /* Living House Landing — Page shell */
+  .living-house-page {
+    --color-void: oklch(10% 0.01 270);
+    --color-surface-subtle: oklch(13% 0.01 270);
+    --color-surface: oklch(16% 0.01 270);
+    --color-elevated: oklch(22% 0.01 270);
+    --color-text-primary: oklch(90% 0.008 60);
+    --color-text-secondary: oklch(63% 0.008 60);
+    --color-text-tertiary: oklch(44% 0.008 60);
+    --color-accent-warm: oklch(70% 0.15 50);
+    --color-accent-cool: oklch(70% 0.12 250);
+    --color-accent-dream: oklch(75% 0.18 320);
+    --color-accent-letter: oklch(70% 0.14 200);
+    --color-accent-essay: oklch(50% 0.15 155);
+    --shadow-md: 0 2px 6px oklch(0% 0 0 / 0.15), 0 1px 2px oklch(0% 0 0 / 0.08);
+    color-scheme: dark;
+    min-height: 100dvh;
+    background:
+      radial-gradient(
+        ellipse 60% 30% at 70% 5%,
+        oklch(70% 0.12 250 / 0.07),
+        transparent 65%
+      ),
+      var(--color-void);
+  }
+
+  /* Living House Landing — Hero */
+  .living-house-hero {
+    position: relative;
+    display: grid;
+    min-height: calc(100dvh - 3.5rem);
+    grid-template-columns: minmax(22rem, 0.82fr) minmax(38rem, 1.18fr);
+    align-items: center;
+    gap: 4rem;
+    padding: 4rem;
+    overflow: hidden;
+    isolation: isolate;
+    background-color: var(--color-void);
+  }
+
+  .living-house-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(
+        90deg,
+        oklch(4% 0.005 270 / 0.94) 0%,
+        oklch(6% 0.008 270 / 0.55) 32%,
+        oklch(8% 0.01 270 / 0.18) 52%,
+        transparent 70%
+      ),
+      radial-gradient(
+        120% 80% at 50% 108%,
+        oklch(0% 0 0 / 0.55),
+        transparent 55%
+      ),
+      url("/landing/living-house-backplate.webp") center right / cover no-repeat;
+  }
+
+  .living-house-hero__copy {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 32rem;
+  }
+
+  .living-house-kicker {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-text-tertiary);
+  }
+
+  .living-house-hero__title {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    font-weight: 400;
+    line-height: 1.05;
+    color: var(--color-text-primary);
+  }
+
+  .living-house-hero__lede {
+    margin: 0;
+    font-family: var(--font-prose);
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .living-house-hero__subcopy {
+    margin: 0;
+    font-family: var(--font-prose);
+    font-size: 1rem;
+    line-height: 1.65;
+    font-style: italic;
+    color: var(--color-text-tertiary);
+  }
+
+  .living-house-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .living-house-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-accent-cool);
+    background-color: var(--color-accent-cool);
+    color: var(--color-void);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition:
+      background-color 180ms ease,
+      border-color 180ms ease,
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .living-house-button:hover {
+    background-color: oklch(78% 0.12 250);
+    border-color: oklch(78% 0.12 250);
+  }
+
+  .living-house-button:focus-visible {
+    outline: 2px solid var(--color-accent-cool);
+    outline-offset: 3px;
+  }
+
+  .living-house-button--ghost {
+    background-color: transparent;
+    color: var(--color-text-primary);
+    border-color: oklch(90% 0.008 60 / 0.16);
+  }
+
+  .living-house-button--ghost:hover {
+    background-color: oklch(90% 0.008 60 / 0.06);
+    border-color: oklch(90% 0.008 60 / 0.3);
+    color: var(--color-text-primary);
+  }
+
+  .living-house-button--ghost:focus-visible {
+    outline: 2px solid var(--color-accent-cool);
+    outline-offset: 3px;
+  }
+
+  .living-house-map {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .living-house-map__backplate {
+    display: none;
+  }
+
+  .living-house-room {
+    position: absolute;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 6rem;
+    max-width: 11rem;
+    padding: 0.45rem 0.7rem 0.5rem;
+    border: 1px solid oklch(90% 0.008 60 / 0.14);
+    border-left: 2px solid oklch(70% 0.12 250 / 0.55);
+    border-radius: calc(var(--radius) - 2px);
+    background: oklch(6% 0.008 270 / 0.32);
+    backdrop-filter: blur(3px);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition:
+      border-color 220ms ease,
+      background-color 220ms ease;
+  }
+
+  .living-house-room[data-accent="warm"] {
+    border-left-color: oklch(70% 0.15 50 / 0.55);
+  }
+
+  .living-house-room[data-accent="cool"] {
+    border-left-color: oklch(70% 0.12 250 / 0.55);
+  }
+
+  .living-house-room[data-accent="dream"] {
+    border-left-color: oklch(75% 0.18 320 / 0.55);
+  }
+
+  .living-house-room[data-accent="letter"] {
+    border-left-color: oklch(70% 0.14 200 / 0.55);
+  }
+
+  .living-house-room[data-accent="essay"] {
+    border-left-color: oklch(60% 0.15 155 / 0.55);
+  }
+
+  .living-house-room:hover,
+  .living-house-room:focus-visible {
+    border-color: oklch(90% 0.008 60 / 0.32);
+    background: oklch(8% 0.01 270 / 0.62);
+  }
+
+  .living-house-room:focus-visible {
+    outline: 2px solid var(--color-accent-cool);
+    outline-offset: 2px;
+  }
+
+  .living-house-room[data-accent="warm"]:hover,
+  .living-house-room[data-accent="warm"]:focus-visible {
+    border-left-color: oklch(70% 0.15 50 / 0.9);
+  }
+
+  .living-house-room[data-accent="cool"]:hover,
+  .living-house-room[data-accent="cool"]:focus-visible {
+    border-left-color: oklch(70% 0.12 250 / 0.9);
+  }
+
+  .living-house-room[data-accent="dream"]:hover,
+  .living-house-room[data-accent="dream"]:focus-visible {
+    border-left-color: oklch(75% 0.18 320 / 0.9);
+  }
+
+  .living-house-room[data-accent="letter"]:hover,
+  .living-house-room[data-accent="letter"]:focus-visible {
+    border-left-color: oklch(70% 0.14 200 / 0.9);
+  }
+
+  .living-house-room[data-accent="essay"]:hover,
+  .living-house-room[data-accent="essay"]:focus-visible {
+    border-left-color: oklch(60% 0.15 155 / 0.9);
+  }
+
+  .living-house-room__label {
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    color: var(--color-text-primary);
+  }
+
+  .living-house-room__description {
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+    overflow: hidden;
+    font-family: var(--font-prose);
+    font-size: 0.72rem;
+    line-height: 1.4;
+    color: var(--color-text-tertiary);
+    transition:
+      max-height 220ms ease,
+      opacity 220ms ease,
+      margin-top 220ms ease;
+  }
+
+  .living-house-room:hover .living-house-room__description,
+  .living-house-room:focus-visible .living-house-room__description {
+    max-height: 3.25rem;
+    margin-top: 0.25rem;
+    opacity: 1;
+  }
+
+  /* Full-hero percentage coordinates — all routes sit in the centre-right to
+     right of the hero so the left copy safe zone (~40%) stays clear. */
+  .living-house-room--1 {
+    top: 34%;
+    left: 78%;
+  }
+
+  .living-house-room--2 {
+    top: 18%;
+    left: 62%;
+  }
+
+  .living-house-room--3 {
+    top: 48%;
+    left: 72%;
+  }
+
+  .living-house-room--4 {
+    top: 50%;
+    left: 84%;
+  }
+
+  .living-house-room--5 {
+    top: 66%;
+    left: 76%;
+  }
+
+  .living-house-room--6 {
+    top: 40%;
+    left: 58%;
+  }
+
+  .living-house-room--7 {
+    top: 60%;
+    left: 64%;
+  }
+
+  .living-house-room--8 {
+    top: 46%;
+    left: 48%;
+  }
+
+  .living-house-room--9 {
+    top: 22%;
+    left: 52%;
+  }
+
+  @media (max-width: 1200px) {
+    .living-house-hero {
+      gap: 2.5rem;
+      padding: 2.5rem;
+    }
+
+    .living-house-hero__title {
+      font-size: 3rem;
+    }
+  }
+
+  .living-house-section {
+    position: relative;
+    padding: 6rem 4rem;
+  }
+
+  .living-house-section__header {
+    max-width: 44rem;
+  }
+
+  .living-house-section__title {
+    margin: 1rem 0 0;
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 400;
+    line-height: 1.05;
+    color: var(--color-text-primary);
+  }
+
+  .living-house-section__lede {
+    margin: 1.25rem 0 0;
+    max-width: 38rem;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .living-house-room-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr 1fr;
+    grid-auto-rows: minmax(14rem, auto);
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  .living-house-aperture {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem;
+    border: 1px solid oklch(90% 0.008 60 / 0.1);
+    border-radius: var(--radius);
+    background: oklch(13% 0.01 270 / 0.62);
+    overflow: hidden;
+    transition:
+      border-color 180ms ease,
+      background 180ms ease;
+  }
+
+  .living-house-aperture::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      120% 85% at 0% 0%,
+      oklch(70% 0.12 250 / 0.09),
+      transparent 55%
+    );
+  }
+
+  .living-house-aperture[data-accent="dream"]::before {
+    background: radial-gradient(
+      120% 85% at 100% 0%,
+      oklch(75% 0.18 320 / 0.1),
+      transparent 55%
+    );
+  }
+
+  .living-house-aperture[data-accent="letter"]::before {
+    background: radial-gradient(
+      120% 85% at 0% 100%,
+      oklch(78% 0.15 85 / 0.08),
+      transparent 55%
+    );
+  }
+
+  .living-house-aperture[data-accent="warm"]::before {
+    background: radial-gradient(
+      120% 85% at 100% 100%,
+      oklch(70% 0.15 50 / 0.1),
+      transparent 55%
+    );
+  }
+
+  .living-house-aperture:nth-child(1) {
+    grid-row: span 2;
+  }
+
+  .living-house-aperture:nth-child(4) {
+    grid-column: span 2;
+  }
+
+  .living-house-aperture__eyebrow {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+  }
+
+  .living-house-aperture__title {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--color-text-primary);
+  }
+
+  .living-house-aperture__copy {
+    margin: 0;
+    max-width: 34rem;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .living-house-aperture__routes {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.625rem;
+    padding-top: 0.5rem;
+    position: relative;
+  }
+
+  .living-house-aperture__routes a {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid oklch(90% 0.008 60 / 0.14);
+    border-radius: calc(var(--radius) - 4px);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition:
+      border-color 180ms ease,
+      background 180ms ease,
+      color 180ms ease;
+  }
+
+  .living-house-aperture__routes a:hover {
+    border-color: oklch(70% 0.12 250 / 0.55);
+    background: oklch(70% 0.12 250 / 0.08);
+  }
+
+  .living-house-aperture__routes a:focus-visible {
+    outline: 2px solid oklch(70% 0.12 250 / 0.85);
+    outline-offset: 2px;
+    background: oklch(70% 0.12 250 / 0.08);
+  }
+
+  .living-house-aperture[data-accent="dream"]
+    .living-house-aperture__routes
+    a:hover,
+  .living-house-aperture[data-accent="dream"]
+    .living-house-aperture__routes
+    a:focus-visible {
+    border-color: oklch(75% 0.18 320 / 0.55);
+    background: oklch(75% 0.18 320 / 0.1);
+  }
+
+  .living-house-aperture[data-accent="dream"]
+    .living-house-aperture__routes
+    a:focus-visible {
+    outline-color: oklch(75% 0.18 320 / 0.85);
+  }
+
+  .living-house-aperture[data-accent="letter"]
+    .living-house-aperture__routes
+    a:hover,
+  .living-house-aperture[data-accent="letter"]
+    .living-house-aperture__routes
+    a:focus-visible {
+    border-color: oklch(78% 0.15 85 / 0.55);
+    background: oklch(78% 0.15 85 / 0.1);
+  }
+
+  .living-house-aperture[data-accent="letter"]
+    .living-house-aperture__routes
+    a:focus-visible {
+    outline-color: oklch(78% 0.15 85 / 0.85);
+  }
+
+  .living-house-signal-corridor {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .living-house-signal-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 0.8fr 0.7fr;
+    gap: 1rem;
+    margin-top: 3rem;
+    align-items: stretch;
+  }
+
+  .living-house-signal-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-height: 9rem;
+    padding: 1.5rem;
+    border: 1px solid oklch(90% 0.008 60 / 0.1);
+    border-radius: var(--radius);
+    background: oklch(13% 0.01 270 / 0.55);
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  a.living-house-signal-panel {
+    justify-content: space-between;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition:
+      border-color 180ms ease,
+      background 180ms ease,
+      color 180ms ease;
+  }
+
+  a.living-house-signal-panel::after {
+    content: "→";
+    font-family: var(--font-sans);
+    font-size: 1.25rem;
+    color: var(--color-text-tertiary);
+    transition:
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  a.living-house-signal-panel:hover {
+    border-color: oklch(70% 0.12 250 / 0.55);
+    background: oklch(70% 0.12 250 / 0.08);
+  }
+
+  a.living-house-signal-panel:hover::after {
+    color: oklch(70% 0.12 250 / 0.95);
+    transform: translateX(2px);
+  }
+
+  a.living-house-signal-panel:focus-visible {
+    outline: 2px solid oklch(70% 0.12 250 / 0.85);
+    outline-offset: 2px;
+    background: oklch(70% 0.12 250 / 0.08);
+  }
+
+  .living-house-invitation {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(24rem, 0.95fr) minmax(20rem, 1fr);
+    gap: 3rem;
+    align-items: center;
+    margin: 4rem;
+    padding: 4rem;
+    min-height: 30rem;
+    border: 1px solid oklch(90% 0.008 60 / 0.12);
+    border-radius: var(--radius);
+    background:
+      linear-gradient(
+        90deg,
+        oklch(8% 0.008 270 / 0.94) 0%,
+        oklch(10% 0.01 270 / 0.55) 55%,
+        transparent 100%
+      ),
+      url("/landing/living-threshold-backplate.webp") center / cover;
+    overflow: hidden;
+  }
+
+  .living-house-invitation__copy {
+    max-width: 34rem;
+  }
+
+  .living-house-invitation__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .living-house-invitation__actions a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid oklch(90% 0.008 60 / 0.15);
+    border-radius: calc(var(--radius) - 4px);
+    background: oklch(13% 0.01 270 / 0.62);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition:
+      border-color 180ms ease,
+      background 180ms ease,
+      transform 180ms ease;
+  }
+
+  .living-house-invitation__actions a span {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 500;
+  }
+
+  .living-house-invitation__actions a small {
+    color: var(--color-text-tertiary);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .living-house-invitation__actions a:hover {
+    border-color: oklch(70% 0.15 50 / 0.55);
+    background: oklch(70% 0.15 50 / 0.08);
+    transform: translateX(4px);
+  }
+
+  .living-house-invitation__actions a:focus-visible {
+    outline: 2px solid oklch(70% 0.15 50 / 0.85);
+    outline-offset: 2px;
+    background: oklch(70% 0.15 50 / 0.1);
+  }
+
+  .living-house-invitation__light {
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+  }
+
+  @media (max-width: 1200px) {
+    .living-house-section {
+      padding: 5rem 2.5rem;
+    }
+
+    .living-house-section__title {
+      font-size: 2.5rem;
+    }
+
+    .living-house-room-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .living-house-aperture:nth-child(1) {
+      grid-row: auto;
+    }
+
+    .living-house-aperture:nth-child(4) {
+      grid-column: span 2;
+    }
+
+    .living-house-signal-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .living-house-invitation {
+      margin: 2.5rem;
+      padding: 3rem;
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .living-house-button,
+    .living-house-room,
+    .living-house-room__description,
+    .living-house-aperture,
+    .living-house-aperture__routes a,
+    a.living-house-signal-panel,
+    a.living-house-signal-panel::after,
+    .living-house-invitation__actions a {
+      transition: none;
+    }
+
+    .living-house-room:hover,
+    .living-house-room:focus-visible,
+    a.living-house-signal-panel:hover::after,
+    .living-house-invitation__actions a:hover {
+      transform: none;
+    }
+  }
 }
 
 /* ============================================
