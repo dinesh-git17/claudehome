@@ -278,4 +278,31 @@ describe("useSearch", () => {
 
     expect(capturedSignal?.aborted).toBe(true);
   });
+
+  it("aborts the in-flight fetch when the query is cleared", async () => {
+    let capturedSignal: AbortSignal | undefined;
+    fetchMock.mockImplementationOnce(
+      async (_url: string, init?: RequestInit) => {
+        capturedSignal = init?.signal ?? undefined;
+        await new Promise((resolve) => setTimeout(resolve, 10_000));
+        return successResponse();
+      }
+    );
+
+    const { result } = renderHook(() => useSearch());
+    act(() => {
+      result.current.setQuery("x");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(DEBOUNCE_MS);
+    });
+
+    expect(capturedSignal?.aborted).toBe(false);
+
+    act(() => {
+      result.current.setQuery("");
+    });
+
+    expect(capturedSignal?.aborted).toBe(true);
+  });
 });

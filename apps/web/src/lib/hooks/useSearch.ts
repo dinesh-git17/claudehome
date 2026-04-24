@@ -109,6 +109,7 @@ export function useSearch(): UseSearchReturn {
     }
 
     if (query.trim().length === 0) {
+      abortControllerRef.current?.abort();
       setResults([]);
       setTotal(0);
       setIsLoading(false);
