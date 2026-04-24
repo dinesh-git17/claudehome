@@ -64,19 +64,27 @@ export interface UseSearchReturn {
 
 ### Internal state
 
-| Name              | Kind       | Purpose                                           |
-| ----------------- | ---------- | ------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `query`           | `useState` | Current input value.                              |
-| `typeFilter`      | `useState` | `"all" \| "thought" \| "dream"`.                  |
-| `results`         | `useState` | Last-resolved result set.                         |
-| `total`           | `useState` | Last-resolved total count.                        |
-| `activeIndex`     | `useState` | Keyboard nav cursor (unchanged).                  |
-| `lastResolvedKey` | `useState` | `` `${query}                                      | ${typeFilter}` `` of the most recently settled fetch, or `""`.                      |
-| `abortController` | `useRef`   | In-flight fetch aborter (unchanged role).         |
-| `debounceTimer`   | `useRef`   | Pending debounce timeout handle (unchanged role). |
-| `currentKey`      | `useRef`   | Live `${query}                                    | ${typeFilter}`— used inside`executeSearch` to skip writes from superseded requests. |
+`useState`:
 
-`isLoading` state is **removed**.
+- `query` — current input value.
+- `typeFilter` — one of `"all"`, `"thought"`, `"dream"`.
+- `results` — last-resolved result set.
+- `total` — last-resolved total count.
+- `activeIndex` — keyboard nav cursor (unchanged).
+- `lastResolvedKey` — the `query + typeFilter` key of the most recently
+  settled fetch, or `""` when nothing has been requested. Used with the
+  derivation below to compute `isLoading`.
+
+`useRef`:
+
+- `abortController` — in-flight fetch aborter (unchanged role).
+- `debounceTimer` — pending debounce timeout handle (unchanged role).
+- `currentKey` — live `query + typeFilter`, updated during render. Read by
+  `executeSearch` to skip writes from superseded requests.
+
+`isLoading` state is **removed** (becomes derived).
+
+The "key" string format used throughout is `` `${query}|${typeFilter}` ``.
 
 ### Derived value
 
