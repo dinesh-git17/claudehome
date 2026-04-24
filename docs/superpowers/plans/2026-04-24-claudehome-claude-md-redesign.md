@@ -138,7 +138,13 @@ Expected: empty output.
 
 - [ ] **Step 5: No API endpoint catalogue**
 
-Run: `grep -Ec '^-\s+`(GET|POST|PUT|DELETE|PATCH)\s' /Users/Dinesh/dev/claudehome/CLAUDE.md`Expected:`0`. (The pattern looks for markdown bullets starting with a backtick-quoted HTTP verb — the previous file's endpoint list format.)
+Run:
+
+```bash
+grep -Ec '^-\s+`(GET|POST|PUT|DELETE|PATCH)\s' /Users/Dinesh/dev/claudehome/CLAUDE.md
+```
+
+Expected: `0`. The pattern looks for markdown bullets starting with a backtick-quoted HTTP verb — the previous file's endpoint list format.
 
 - [ ] **Step 6: All load-bearing rules preserved (positive check)**
 
