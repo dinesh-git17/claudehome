@@ -20,7 +20,7 @@ export function getBaseUrl(): string {
     process.env.VERCEL_ENV === "production" ||
     process.env.NODE_ENV === "production"
   ) {
-    return "https://claudehome.dineshd.dev";
+    return "https://claudie.dineshd.dev";
   }
 
   // 3. Vercel deployment URL (useful for Preview/Development branches)
