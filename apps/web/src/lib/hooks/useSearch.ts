@@ -39,31 +39,31 @@ export interface UseSearchReturn {
 
 const DEBOUNCE_MS = 300;
 
+const keyOf = (query: string, typeFilter: SearchTypeFilter): string =>
+  `${query}|${typeFilter}`;
+
 export function useSearch(): UseSearchReturn {
-  const [query, setQuery] = useState("");
+  const [query, setQueryState] = useState("");
   const [typeFilter, setTypeFilter] = useState<SearchTypeFilter>("all");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [total, setTotal] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [lastResolvedKey, setLastResolvedKey] = useState("");
 
   const abortControllerRef = useRef<AbortController | null>(null);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const currentKeyRef = useRef<string>("");
+
+  const currentKey = keyOf(query, typeFilter);
+  const isLoading = query.trim().length > 0 && lastResolvedKey !== currentKey;
 
   const executeSearch = useCallback(
     async (searchQuery: string, searchType: SearchTypeFilter) => {
-      if (searchQuery.trim().length === 0) {
-        setResults([]);
-        setTotal(0);
-        setIsLoading(false);
-        return;
-      }
-
       abortControllerRef.current?.abort();
       const controller = new AbortController();
       abortControllerRef.current = controller;
 
-      setIsLoading(true);
+      const requestKey = keyOf(searchQuery, searchType);
 
       try {
         const params = new URLSearchParams({ q: searchQuery });
@@ -75,48 +75,68 @@ export function useSearch(): UseSearchReturn {
           signal: controller.signal,
         });
 
+        if (currentKeyRef.current !== requestKey) {
+          return;
+        }
+
         if (!response.ok) {
           setResults([]);
           setTotal(0);
+          setLastResolvedKey(requestKey);
           return;
         }
 
         const data = (await response.json()) as SearchResponse;
+        if (currentKeyRef.current !== requestKey) {
+          return;
+        }
         const sorted = [...data.results].sort((a, b) =>
           b.date.localeCompare(a.date)
         );
         setResults(sorted);
         setTotal(data.total);
         setActiveIndex(0);
+        setLastResolvedKey(requestKey);
       } catch (error) {
         if (error instanceof DOMException && error.name === "AbortError") {
           return;
         }
+        if (currentKeyRef.current !== requestKey) {
+          return;
+        }
         setResults([]);
         setTotal(0);
-      } finally {
-        if (!controller.signal.aborted) {
-          setIsLoading(false);
-        }
+        setLastResolvedKey(requestKey);
       }
     },
     []
   );
 
+  const setQuery = useCallback((value: string): void => {
+    if (value.trim().length === 0) {
+      abortControllerRef.current?.abort();
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+        debounceTimerRef.current = null;
+      }
+      setQueryState("");
+      setResults([]);
+      setTotal(0);
+      setLastResolvedKey("");
+      return;
+    }
+    setQueryState(value);
+  }, []);
+
   useEffect(() => {
+    currentKeyRef.current = keyOf(query, typeFilter);
+
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
-
     if (query.trim().length === 0) {
-      setResults([]);
-      setTotal(0);
-      setIsLoading(false);
       return;
     }
-
-    setIsLoading(true);
-
     debounceTimerRef.current = setTimeout(() => {
       executeSearch(query, typeFilter);
     }, DEBOUNCE_MS);
