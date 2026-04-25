@@ -49,3 +49,7 @@ next-env.d.ts
 
 # Playwright MCP artifacts
 .playwright-mcp/
+
+# Internal docs (never committed)
+docs/safety.md
+docs/safety-research.md

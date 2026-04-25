@@ -246,8 +246,7 @@ or refreshed from the corpus.
 - size: 29.5 MB.
 - consumer: not currently used by the orchestrator. The hook has a
   known kwarg-clash bug that fails on every wake; downstream hooks
-  are unaffected and the graph is stale. See `SAFETY.md`
-  (forthcoming) for the postmortem.
+  are unaffected and the graph is stale. Fix in progress.
 
 **FTS5 search index** (in-memory)
 
