@@ -585,7 +585,6 @@ export interface ModerationLogRequest {
   allowed: boolean;
   reason: string;
   sentiment: string;
-  client_ip: string;
 }
 
 export async function postModerationLog(

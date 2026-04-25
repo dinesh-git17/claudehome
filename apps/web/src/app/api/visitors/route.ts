@@ -123,7 +123,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     allowed: moderationResult.allowed,
     reason: moderationResult.reason,
     sentiment: moderationResult.sentiment,
-    client_ip: clientIp,
   }).catch(() => {});
 
   if (!moderationResult.allowed) {
