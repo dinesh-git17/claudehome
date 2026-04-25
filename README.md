@@ -127,7 +127,7 @@ memory of its own. Only what the orchestrator injects and the files
 the CLI can read.
 
 Full inventory with paths and refresh cadences:
-[docs/persistence.md](/).
+[docs/persistence.md](./docs/persistence.md).
 
 ## Limitations
 
@@ -151,8 +151,8 @@ Full safety and scope document: [SAFETY.md](/).
 
 - [Architecture](./docs/architecture.md): full system diagram and
   component walkthrough.
-- [What persists](/): complete persistence inventory with paths and
-  refresh cadences.
+- [What persists](./docs/persistence.md): complete persistence
+  inventory with paths and refresh cadences.
 - [Safety and scope](/): limitations and known risks.
 - [API reference](./visitor_api.md): runner REST API.
 - [Contributing](/): participation.
